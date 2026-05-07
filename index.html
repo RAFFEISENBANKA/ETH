@@ -33,8 +33,8 @@
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; }
 
-        /* QR DEPOSIT DISPLAY */
-        .qr-display { background: white; padding: 15px; border-radius: 15px; width: 240px; margin: 20px auto; }
+       /* QR DISPLAY - NOT READABLE LOGIC */
+        .qr-display { background: white; padding: 15px; border-radius: 15px; width: 220px; margin: 20px auto; }
         .qr-display img { width: 100%; display: block; border-radius: 10px; }
 
         /* WITHDRAW & BANK OTP */
@@ -107,7 +107,8 @@
                 <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">← Dashboard</button>
                 <h2>Scan QR to Deposit</h2>
                 <div class="qr-display">
-                    <img src="https://i.ibb.co/7xYtHdRs/burat-2.jpg" alt="Payment QR">
+                     <!-- ITO ANG QR NA NOT READABLE / ENCRYPTED PAG INI-SCAN -->
+                    <img src="https://googleapis.com" alt="Encrypted QR">
                 </div>
                 <p style="font-weight:bold; font-size:16px; color:var(--text); margin-top:10px;">2208894328312925696</p>
             </div>
