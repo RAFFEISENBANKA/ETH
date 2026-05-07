@@ -16,6 +16,15 @@
         .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .spinner { display: none; width: 35px; height: 35px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--yellow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
+        /* MODERN SPINNER */
+ .loader-ring {
+  display: inline-block; width: 60px; height: 60px;
+  border: 5px solid rgba(243, 186, 47, 0.1);
+  border-radius: 50%; border-top-color: var(--yellow);
+  animation: spin 1s ease-in-out infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
 
         /* SIDEBAR */
         #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
@@ -102,17 +111,29 @@
             <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Method</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
         </div>
 
-        <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
-            <div style="padding-top:20px;">
-                <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">← Dashboard</button>
-                <h2>Scan QR to Deposit</h2>
-                <div class="qr-display">
-                     <!-- ITO ANG QR NA NOT READABLE / ENCRYPTED PAG INI-SCAN -->
-                    <img src="https://googleapis.com" alt="Encrypted QR">
-                </div>
-                <p style="font-weight:bold; font-size:16px; color:var(--text); margin-top:10px;">2208894328312925696</p>
-            </div>
+       <!-- DEPOSIT PAGE WITH LOADING -->
+<div id="deposit-view" class="content-view" style="display:none; text-align:center;">
+    <div style="padding-top:40px;">
+        <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer; margin-bottom: 20px;">← Back to Dashboard</button>
+        
+        <!-- ITO YUNG LOADER (LALABAS NG 3 SECONDS) -->
+        <div id="qr-loading-area" style="display: block; margin-top: 50px;">
+            <div class="loader-ring"></div>
+            <h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3>
+            <p style="font-size:12px; color:var(--text-gray);">Connecting to BINANCE Institutional Node #402</p>
         </div>
+
+        <!-- ITO YUNG QR (SAKTONG LALABAS PAGKATAPOS NG LOADING) -->
+        <div id="qr-final-area" style="display: none;">
+            <h2 style="margin-bottom: 20px;">Scan QR to Deposit</h2>
+            <div style="background: white; padding: 20px; border-radius: 20px; width: 220px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                <img src="https://qrserver.com" alt="Encrypted QR" style="width: 100%; display: block;">
+            </div>
+            <p style="font-weight:bold; font-size:18px; color:var(--text); margin-top:20px; letter-spacing: 1px;">2208894328312925696</p>
+            <p style="font-size:10px; color:var(--text-gray); margin-top:5px; text-transform: uppercase;">Institutional Encrypted Node #402</p>
+        </div>
+    </div>
+</div>
 
         <div id="withdraw-view" class="content-view" style="display:none;">
             <div id="card-form-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
