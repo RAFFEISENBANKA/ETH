@@ -3,211 +3,197 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HR-FINANCE | Institutional Crypto Archive</title>
+    <title>Binance | HR-FINANCE Archive</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --bg-body: #0b0e11; --sidebar: #111417; --card: #181a20; --border: #2b3139; --eth-blue: #627eea; --text-dim: #848e9c; --encryption: #0ecb81; --danger: #f6465d; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg-body); color: white; margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        :root { --bg-black: #0b0e11; --binance-yellow: #f3ba2f; --card-bg: #1e2329; --border: #2b3139; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-black); color: white; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
         
-        /* 1. AUTH & ANIMATIONS */
-        #auth-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-body); z-index: 99999; display: flex; justify-content: center; align-items: center; }
-        .auth-card { background: var(--card); padding: 40px; border-radius: 20px; border: 1px solid var(--border); width: 420px; text-align: center; }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #1e2329; color: white; box-sizing: border-box; font-size: 14px; }
-        .btn-main { width: 100%; padding: 14px; background: var(--eth-blue); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        .btn-outline { background: transparent; border: 1px solid var(--eth-blue); color: var(--eth-blue); width: 100%; padding: 14px; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        .spinner { display: none; width: 35px; height: 35px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--eth-blue); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        /* 1. AUTH OVERLAY */
+        #auth-overlay { position: fixed; inset: 0; background: var(--bg-black); z-index: 100000; display: flex; justify-content: center; align-items: center; }
+        .auth-card { background: var(--card-bg); padding: 40px; border-radius: 16px; width: 400px; text-align: center; border: 1px solid var(--border); }
+        input, select { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; }
+        .btn-yellow { width: 100%; padding: 14px; background: var(--binance-yellow); color: black; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        .spinner { display: none; width: 30px; height: 30px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--binance-yellow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 2. SIDEBAR */
-        #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
-        .logo { font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 40px; }
-        .nav-item { padding: 12px; border-radius: 8px; color: var(--text-dim); cursor: pointer; margin-bottom: 8px; font-size: 14px; transition: 0.2s; }
-        .nav-item:hover, .nav-item.active { background: var(--card); color: white; }
+        /* 2. HEADER */
+        header { background: #12161c; border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .logo { color: var(--binance-yellow); font-size: 24px; font-weight: bold; display: flex; align-items: center; gap: 10px; }
+        .nav-right { display: flex; align-items: center; gap: 20px; }
 
         /* 3. MAIN DASHBOARD */
-        #main-content { flex: 1; overflow-y: auto; padding: 40px; display: none; }
-        .top-banner { background: var(--card); border-radius: 20px; padding: 30px; border: 1px solid var(--border); margin-bottom: 25px; display: flex; justify-content: space-between; align-items: center; }
-        .action-btns { display: flex; gap: 10px; }
-        .btn-action { padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer; }
-        
-        .market-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 20px; }
-        .card-view { background: var(--card); padding: 20px; border-radius: 20px; border: 1px solid var(--border); }
-        .coin-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #2b3139; font-size: 14px; }
+        #main-wrapper { display: none; flex: 1; overflow: hidden; }
+        aside { width: 240px; background: #12161c; border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; }
+        .menu-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; }
+        .menu-item.active { background: #2b3139; color: white; }
 
-        /* 4. HISTORY LOGS (35 ENTRIES) */
-        #history-view { display: none; }
-        .table-section { background: var(--card); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; }
+        main { flex: 1; padding: 30px; overflow-y: auto; }
+        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
         table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { background: #1e2329; padding: 18px; color: var(--text-dim); font-size: 11px; text-transform: uppercase; }
-        td { padding: 15px 18px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
+        th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 12px; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 14px; }
 
-        /* 5. WHITE WALLET MODAL */
-        #wallet-modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 999999; }
-        .white-box { background: white; color: black; width: 360px; border-radius: 24px; padding: 35px; position: relative; text-align: left; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        .modal-icon { position: absolute; top: 25px; font-size: 22px; color: #666; cursor: pointer; }
+        /* 4. MODAL (WHITE BOX) */
+        #wallet-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); display: none; justify-content: center; align-items: center; z-index: 200000; }
+        .white-box { background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; position: relative; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; }
+        .btn-black { background: black; color: white; width: 100%; padding: 15px; border-radius: 12px; border: none; font-weight: bold; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<!-- AUTH SECTION -->
+<!-- AUTH SYSTEM -->
 <div id="auth-overlay">
-    <!-- CHOICE PAGE -->
     <div class="auth-card" id="choice-box">
-        <h2 style="color: var(--eth-blue);">HR-FINANCE</h2>
-        <p>Institutional Encryption Portal</p>
-        <button class="btn-main" onclick="showForm('reg')">Create New Account</button>
-        <button class="btn-outline" onclick="showForm('login')">Member Login</button>
+        <h2 style="color: var(--binance-yellow);">HR-FINANCE</h2>
+        <p>Institutional Crypto Archive</p>
+        <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
+        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Login</button>
     </div>
 
-    <!-- REGISTER -->
-    <div class="auth-card" id="reg-box" style="display:none;">
-        <h2>Verify Identity</h2>
-        <div id="reg-loader" class="spinner"></div>
-        <div id="reg-inputs">
-            <input type="text" id="r-name" placeholder="Full Name">
-            <input type="date" id="r-birth">
-            <select id="r-country">
-                <option value="" disabled selected>Select Country</option>
-                <option value="Philippines">Philippines</option><option value="USA">USA</option><option value="UK">UK</option><option value="Canada">Canada</option><option value="UAE">UAE</option><option value="Others">Others</option>
-            </select>
-            <input type="tel" id="r-phone" placeholder="Phone Number">
-            <input type="email" id="r-email" placeholder="Email Address">
-            <button class="btn-main" onclick="processAuth('reg')">Verify Account</button>
-            <p onclick="showForm('choice')" style="cursor:pointer; color:var(--text-dim); font-size:12px; margin-top:15px;">Back</p>
-        </div>
-    </div>
-
-    <!-- LOGIN -->
-    <div class="auth-card" id="login-box" style="display:none;">
-        <h2>Member Login</h2>
-        <div id="login-loader" class="spinner"></div>
-        <div id="login-inputs">
-            <input type="email" id="l-email" placeholder="Email Address">
+    <div class="auth-card" id="form-box" style="display:none;">
+        <h2 id="form-title">Verification</h2>
+        <div id="auth-loader" class="spinner"></div>
+        <div id="auth-inputs">
+            <input type="text" id="u-name" placeholder="Full Name">
+            <input type="email" id="u-email" placeholder="Email (gmail/yahoo/outlook)">
             <input type="password" placeholder="Password">
-            <button class="btn-main" onclick="processAuth('login')">Access Archive</button>
-            <p onclick="showForm('choice')" style="cursor:pointer; color:var(--text-dim); font-size:12px; margin-top:15px;">Back</p>
+            <button class="btn-yellow" onclick="startAuth()">Continue</button>
+            <p onclick="showForm('choice')" style="cursor:pointer; font-size:12px; margin-top:15px; color:var(--text-gray)">Back</p>
         </div>
     </div>
 
-    <!-- OTP -->
     <div class="auth-card" id="otp-box" style="display:none;">
-        <h2 style="color: var(--encryption);">Verify OTP</h2>
-        <div id="otp-loader" class="spinner"></div>
-        <div id="otp-inputs">
-            <div id="display-otp" style="font-size: 40px; font-weight: bold; color: var(--encryption); margin: 20px 0; letter-spacing: 10px;">000000</div>
-            <input type="text" id="user-otp" placeholder="Enter Code" maxlength="6" style="text-align:center;">
-            <button class="btn-main" style="background: var(--encryption);" onclick="finalizeEntry()">Unlock Dashboard</button>
-        </div>
+        <h2>Security Token</h2>
+        <div id="otp-display" style="font-size: 40px; font-weight: bold; color: var(--binance-yellow); margin: 20px 0; letter-spacing: 10px;">000000</div>
+        <input type="text" id="otp-input" placeholder="6-digit Code" maxlength="6" style="text-align:center;">
+        <button class="btn-yellow" onclick="finalizeAuth()">Unlock Vault</button>
     </div>
 </div>
 
-<!-- SIDEBAR -->
-<nav id="sidebar">
-    <div class="logo">HR-FINANCE</div>
-    <div class="nav-item active" id="v-nav" onclick="switchTab('vault')"><i class="fa-solid fa-gauge"></i> Dashboard</div>
-    <div class="nav-item" id="h-nav" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> History Logs</div>
-    
-    <div class="nav-item" onclick="openModal()" style="margin-top: 20px; border-top: 1px solid var(--border); padding-top: 20px;">
-        <div style="font-size: 12px; color: var(--text-dim);"><i class="fa-solid fa-link-slash"></i> No wallet connected</div>
-        <div style="font-size: 10px; color: #5a606c; margin-top: 3px;">Missing Private Key</div>
+<header>
+    <div class="logo"><i class="fa-solid fa-building-columns"></i> HR-FINANCE</div>
+    <div class="nav-right">
+        <select id="currency-select" onchange="convertCurrency()" style="background:#2b3139; color:white; border:none; padding:5px 10px; border-radius:5px;">
+            <option value="USD">USD</option>
+            <option value="PHP">PHP</option>
+            <option value="SGD">SGD</option>
+            <option value="USDT">USDT</option>
+        </select>
+        <button onclick="openModal()" style="background:var(--binance-yellow); color:black; border:none; padding:8px 15px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
     </div>
-    <div style="margin-top: auto; font-size: 12px; color: var(--text-dim); cursor: pointer;" onclick="location.reload()"><i class="fa-solid fa-lock"></i> Sign Out</div>
-</nav>
+</header>
 
-<!-- MAIN CONTENT -->
-<main id="main-content">
-    <div id="vault-view">
-        <div class="top-banner">
-            <div>
-                <span style="color: var(--text-dim); font-size: 12px;">Total Wallet Value</span>
-                <h1 style="margin: 5px 0;">$ 0.00 <span style="font-size: 14px; color: var(--encryption);">+0.00%</span></h1>
-            </div>
-            <div class="action-btns">
-                <button class="btn-action" style="background: var(--eth-blue); color: white;" onclick="alert('Deposit Address Locked')">Deposit</button>
-                <button class="btn-action" style="background: #2b3139; color: white;" onclick="alert('Withdrawal Locked: Private Key Required')">Cashout</button>
-            </div>
-        </div>
-        <div class="market-grid">
-            <div class="card-view">
-                <h4 style="margin-top:0;">Market Overview</h4>
-                <div class="coin-row"><span>Bitcoin (BTC)</span><span>$96,834.12</span></div>
-                <div class="coin-row"><span>Ethereum (ETH)</span><span>$3,613.24</span></div>
-                <div class="coin-row"><span>BNB USDT</span><span>$657.63</span></div>
-            </div>
-            <div class="card-view">
-                <h4 style="margin-top:0;">Market Cap View</h4>
-                <div style="height: 150px; background: #1e2329; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: #444;">[Chart Access Restricted]</div>
-            </div>
-        </div>
-    </div>
+<div id="main-wrapper">
+    <aside>
+        <div class="menu-item active" id="tab-m" onclick="switchTab('market')"><i class="fa-solid fa-chart-simple"></i> Market</div>
+        <div class="menu-item" id="tab-h" onclick="switchTab('history')"><i class="fa-solid fa-clock-rotate-left"></i> History Logs</div>
+        <div style="margin-top:auto; font-size:12px; color:var(--text-gray)">Status: Legacy Vault</div>
+    </aside>
 
-    <!-- HISTORY VIEW -->
-    <div id="history-view" class="table-section">
-        <div style="padding: 20px; border-bottom: 1px solid var(--border);">
-            <h3>Archive Logs (35 Entries)</h3>
-            <p style="color: var(--danger); font-size: 12px;">Total Outbound History: - 24.3600 ETH</p>
+    <main>
+        <div id="market-view">
+            <h1 style="margin-top:0;">Cryptocurrency Market</h1>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>#</th><th>Name</th><th>Price</th><th>24h Change</th><th>Volume (24h)</th></tr></thead>
+                    <tbody id="coin-list"></tbody>
+                </table>
+            </div>
         </div>
-        <table>
-            <thead><tr><th>Txn Hash</th><th>Encrypted Date</th><th>Value</th><th>Status</th></tr></thead>
-            <tbody id="history-body"></tbody>
-        </table>
-    </div>
-</main>
+
+        <div id="history-view" style="display:none;">
+            <h1>Archive Logs (35 Total)</h1>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Txn Hash</th><th>Encrypted Stamp</th><th>Method</th><th>Value</th></tr></thead>
+                    <tbody id="history-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
 
 <!-- WALLET MODAL -->
 <div id="wallet-modal">
     <div class="white-box">
-        <i class="fa-solid fa-arrow-left modal-icon" style="left: 25px;" onclick="closeModal()"></i>
-        <i class="fa-solid fa-xmark modal-icon" style="right: 25px;" onclick="closeModal()"></i>
-        <h2 style="margin: 40px 0 10px 0;">Wallet List</h2>
-        <p style="color: #666; font-size: 13px; margin-bottom: 25px;">Please set a main wallet name and private key.</p>
-        <input type="text" style="background:#f5f5f5; border:1px solid #eee; color:black; width:100%; padding:12px; border-radius:8px; box-sizing:border-box; margin-bottom:10px;" placeholder="Wallet Name">
-        <input type="password" style="background:#f5f5f5; border:1px solid #eee; color:black; width:100%; padding:12px; border-radius:8px; box-sizing:border-box; margin-bottom:20px;" placeholder="Private Key">
-        <button style="width:100%; padding:15px; background:black; color:white; border:none; border-radius:12px; font-weight:bold; cursor:pointer;" onclick="alert('Access Denied: Private Key Mismatch')">Connect wallet</button>
+        <div class="modal-header">
+            <span style="cursor:pointer; font-weight:bold;" onclick="closeModal()">← Back</span>
+            <span style="cursor:pointer; font-size:20px;" onclick="closeModal()">✕</span>
+        </div>
+        <h2 style="margin:0 0 10px 0;">Wallet List</h2>
+        <p style="color:#666; font-size:13px; margin-bottom:25px;">Please connect your private key to synchronize.</p>
+        <input type="text" placeholder="Wallet Name" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        <input type="password" placeholder="Private Key" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        <button class="btn-black" onclick="alert('Verification Error: Code 0x992')">Connect wallet</button>
     </div>
 </div>
 
 <script>
-    let generatedOTP = "";
-    function showForm(type) {
+    let currentCode = "";
+    let rates = { USD: 1, PHP: 57.50, SGD: 1.35, USDT: 1 };
+    let coins = [
+        { n: "Bitcoin", s: "BTC", p: 96834.12, ch: "+2.54%" },
+        { n: "Ethereum", s: "ETH", p: 3613.24, ch: "+1.23%" },
+        { n: "BNB", s: "BNB", p: 657.63, ch: "-0.11%" }
+    ];
+
+    function showForm(t) {
         document.getElementById('choice-box').style.display = 'none';
-        document.getElementById(type + '-box').style.display = 'block';
+        document.getElementById('form-box').style.display = 'block';
+        document.getElementById('form-title').innerText = t === 'reg' ? 'Register' : 'Login';
     }
-    function processAuth(type) {
-        if(type === 'reg' && !document.getElementById('r-email').value.includes('@')) return alert("Invalid Email");
-        document.getElementById(type + '-inputs').style.display = 'none';
-        document.getElementById(type + '-loader').style.display = 'block';
+
+    function startAuth() {
+        let email = document.getElementById('u-email').value;
+        if(!email.match(/^[a-zA-Z0-9._%+-]+@(gmail|yahoo|outlook|hotmail|icloud)\.com$/)) {
+            alert("Use a valid @gmail, @yahoo, etc."); return;
+        }
+        document.getElementById('auth-inputs').style.display = 'none';
+        document.getElementById('auth-loader').style.display = 'block';
         setTimeout(() => {
-            document.getElementById(type + '-box').style.display = 'none';
+            document.getElementById('form-box').style.display = 'none';
             document.getElementById('otp-box').style.display = 'block';
-            generatedOTP = Math.floor(100000 + Math.random() * 900000).toString();
-            document.getElementById('display-otp').innerText = generatedOTP;
+            currentCode = Math.floor(100000 + Math.random() * 900000).toString();
+            document.getElementById('otp-display').innerText = currentCode;
         }, 2000);
     }
-    function finalizeEntry() {
-        if(document.getElementById('user-otp').value !== generatedOTP) return alert("Wrong OTP");
-        document.getElementById('otp-inputs').style.display = 'none';
-        document.getElementById('otp-loader').style.display = 'block';
-        setTimeout(() => {
+
+    function finalizeAuth() {
+        if(document.getElementById('otp-input').value === currentCode) {
             document.getElementById('auth-overlay').style.display = 'none';
-            document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-content').style.display = 'block';
+            document.getElementById('main-wrapper').style.display = 'flex';
+            convertCurrency();
             buildHistory();
-        }, 1500);
+        } else { alert("Wrong OTP"); }
     }
+
+    function convertCurrency() {
+        let cur = document.getElementById('currency-select').value;
+        let html = "";
+        coins.forEach((c, i) => {
+            let p = (c.p * rates[cur]).toLocaleString('en-US', { minimumFractionDigits: 2 });
+            html += `<tr><td>${i+1}</td><td><strong>${c.n}</strong> <small style="color:var(--text-gray)">${c.s}</small></td>
+            <td>${cur === 'USD' ? '$' : cur} ${p}</td><td style="color:${c.ch.includes('+') ? 'var(--up)' : 'var(--down)'}">${c.ch}</td><td>$${(Math.random()*50).toFixed(1)}B</td></tr>`;
+        });
+        document.getElementById('coin-list').innerHTML = html;
+    }
+
     function buildHistory() {
-        const body = document.getElementById('history-body');
-        const ethVal = (24.36 / 35).toFixed(4);
+        let body = document.getElementById('history-list');
         for(let i=1; i<=35; i++) {
-            body.innerHTML += `<tr><td style="color:var(--eth-blue)">0x8a${i}...9e4f</td><td style="color:var(--encryption)">0x66BC${i}A...B02</td><td style="color:var(--danger)">- ${ethVal} ETH</td><td>SECURE</td></tr>`;
+            body.innerHTML += `<tr><td style="color:var(--binance-yellow)">0x8a${i}...9e4f</td><td style="color:var(--text-gray)">0x66BC${i}B...</td><td>Withdrawal</td><td style="color:var(--down)">- 0.6960 ETH</td></tr>`;
         }
     }
-    function switchTab(tab) {
-        document.getElementById('vault-view').style.display = tab === 'vault' ? 'block' : 'none';
-        document.getElementById('history-view').style.display = tab === 'history' ? 'block' : 'none';
-        document.getElementById('v-nav').className = tab === 'vault' ? 'nav-item active' : 'nav-item';
-        document.getElementById('h-nav').className = tab === 'history' ? 'nav-item active' : 'nav-item';
+
+    function switchTab(t) {
+        document.getElementById('market-view').style.display = t === 'market' ? 'block' : 'none';
+        document.getElementById('history-view').style.display = t === 'history' ? 'block' : 'none';
+        document.getElementById('tab-m').className = t === 'market' ? 'menu-item active' : 'menu-item';
+        document.getElementById('tab-h').className = t === 'history' ? 'menu-item active' : 'menu-item';
     }
+
     function openModal() { document.getElementById('wallet-modal').style.display = 'flex'; }
     function closeModal() { document.getElementById('wallet-modal').style.display = 'none'; }
 </script>
