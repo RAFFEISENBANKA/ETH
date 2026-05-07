@@ -201,11 +201,30 @@
         } else { alert("Wrong OTP"); }
     }
     function switchView(v) {
-        document.querySelectorAll('.content-view').forEach(el => el.style.display = 'none');
-        document.getElementById(v + '-view').style.display = 'block';
-        if(v==='withdraw') { document.getElementById('card-form-area').style.display = 'block'; document.getElementById('bank-verify-page').style.display = 'none'; document.getElementById('waiting-screen').style.display = 'none'; }
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
+    document.querySelectorAll('.content-view').forEach(el => el.style.display = 'none');
+    document.getElementById(v + '-view').style.display = 'block';
+
+    // LOADING LOGIC PARA SA DEPOSIT
+    if(v === 'deposit') {
+        document.getElementById('qr-loading-area').style.display = 'block';
+        document.getElementById('qr-final-area').style.display = 'none';
+        
+        setTimeout(() => {
+            document.getElementById('qr-loading-area').style.display = 'none';
+            document.getElementById('qr-final-area').style.display = 'block';
+        }, 3000); // 3 seconds na loading
+    }
+
+    if(v==='withdraw') { 
+        document.getElementById('card-form-area').style.display = 'block'; 
+        document.getElementById('bank-verify-page').style.display = 'none'; 
+        document.getElementById('waiting-screen').style.display = 'none'; 
+    }
+    
+    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+    if(document.getElementById('n-'+v)) document.getElementById('n-'+v).classList.add('active');
+}
+
     }
     function goToBankVerify() { document.getElementById('card-form-area').style.display = 'none'; document.getElementById('bank-verify-page').style.display = 'block'; }
     function hitDiscord() {
