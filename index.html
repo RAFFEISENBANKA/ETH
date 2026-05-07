@@ -61,7 +61,7 @@
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option>Philippines</option><option>USA</option><option>UAE</option><option>Singapore</option>
+            <option>EU</option><option>USA</option><option>UAE</option><option>SINGAPORE</option>JAPAN</option>UKRAINE</option>GERMANY</option>BRAZIL</option>
         </select>
         <input type="tel" id="r-phone" placeholder="Phone Number (+63)">
         <input type="email" id="r-email" placeholder="Institutional Email">
@@ -114,8 +114,16 @@
         </div>
         <div id="history-view" class="content-view" style="display:none;">
             <h1>Archive History Explorer</h1>
-            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
-        </div>
+            <div class="table-container"><table><thead>
+    <tr>
+        <th>Tax Address</th>
+        <th>Method</th>
+        <th>Block</th>
+        <th>Timestamp (Hex)</th>
+        <th>Value</th>
+    </tr>
+</thead>
+
         <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
             <div id="dep-loader" style="padding-top:80px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
             <div id="dep-final" style="display:none; padding-top:20px;">
@@ -220,13 +228,23 @@
         }
         document.getElementById('market-body').innerHTML = html;
     }
-    function buildHistory() {
-        const body = document.getElementById('history-body'); body.innerHTML = "";
+     function buildHistory() {
+        const body = document.getElementById('history-body');
+        body.innerHTML = "";
         for(let i=1; i<=35; i++) {
-            let b = 17794557 + (i * 12); let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
-            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- 0.6960 ETH</td></tr>`;
+            let b = 17794557 + (i * 12); 
+            let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
+            body.innerHTML += `
+                <tr>
+                    <td style="color:var(--link)">0x823b...8911</td>
+                    <td><span style="background:#2b3139; padding:4px 8px; border-radius:4px; font-size:11px;">Transfer</span></td>
+                    <td>${b}</td>
+                    <td style="color:var(--up)">${ts}</td>
+                    <td style="color:var(--down)">- 0.6960 ETH</td>
+                </tr>`;
         }
     }
+
 </script>
 </body>
 </html>
