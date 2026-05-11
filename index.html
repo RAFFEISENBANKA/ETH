@@ -109,7 +109,7 @@
 
     <main>
         <div id="market-view" class="content-view">
-            <h1>Market Overview (Rank 1-100)</h1>
+            <h1>Market Overview (List 1-***)</h1>
             <div class="table-container"><table><thead><tr><th>#</th><th>Last Name</th><th>TOTAL</th><th>CLAIMER OF FUNDS</th><th>Refund Done</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
         <div id="history-view" class="content-view" style="display:none;">
@@ -212,12 +212,35 @@
             sec--;
         }, 1000);
     }
-    function updateMarket() {
-        let cur = document.getElementById('currency-select').value; let html = "";
-        for(let i=1; i<=1; i++) {
-            let name = LASTNAMEs[(i-1) % LASTNAMEs.length];
-            let base = i===1?96834.12:(1500/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
-            html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(151-i).toFixed(1)}B</td></tr>`;
+function updateMarket() {
+    let cur = document.getElementById('currency-select').value; 
+    let html = "";
+    
+    // Binago ang i <= 1 sa i <= LASTNAME.length para lumabas lahat ng pangalan
+    for(let i = 1; i <= LASTNAME.length; i++) {
+        const name = LASTNAME[i - 1]; // Kinuha ang pangalan base sa index
+                       </tr>`;
+    }
+    
+    // Siguraduhin na may element na 'market-body' sa iyong HTML
+    const marketBody = document.getElementById('market-body');
+    if (marketBody) {
+        marketBody.innerHTML = html;
+    }
+}
+        
+        // Kalkulasyon ng presyo
+        let base = i === 1 ? 96834.12 : (15000 / i); 
+        let p = (base * rates[cur]).toLocaleString('en-US', {minimumFractionDigits: 2});
+        
+        // Pagbuo ng table row (TR)
+        html += `<tr>
+                    <td>${i}</td>
+                    <td><strong>${name}</strong></td>
+                    <td>${cur} ${p}</td>
+                    <td style="color:var(--up)">+${(Math.random() * 5).toFixed(2)}%</td>
+                    <td>$${(151 - i).toFixed(1)}B</td>
+                 </tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
     }
