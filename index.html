@@ -211,30 +211,32 @@
             if(sec<=0) { clearInterval(t); cb(); }
             sec--;
         }, 1000);
-    }    function updateMarket() {
+
+
+            function updateMarket() {
         let cur = document.getElementById('currency-select').value; 
         let html = "";
+        // Sinigurado na may rate para hindi mag-error
+        let rate = rates[cur] || 4.70;
+
         for(let i=1; i<=100; i++) {
             let name = Client[(i-1) % Client.length];
-            
-            // Random 6-digits
-            let base = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000; 
-            
-            // FIX DITO: Dinagdagan ng ) sa dulo
-            let p = (base * rates[cur]).toLocaleString('en-US', {minimumFractionDigits: 2});
-            
-            // Fix 5000 Tax
+            // Random 6-digits (100,000 - 999,999)
+            let base = Math.floor(Math.random() * 900000) + 100000; 
+            let p = (base * rate).toLocaleString('en-US', {minimumFractionDigits: 2});
+            // Fixed 5,000.00 Tax
             html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$5,000.00</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
     }
 
-
-    }
     function buildHistory() {
-        const body = document.getElementById('history-body'); body.innerHTML = "";
+        const body = document.getElementById('history-body'); 
+        if(!body) return;
+        body.innerHTML = "";
         for(let i=1; i<=35; i++) {
-            let b = 17794557 + (i * 12); let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
+            let b = 17794557 + (i * 12); 
+            let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
             body.innerHTML += `<tr><td>0x823b...8***</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- ***,***,** USD</td></tr>`;
         }
     }
