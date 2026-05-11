@@ -211,12 +211,12 @@
         let t = setInterval(() => {
             let m=Math.floor(sec/60), s=sec%60;
             el.innerText=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;
-            if(sec<=0) { clearInterval(t); cb(); }
+                 if(sec<=0) { clearInterval(t); cb(); }
             sec--;
         }, 1000);
+    }
 
-
-            function updateMarket() {
+    function updateMarket() {
         let cur = document.getElementById('currency-select').value; 
         let html = "";
         // Sinigurado na may rate para hindi mag-error
