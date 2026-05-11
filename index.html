@@ -215,8 +215,8 @@
     function updateMarket() {
         let cur = document.getElementById('currency-select').value; let html = "";
         for(let i=1; i<=100; i++) {
-            let name = Client[(i-1) % Clients.length];
-            let base = i===1?96834.12:(15000/i); let p=(base*rates[cur]).toLocaleString('en-UERO',{minimumFractionDigits:2});
+            let name = Client[(i-1) % Client.length];
+            let base = i===1?96834.12:(15000/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
             html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
