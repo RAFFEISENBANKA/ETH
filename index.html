@@ -220,7 +220,7 @@
             
             // 1. GINAWANG RANDOM 6-DIGITS ANG FUNDS
             let base = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000; 
-            let p = (base * rates[cur]).toLocaleString('en-US', {minimumFractionDigits: 2});
+            let p = (base * rates[cur]).toLocaleString('en-US', {minimumFractionDigits: 2};
             
             // 2. GINAWANG FIX NA 5000 ANG TAX (DITO SA DULO)
             html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$5,000.00</td></tr>`;
