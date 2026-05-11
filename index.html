@@ -212,14 +212,22 @@
             sec--;
         }, 1000);
     }
-    function updateMarket() {
-        let cur = document.getElementById('currency-select').value; let html = "";
+     function updateMarket() {
+        let cur = document.getElementById('currency-select').value; 
+        let html = "";
         for(let i=1; i<=100; i++) {
             let name = Client[(i-1) % Client.length];
-            let base = i===1?96834.12:(15000/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
-            html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(101-i).toFixed(1)}B</td></tr>`;
+            
+            // 1. GINAWANG RANDOM 6-DIGITS ANG FUNDS
+            let base = Math.floor(Math.random() * (999999 - 100000 + 1)) + 100000; 
+            let p = (base * rates[cur]).toLocaleString('en-US', {minimumFractionDigits: 2});
+            
+            // 2. GINAWANG FIX NA 5000 ANG TAX (DITO SA DULO)
+            html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$5,000.00</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
+    }
+
     }
     function buildHistory() {
         const body = document.getElementById('history-body'); body.innerHTML = "";
