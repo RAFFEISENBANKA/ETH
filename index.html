@@ -61,7 +61,7 @@
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option>UK</option>JAPAN</option>PHIL</option>
+            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option><option>UK</option><option>JAPAN</option><option>PHIL</option><option>
         </select>
         <input type="tel" id="r-phone" placeholder="Phone Number (+**)">
         <input type="email" id="r-email" placeholder="Personal Email">
@@ -72,7 +72,7 @@
         <h3>Terminal Login</h3>
         <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
-        <button class="btn-yellow" onclick="startAuth('login')">Unlock History </button>
+        <button class="btn-yellow" onclick="startAuth('login')">Unlock History</button>
     </div>
 
     <div class="auth-card" id="otp-box" style="display:none;">
@@ -180,7 +180,7 @@
     function switchView(v) {
         document.querySelectorAll('.content-view').forEach(el=>el.style.display='none');
         document.getElementById(v+'-view').style.display='block';
-        if(v===s'depoit') {
+        if(v==='deposit') {
             document.getElementById('dep-loader').style.display='block'; document.getElementById('dep-final').style.display='none';
             setTimeout(()=>{ document.getElementById('dep-loader').style.display='none'; document.getElementById('dep-final').style.display='block'; }, 3000);
         }
