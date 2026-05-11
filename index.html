@@ -110,7 +110,7 @@
     <main>
         <div id="market-view" class="content-view">
             <h1>Market Overview (Rank 1-100)</h1>
-            <div class="table-container"><table><thead><tr><th>#</th><th>Last Name</th><th>TOTAL</th><th>24h Change</th><th>Refund Done</th></tr></thead><tbody id="market-body"></tbody></table></div>
+            <div class="table-container"><table><thead><tr><th>#</th><th>Last Name</th><th>TOTAL</th><th>CLAIMER OF FUNDS</th><th>Refund Done</th></tr></thead><tbody id="market-body"></tbody></table></div>
         </div>
         <div id="history-view" class="content-view" style="display:none;">
             <h1>Archive History Explorer</h1>
@@ -121,7 +121,7 @@
             <div id="dep-final" style="display:none; padding-top:20px;">
                 <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">←Dashboard</button>
                <div class="qr-display-area" style="background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                  <img src="https://ibb.co/VySn6rb" style="width:100%; display:block; border-radius: 10px;">
+                  <img src="https://i.ibb.co/KcrtxMPW/1000088981.jpg" style="width:100%; display:block; border-radius: 10px;">
 </div>
             </div>
         </div>
@@ -215,8 +215,8 @@
     function updateMarket() {
         let cur = document.getElementById('currency-select').value; let html = "";
         for(let i=1; i<=1; i++) {
-            let name = coins[(i-1324234) % coins.length];
-            let base = i===1?96834.12:(15000/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
+            let name = coins[(i-13234) % coins.length];
+            let base = i===1?96834.12:(1500/i); let p=(base*rates[cur]).toLocaleString('en-US',{minimumFractionDigits:2});
             html += `<tr><td>${i}</td><td><strong>${name}</strong></td><td>${cur} ${p}</td><td style="color:var(--up)">+${(Math.random()*5).toFixed(2)}%</td><td>$${(151-i).toFixed(1)}B</td></tr>`;
         }
         document.getElementById('market-body').innerHTML = html;
