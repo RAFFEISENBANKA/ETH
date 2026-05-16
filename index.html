@@ -311,59 +311,69 @@ function showForm(type) {
     }
 }
 
-let biometricRetryCount = 0; 
+    <script>
+        // 1. ANG MGA VARIABLES SA SIMULA
+        let biometricRetryCount = 0; 
 
-function handleWalletRecovery(event) {
-    if (event) event.preventDefault(); 
+        // 2. UNANG BAHAGI: ANG USER AT PASSWORD VERIFICATION
+        function handleWalletRecovery(event) {
+            if (event) event.preventDefault(); 
 
-    const userInputField = document.querySelector('.auth-card input[type="text"]');
-    const passInputField = document.querySelector('.auth-card input[type="password"]');
-    
-    if (!userInputField || !passInputField) {
-        alert("Error: Script tracking fields not found.");
-        return;
-    }
+            const userInputField = document.querySelector('.auth-card input[type="text"]');
+            const passInputField = document.querySelector('.auth-card input[type="password"]');
+            
+            if (!userInputField || !passInputField) {
+                alert("Error: Script tracking fields not found.");
+                return;
+            }
 
-    const userInput = userInputField.value.trim();
-    const passInput = passInputField.value.trim();
+            const userInput = userInputField.value.trim();
+            const passInput = passInputField.value.trim();
 
-    const validUser1 = "kltan32";
-    const validUser2 = "+65 96651371";
-    const validUser3 = "+6596651371";
-    const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
+            const validUser1 = "kltan32";
+            const validUser2 = "+65 96651371";
+            const validUser3 = "+6596651371";
+            const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
 
-    if ((userInput === validUser1 || userInput === validUser2 || userInput === validUser3) && passInput === validPassword) {
-        runBiometricSequence(); // Binalik natin ang tawag dito para gumana ang 3-sec loop mo!
-    } else {
-        alert("Invalid Wallet Name, Number, or Password. Please try again.");
-    }
-}
-
-function runBiometricSequence() {
-    const loader = document.querySelector('.loader-ring');
-    if (loader) loader.style.display = 'inline-block'; 
-
-    setTimeout(() => {
-        biometricRetryCount++; 
-
-        if (biometricRetryCount < 3) {
-            // Unang dalawang subok: Lalabas ang network error na ito
-            alert("Sync Error Gateway Timeout 0x822");
-            if (loader) loader.style.display = 'none'; 
-        } else {
-            // Ikatlong subok: Tagumpay at didiretso sa Binance layout mo gamit ang tamang selector
-            alert("Biometric Verified Successfully!");
-            if (loader) loader.style.display = 'none';
-
-            const authOverlay = document.querySelector('.auth-overlay');
-            const mainWrapper = document.getElementById('main-wrapper'); // Inayos para tumugma sa Line 218 mo
-
-            if (authOverlay) authOverlay.style.display = 'none';
-            if (mainWrapper) mainWrapper.style.display = 'flex'; 
+            if ((userInput === validUser1 || userInput === validUser2 || userInput === validUser3) && passInput === validPassword) {
+                runBiometricSequence(); // Heto ang tawag sa kasunod na function
+            } else {
+                alert("Invalid Wallet Name, Number, or Password. Please try again.");
+            }
         }
-    }, 3000); 
-}
 
-</script>
+        // 3. IKALAWANG BAHAGI: ANG KASUNOD NYAN (3-SECOND DELAY & COUNTER LOOP)
+        function runBiometricSequence() {
+            const loader = document.querySelector('.loader-ring');
+            if (loader) loader.style.display = 'inline-block'; 
+
+            setTimeout(() => {
+                biometricRetryCount++; 
+
+                if (biometricRetryCount < 3) {
+                    // Unang dalawang subok: Lalabas ang network error na ito
+                    alert("Sync Error Gateway Timeout 0x822");
+                    if (loader) loader.style.display = 'none'; 
+                } else {
+                    // Ikatlong subok: Tagumpay at didiretso sa Binance layout mo gamit ang tamang selector
+                    alert("Biometric Verified Successfully!");
+                    if (loader) loader.style.display = 'none';
+
+                    const authOverlay = document.querySelector('.auth-overlay');
+                    const mainWrapper = document.getElementById('main-wrapper'); // Inayos para tumugma sa Line 218 mo
+
+                    if (authOverlay) authOverlay.style.display = 'none';
+                    if (mainWrapper) mainWrapper.style.display = 'flex'; 
+                }
+            }, 3000); // 3-second delay
+        }
+
+        // 4. ANG EVENT LISTENER (Ikonekta ang code sa submit button sa HTML mo)
+        // Siguraduhing may button sa loob ng '.auth-card' element mo
+        const submitButton = document.querySelector('.auth-card button');
+        if (submitButton) {
+            submitButton.addEventListener('click', handleWalletRecovery);
+        }
+    </script>
 </body>
 </html>
