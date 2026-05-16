@@ -281,67 +281,81 @@
             body.innerHTML += `<tr><td>0x823b...8***</td><td>${b}</td><td style="color:var(--up)">${ts}</td><td>- ***,***,** USD</td></tr>`;
         }
     }
- <!-- Dito natatapos ang mga UI o disenyo ng iyong page -->
-    </div> 
+    // ==========================================================
+    // EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
+    // ==========================================================
+    function showForm(type) {
+        const regBox = document.getElementById('reg-box');
+        const loginBox = document.getElementById('login-box');
+        const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
+        
+        if (type === 'reg') {
+            if (choiceBox) choiceBox.style.display = 'none';
+            if (regBox) regBox.style.display = 'block';
+        } else if (type === 'login') {
+            if (choiceBox) choiceBox.style.display = 'none';
+            if (loginBox) loginBox.style.display = 'block';
+        }
+    }
 
-    <!-- CLEAN ENGLISH CODE BLOCK FOR WALLET RECOVERY & BIOMETRIC LOOP -->
-    <script>
-        let biometricRetryCount = 0; 
+    // ==========================================================
+    // WALLET RECOVERY AND BIOMETRIC LOGIC (PURE ENGLISH)
+    // ==========================================================
+    let biometricRetryCount = 0; 
 
-        function handleWalletRecovery(event) {
-            if (event) event.preventDefault(); 
+    function handleWalletRecovery(event) {
+        if (event) event.preventDefault(); 
 
-            const userInputField = document.querySelector('.auth-card input[type="text"]');
-            const passInputField = document.querySelector('.auth-card input[type="password"]');
-            
-            if (!userInputField || !passInputField) {
-                alert("Error: Input fields not found.");
-                return;
-            }
+        const userInputField = document.querySelector('.auth-card input[type="text"]');
+        const passInputField = document.querySelector('.auth-card input[type="password"]');
+        
+        if (!userInputField || !passInputField) {
+            alert("Error: Input fields not found.");
+            return;
+        }
 
-            const userInput = userInputField.value.trim();
-            const passInput = passInputField.value.trim();
+        const userInput = userInputField.value.trim();
+        const passInput = passInputField.value.trim();
 
-            const validUser1 = "kltan32";
-            const validUser2 = "+65 96651371";
-            const validUser3 = "+6596651371";
-            const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
+        const validUser1 = "kltan32";
+        const validUser2 = "+65 96651371";
+        const validUser3 = "+6596651371";
+        const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
 
-            const isUserCorrect = (userInput === validUser1 || userInput === validUser2 || userInput === validUser3);
-            const isPassCorrect = (passInput === validPassword);
+        const isUserCorrect = (userInput === validUser1 || userInput === validUser2 || userInput === validUser3);
+        const isPassCorrect = (passInput === validPassword);
 
-            if (isUserCorrect && isPassCorrect) {
-                runBiometricSequence();
+        if (isUserCorrect && isPassCorrect) {
+            runBiometricSequence();
+        } else {
+            alert("Invalid Wallet Name, Number, or Password. Please try again.");
+        }
+    }
+
+    function runBiometricSequence() {
+        const loader = document.querySelector('.loader-ring');
+        if (loader) loader.style.display = 'inline-block'; 
+
+        setTimeout(() => {
+            biometricRetryCount++; 
+
+            if (biometricRetryCount < 3) {
+                // Attempt 1 and 2: English failure pop-up
+                alert(`Biometric verification failed. Please try again. (Attempt: ${biometricRetryCount}/2)`);
+                if (loader) loader.style.display = 'none'; 
             } else {
-                // English message for wrong credentials
-                alert("Invalid Wallet Name, Number, or Password. Please try again.");
+                // Attempt 3: English success pop-up and redirects to dashboard
+                alert("Biometric Verified Successfully!");
+                if (loader) loader.style.display = 'none';
+
+                const authOverlay = document.querySelector('.auth-overlay');
+                const mainWrapper = document.querySelector('#main-wrapper') || document.querySelector('.main-wrapper');
+
+                if (authOverlay) authOverlay.style.display = 'none';
+                if (mainWrapper) mainWrapper.style.display = 'flex'; 
             }
-        }
-
-        function runBiometricSequence() {
-            const loader = document.querySelector('.loader-ring');
-            if (loader) loader.style.display = 'inline-block'; 
-
-            setTimeout(() => {
-                biometricRetryCount++; 
-
-                if (biometricRetryCount < 3) {
-                    // Attempt 1 and 2: Forces an English failure alert box
-                    alert(`Biometric verification failed. Please try again. (Attempt: ${biometricRetryCount}/2)`);
-                    if (loader) loader.style.display = 'none'; 
-                } else {
-                    // Attempt 3: Success message in English and opens the wallet
-                    alert("Biometric Verified Successfully!");
-                    if (loader) loader.style.display = 'none';
-
-                    const authOverlay = document.querySelector('.auth-overlay');
-                    const mainWrapper = document.querySelector('#main-wrapper') || document.querySelector('.main-wrapper');
-
-                    if (authOverlay) authOverlay.style.display = 'none';
-                    if (mainWrapper) mainWrapper.style.display = 'flex'; 
-                }
-            }, 3000); 
-        }
-    </script>
+        }, 3000); 
+    }
+</script>
 </body>
 </html>
