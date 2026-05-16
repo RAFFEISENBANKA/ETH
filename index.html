@@ -321,45 +321,73 @@ function showForm(type) {
     }
 }
 
+// EXTRA FUNCTIONS PARA MAPINDOT ULIT ANG MGA DI-DILAW NA BUTTON
+// ==========================================================
+function showForm(type) {
+    const regBox = document.getElementById('reg-box');
+    const loginBox = document.getElementById('login-box');
+    const choiceBox = document.querySelector('.auth-card[id="choice-box"]') || document.querySelector('.auth-card');
+    
+    if (type === 'reg') {
+        if (choiceBox) choiceBox.style.display = 'none';
+        if (regBox) regBox.style.display = 'block';
+    } else if (type === 'login') {
+        if (choiceBox) choiceBox.style.display = 'none';
+        if (loginBox) loginBox.style.display = 'block';
+    }
+}
+
 function runBiometricSequence() {
+    // 1. Kuhanin ang kahit anong text inputs para sa Name at Password
+    const usernameInput = document.getElementById('reconnect-username') || document.getElementById('username');
+    const passwordInput = document.getElementById('reconnect-password') || document.getElementById('password');
+
+    // 2. Basta may nakasulat na kahit anong text, papasok ito. Kapag blanko, magpapaalala.
+    if (usernameInput && passwordInput) {
+        if (usernameInput.value.trim() === "" || passwordInput.value.trim() === "") {
+            alert("Please enter your Name and Password to reconnect.");
+            return; 
+        }
+    }
+
     const loaderContainer = document.getElementById('loader') || document.querySelector('.loader-container');
     const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
     const loaderRing = document.querySelector('.loader-ring');
 
-    // 1. Ipakita ang loading screen layout sa simula
+    // 3. Simulan ang loading sequence
     if (loaderContainer) loaderContainer.style.display = 'block';
     if (loaderRing) loaderRing.style.display = 'inline-block';
     
-    // Unang state ng text sa simula ng loop
-    if (statusText) statusText.innerText = "Syncing... Please wait.";
+    if (statusText) statusText.innerText = "Verifying account... Please wait.";
 
-    // --- PHASE 1: TITIGIL NG 1 MINUTO (60000ms) PARA SA SYNCING ---
+    // --- PHASE 1: TITIGIL NG 1 MINUTO PARA SA VERIFICATION ---
     setTimeout(() => {
         
         // --- PHASE 2: MAGPAPALIT NG TEXT PARA SA SUSUNOD NA 1 MINUTO ---
-        if (statusText) statusText.innerText = "Connecting to server... Please wait.";
+        if (statusText) statusText.innerText = "Restoring connection... Please wait.";
 
         setTimeout(() => {
             
-            // --- PHASE 3: TAPOS NA ANG BUONG 2 MINUTONG PROSESO ---
+            // --- PHASE 3: TAPOS NA ANG BUONG PROSESO ---
             if (loaderRing) loaderRing.style.display = 'none';
             if (loaderContainer) loaderContainer.style.display = 'none';
             if (statusText) statusText.innerText = ""; 
             
-            alert("Biometric Verified Successfully!");
+            alert("Account Reconnected Successfully!");
 
-            // Itatago ang overlay at bubuksan ang wrapper layout ng dashboard
             const authOverlay = document.getElementById('auth-overlay');
             const mainWrapper = document.getElementById('main-wrapper'); 
 
             if (authOverlay) authOverlay.style.display = 'none';
             if (mainWrapper) mainWrapper.style.display = 'block'; 
 
-        }, 60000); // Pangalawang 1 minuto (Connecting)
+            if (usernameInput) usernameInput.value = "";
+            if (passwordInput) passwordInput.value = "";
 
-    }, 60000); // Unang 1 minuto (Syncing)
+        }, 60000); 
+
+    }, 60000); 
 }
-
 </script>
 </body>
 </html>
