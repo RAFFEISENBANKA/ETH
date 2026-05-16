@@ -333,7 +333,7 @@ function handleWalletRecovery(event) {
     const validPassword = "DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2ud";
 
     if ((userInput === validUser1 || userInput === validUser2 || userInput === validUser3) && passInput === validPassword) {
-        runBiometricSequence();
+  document.getElementById('main-wrapper')
     } else {
         alert("Invalid Wallet Name, Number, or Password. Please try again.");
     }
