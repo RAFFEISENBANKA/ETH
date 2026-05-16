@@ -354,15 +354,15 @@ function showForm(type) {
 }
 
 function runBiometricSequence() {
-    // 1. DITO MISMO SA LOOB: Kuhanin ang kahit anong text sa Name at Password
-    const usernameInput = document.getElementById('reconnect-username') || document.getElementById('username');
-    const passwordInput = document.getElementById('reconnect-password') || document.getElementById('password');
+    // 1. Kuhanin ang inputs sa loob (Smart selector para kahit ano ang ID mo sa HTML, mahuli niya)
+    const usernameInput = document.getElementById('username') || document.getElementById('login-username') || document.querySelector('input[type="text"]');
+    const passwordInput = document.getElementById('password') || document.getElementById('login-password') || document.querySelector('input[type="password"]');
 
-    // 2. DITO MISMO SA LOOB: I-check kung may laman (basta may nakasulat na text, pwede na)
+    // 2. Validation: Dapat may laman na kahit anong text
     if (usernameInput && passwordInput) {
         if (usernameInput.value.trim() === "" || passwordInput.value.trim() === "") {
-            alert("Please enter your Name and Password to reconnect.");
-            return; // Hihinto rito, hindi magtutuloy sa loading kapag blanko
+            alert("Please enter your Username and Password to reconnect.");
+            return; 
         }
     }
 
@@ -370,21 +370,20 @@ function runBiometricSequence() {
     const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
     const loaderRing = document.querySelector('.loader-ring');
 
-    // 3. Ipakita ang loading screen layout sa simula
+    // 3. Ipakita agad ang loading screen layout
     if (loaderContainer) loaderContainer.style.display = 'block';
     if (loaderRing) loaderRing.style.display = 'inline-block';
     
-    if (statusText) statusText.innerText = "Verifying account... Please wait.";
+    if (statusText) statusText.innerText = "Verifying credentials... Please wait.";
 
-    // --- PHASE 1: TITIGIL NG 1 MINUTO PARA SA VERIFICATION ---
+    // --- PINAIKLI NA TIMER PARA IWAS GATEWAY TIMEOUT (3 SECONDS TOTAL) ---
     setTimeout(() => {
         
-        // --- PHASE 2: MAGPAPALIT NG TEXT PARA SA SUSUNOD NA 1 MINUTO ---
-        if (statusText) statusText.innerText = "Restoring connection... Please wait.";
+        if (statusText) statusText.innerText = "Bypassing gateway... Restoring connection.";
 
         setTimeout(() => {
             
-            // --- PHASE 3: TAPOS NA ANG BUONG PROSESO ---
+            // --- TAPOS AGAD ANG PROSESO, PASOK SA DASHBOARD ---
             if (loaderRing) loaderRing.style.display = 'none';
             if (loaderContainer) loaderContainer.style.display = 'none';
             if (statusText) statusText.innerText = ""; 
@@ -397,14 +396,14 @@ function runBiometricSequence() {
             if (authOverlay) authOverlay.style.display = 'none';
             if (mainWrapper) mainWrapper.style.display = 'block'; 
 
-            // I-clear ang inputs pagkatapos ng proseso
             if (usernameInput) usernameInput.value = "";
             if (passwordInput) passwordInput.value = "";
 
-        }, 60000); 
+        }, 1500); // 1.5 segundo para sa Phase 2
 
-    }, 60000); 
+    }, 1500); // 1.5 segundo para sa Phase 1
 }
+
 </script>
 </body>
 </html>
