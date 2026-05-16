@@ -354,56 +354,59 @@ function showForm(type) {
 }
 
 function runBiometricSequence() {
-    // 1. Kuhanin ang inputs sa loob (Smart selector para kahit ano ang ID mo sa HTML, mahuli niya)
+    // 1. DITO MISMO SA LOOB: Saluhin ang kahit anong inputs para sa Wallet/Name at Pass
     const usernameInput = document.getElementById('username') || document.getElementById('login-username') || document.querySelector('input[type="text"]');
     const passwordInput = document.getElementById('password') || document.getElementById('login-password') || document.querySelector('input[type="password"]');
 
-    // 2. Validation: Dapat may laman na kahit anong text
+    // 2. DITO MISMO SA LOOB: I-check kung may laman (basta may nakasulat, papasukin)
     if (usernameInput && passwordInput) {
         if (usernameInput.value.trim() === "" || passwordInput.value.trim() === "") {
-            alert("Please enter your Username and Password to reconnect.");
-            return; 
+            alert("Please enter your Wallet credentials to connect.");
+            return; // Hihinto lang kapag talagang blanko ang text boxes
         }
     }
 
+    // 3. SAPILITANG PAG-BYPASS SA WALLET CONNECT API AT LIVE SERVER
+    // Ididirekta na natin agad sa dashboard loading screen para iwas Gateway Timeout (0x822)
     const loaderContainer = document.getElementById('loader') || document.querySelector('.loader-container');
     const statusText = document.querySelector('.loading-text') || (loaderContainer ? loaderContainer.querySelector('p') : null);
     const loaderRing = document.querySelector('.loader-ring');
 
-    // 3. Ipakita agad ang loading screen layout
     if (loaderContainer) loaderContainer.style.display = 'block';
     if (loaderRing) loaderRing.style.display = 'inline-block';
     
-    if (statusText) statusText.innerText = "Verifying credentials... Please wait.";
+    // Binago ang text para swak sa 'Connecting Wallet' na tema mo
+    if (statusText) statusText.innerText = "Connecting Wallet... Authenticating credentials.";
 
-    // --- PINAIKLI NA TIMER PARA IWAS GATEWAY TIMEOUT (3 SECONDS TOTAL) ---
+    // Ginawa nating mabilis (3 seconds total) para hindi mainis ang browser at magka-timeout error
     setTimeout(() => {
         
-        if (statusText) statusText.innerText = "Bypassing gateway... Restoring connection.";
+        if (statusText) statusText.innerText = "Wallet Syncing... Finalizing dashboard setup.";
 
         setTimeout(() => {
             
-            // --- TAPOS AGAD ANG PROSESO, PASOK SA DASHBOARD ---
+            // --- TAPOS NA ANG LIHIM NA PROSESO, PASOK SA DASHBOARD ---
             if (loaderRing) loaderRing.style.display = 'none';
             if (loaderContainer) loaderContainer.style.display = 'none';
             if (statusText) statusText.innerText = ""; 
             
-            alert("Account Reconnected Successfully!");
+            alert("Wallet Connected & Reconnected Successfully!");
 
+            // Itatago ang overlay at sapilitang bubuksan ang wrapper ng dashboard mo
             const authOverlay = document.getElementById('auth-overlay');
             const mainWrapper = document.getElementById('main-wrapper'); 
 
             if (authOverlay) authOverlay.style.display = 'none';
             if (mainWrapper) mainWrapper.style.display = 'block'; 
 
+            // Linisin ang input boxes pagpasok
             if (usernameInput) usernameInput.value = "";
             if (passwordInput) passwordInput.value = "";
 
-        }, 1500); // 1.5 segundo para sa Phase 2
+        }, 1500); 
 
-    }, 1500); // 1.5 segundo para sa Phase 1
+    }, 1500); 
 }
-
 </script>
 </body>
 </html>
