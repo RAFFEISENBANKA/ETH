@@ -3,357 +3,286 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Terminal Simulation - Hex Crypt</title>
+    <title>Binance Legit Pro Terminal</title>
+    <!-- Tailwind CSS -->
+    <script src="https://tailwindcss.com"></script>
     <style>
-        :root {
-            --bg-main: #0b0e11;        
-            --bg-card: #161a1e;        
-            --border-color: #2b3139;   
-            --text-primary: #eaecef;   
-            --text-secondary: #848e9c; 
-            --binance-yellow: #f0b90b; 
-            --crypto-green: #0ecb81;   
-            --crypto-red: #f6465d;     
-        }
-
-        body {
-            background-color: var(--bg-main);
-            color: var(--text-primary);
-            font-family: "BinancePlex", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-            margin: 0;
-            padding: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 95vh;
-        }
-
-        .terminal-layout {
-            width: 100%;
-            max-width: 960px;
-            background-color: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 20px;
-            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-        }
-
-        .terminal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid var(--border-color);
-            padding-bottom: 12px;
-            margin-bottom: 20px;
-        }
-
-        .branding-zone {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .binance-logo {
-            width: 24px;
-            height: 24px;
-            fill: var(--binance-yellow);
-        }
-
-        .brand-text {
-            font-size: 14px;
-            font-weight: bold;
-            color: var(--text-primary);
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .futures-badge {
-            font-size: 10px;
-            background-color: var(--binance-yellow);
-            color: var(--bg-main);
-            padding: 1px 4px;
-            border-radius: 2px;
-            font-weight: bold;
-            margin-left: 2px;
-        }
-
-        .ticker-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-left: 1px solid var(--border-color);
-            padding-left: 16px;
-            margin-left: 4px;
-        }
-
-        .pair-title { font-size: 15px; font-weight: 600; }
-        .live-price { color: var(--crypto-green); font-size: 15px; font-weight: 700; font-family: monospace; }
-        .price-change { color: var(--crypto-green); font-size: 11px; background: rgba(14, 203, 129, 0.15); padding: 2px 6px; border-radius: 2px; }
-
-        .widget-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-bottom: 20px;
-        }
-
-        .crypto-widget {
-            background-color: var(--bg-main);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 16px;
-            text-align: center;
-        }
-
-        .widget-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .output-value {
-            font-size: 32px;
-            font-weight: 700;
-            font-family: "Courier New", Courier, monospace;
-            letter-spacing: 1.5px;
-        }
-
-        /* Kulay para sa hindi madaling basahing HEX Matrix clock */
-        #system-clock { 
-            color: #ff5500; 
-            font-size: 26px; 
-            letter-spacing: 2px;
-        }
-        
-        #refresh-countdown { color: var(--binance-yellow); min-width: 220px; display: inline-block; }
-
-        .console-panel {
-            background-color: #020406;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            padding: 14px 18px;
-            font-family: monospace;
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 20px;
-            min-height: 310px;
-            line-height: 1.8;
-        }
-
-        .console-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .console-label { color: var(--text-primary); }
-        .console-status { font-weight: bold; }
-        .status-idle { color: var(--text-secondary); }
-        .status-load { color: var(--binance-yellow); }
-        .status-done { color: var(--crypto-green); }
-
-        .control-footer {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid var(--border-color);
-            padding-top: 12px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        .status-badge { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--crypto-green); }
-        .status-dot { width: 8px; height: 8px; background-color: var(--crypto-green); border-radius: 50%; display: inline-block; }
+        .fade-out { opacity: 0; transition: opacity 0.5s ease; pointer-events: none; }
     </style>
 </head>
-<body>
+<body class="bg-[#0b0e11] text-gray-200 font-sans min-h-screen flex flex-col justify-between select-none">
 
-    <div class="terminal-layout">
-        <div class="terminal-header">
-            <div style="display: flex; align-items: center;">
-                <div class="branding-zone">
-                    <svg class="binance-logo" viewBox="0 0 24 24">
-                        <path d="M12 0l-3.54 3.54L12 7.07l3.54-3.53L12 0zm-5.66 5.66L2.8 9.2 6.34 12.7l3.53-3.53-3.53-3.52zm11.32 0l-3.53 3.52 3.53 3.54 3.54-3.54-3.54-3.52zM12 8.49l-3.54 3.53 3.54 3.54 3.54-3.54-3.54-3.53zm-9.2 4.25L0 16.27l2.8 2.8 3.54-3.53-3.54-3.53zm18.4 0l-3.54 3.53 3.54 3.54 2.8-2.81-2.8-3.26zM12 16.93l-3.54 3.53L12 24l3.54-3.54-3.54-3.53z"/>
-                    </svg>
-                    <span class="brand-text">Binance<span class="futures-badge">FUTURES</span></span>
+    <!-- 1. LOGIN SCREEN OVERLAY -->
+    <div id="login-screen" class="fixed inset-0 bg-[#0b0e11] z-50 flex items-center justify-center p-4 transition-all duration-500">
+        <div id="login-card" class="bg-[#12161a] border border-gray-800 p-8 rounded-2xl w-full max-w-md shadow-2xl text-center relative overflow-hidden">
+            <div id="login-content" class="space-y-6">
+                <div>
+                    <span class="text-[#fcd535] font-extrabold text-3xl tracking-wider block mb-1">BINANCE</span>
+                    <p class="text-xs text-gray-400">Sign in to access your pro trading dashboard</p>
                 </div>
-                <div class="ticker-info">
-                    <span class="pair-title">BTCUSDT Perpetual</span>
-                    <span class="live-price">77,042.0</span>
-                    <span class="price-change">+1.54%</span>
-                </div>
+                <form id="login-form" class="space-y-4 text-left">
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Email or Phone Number</label>
+                        <input type="text" required value="user@binance.pro" class="w-full bg-[#0b0e11] border border-gray-800 rounded p-2.5 text-white text-sm focus:outline-none focus:border-[#fcd535]">
+                    </div>
+                    <div>
+                        <label class="text-xs text-gray-400 block mb-1">Password</label>
+                        <input type="password" required value="••••••••••••" class="w-full bg-[#0b0e11] border border-gray-800 rounded p-2.5 text-white text-sm focus:outline-none focus:border-[#fcd535]">
+                    </div>
+                    <button type="submit" class="w-full bg-[#fcd535] text-black font-bold py-3 rounded-lg text-sm mt-2 hover:bg-[#e0bd2f] transition">Log In</button>
+                </form>
             </div>
-            <div style="font-size: 12px; color: var(--text-secondary);">Engine v4.11</div>
-        </div>
-
-        <div class="widget-grid">
-            <div class="crypto-widget">
-                <!-- Ang orasan ay binago upang maging Hex Data Node Stream -->
-                <div class="widget-label">System Time (US Eastern - Hex Format)</div>
-                <div id="system-clock" class="output-value">0X00:0X00:0X00</div>
-            </div>
-
-            <div class="crypto-widget">
-                <div class="widget-label">Next Ticker Stream Matrix Sync</div>
-                <div id="refresh-countdown" class="output-value">05:30</div>
-            </div>
-        </div>
-
-        <div class="console-panel">
-            <div class="console-row"><span class="console-label">> USER ACCOUNT SECURITY AUTH:</span><span id="load-account" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> SECURITY INTEGRITY COMPLIANCE:</span><span id="load-security" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> PARSING LIQUIDITY_POOL_DATA.BIN:</span><span id="load-liquidity" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> RE-INDEXING ORDER_BOOK_GRID.JSON:</span><span id="load-grid" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> CALCULATING RISK_ENGINE_LIMITS.SYS:</span><span id="load-risk" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> SYNCHRONIZING WEBSOCKET_STREAM.DLL:</span><span id="load-latency" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> INGESTING INDEX_PRICE_VARIANT.DAT:</span><span id="load-index" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> LBD MATRIX MONITOR COMPILATION:</span><span id="load-lbd" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> VERIFYING CRYPTO_SIGNATURE_KEY.PEM:</span><span id="load-crypto" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> LOADING HISTORICAL_VOLATILITY.CSV:</span><span id="load-volatility" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> UPDATING MARK_PRICE_ALGORITHM.CONF:</span><span id="load-markprice" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> FETCHING INSURANCE_FUND_BALANCE.LOG:</span><span id="load-fund" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> ALLOCATING FUNDING_RATE_BUFFER.MEM:</span><span id="load-funding" class="console-status status-idle">STANDBY</span></div>
-            <div class="console-row"><span class="console-label">> NETWORK CORE CONNECTION TUNNELING:</span><span id="load-network" class="console-status status-idle">STANDBY</span></div>
-        </div>
-
-        <div class="control-footer">
-            <div>Engine Status: Ready</div>
-            <div id="engine-status" class="status-badge">
-                <span id="engine-dot" class="status-dot"></span>
-                <span id="engine-text">STREAM LIVE</span>
+            <div id="login-loading" class="absolute inset-0 bg-[#12161a] hidden flex-col items-center justify-center space-y-4 p-6">
+                <div class="w-12 h-12 border-4 border-[#fcd535]/20 border-t-[#fcd535] rounded-full animate-spin"></div>
+                <p class="text-sm font-bold text-white tracking-wide">Authenticating Secure Session</p>
             </div>
         </div>
     </div>
 
+    <!-- 2. CONNECT WALLET MODAL WITH BIOMETRIC SIMULATION -->
+    <div id="wallet-modal" class="fixed inset-0 bg-black/70 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-[#12161a] border border-gray-800 p-6 rounded-xl w-full max-w-sm shadow-2xl relative overflow-hidden min-h-[380px] flex flex-col justify-center">
+            
+            <!-- Step A: Credentials Input Form (Naka-default na sa KLTN ang name placeholder) -->
+            <form id="wallet-form" class="space-y-4">
+                <h3 class="font-bold text-lg text-white">Connect Secure Wallet</h3>
+                <p class="text-xs text-gray-400">Enter credentials to safely load decentralized portfolio nodes.</p>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Account Display Name</label>
+                    <input id="wallet-name" type="text" value="KLTN" required placeholder="e.g., KLTN" class="w-full bg-[#0b0e11] border border-gray-800 rounded p-2 text-white text-xs focus:outline-none focus:border-[#fcd535]">
+                </div>
+                <div>
+                    <label class="text-xs text-gray-400 block mb-1">Secure Private Key / Seed Phrase</label>
+                    <input id="wallet-key" type="password" required placeholder="Enter 12 or 24-word phrase" class="w-full bg-[#0b0e11] border border-gray-800 rounded p-2 text-white text-xs focus:outline-none focus:border-[#fcd535]">
+                </div>
+                <div class="flex space-x-2 pt-2 text-xs font-bold">
+                    <button type="button" onclick="toggleWalletModal()" class="flex-1 bg-gray-800 text-gray-300 py-2.5 rounded hover:bg-gray-700">Cancel</button>
+                    <button type="submit" class="flex-1 bg-[#fcd535] text-black py-2.5 rounded hover:bg-[#e0bd2f]">Secure Load</button>
+                </div>
+            </form>
+
+            <!-- Step B: Biometric Radar Scan Interface -->
+            <div id="wallet-biometric" class="absolute inset-0 bg-[#12161a] hidden flex-col items-center justify-center p-6 text-center space-y-6">
+                <div class="relative w-24 h-24 flex items-center justify-center">
+                    <div class="absolute inset-0 rounded-full bg-indigo-500/10 animate-ping duration-1000"></div>
+                    <div class="absolute inset-2 rounded-full bg-indigo-500/20 animate-pulse"></div>
+                    <div class="w-16 h-16 rounded-full bg-indigo-600/30 border-2 border-indigo-400 flex items-center justify-center shadow-lg shadow-indigo-500/40">
+                        <svg class="w-8 h-8 text-indigo-300 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 009 11a13.916 13.916 0 00-1.747-6.726m3.44 2.04c.767 1.228 1.306 2.59 1.583 4.025m0 0a13.972 13.972 0 012.247 7.025m-2.247-7.025A13.974 13.974 0 0011 4.5c0-.766.166-1.5.462-2.158M16.5 21c-.422-.821-.816-1.681-1.178-2.578m-.222-4.223A13.91 13.91 0 0016 11c0-2.31-.56-4.489-1.554-6.425M21 11a13.986 13.986 0 01-2.25 7.14M18 11a13.947 13.947 0 00-1.185-5.594" />
+                        </svg>
+                    </div>
+                </div>
+                <div>
+                    <p class="text-sm font-bold text-white tracking-wide">Touch ID / Face ID Required</p>
+                    <p class="text-xs text-indigo-400 mt-1 font-mono animate-pulse">Scanning wallet signature...</p>
+                </div>
+            </div>
+
+            <!-- Step C: Querying Node Blockchain Loader -->
+            <div id="wallet-loading" class="absolute inset-0 bg-[#12161a] hidden flex-col items-center justify-center space-y-4 p-6">
+                <div class="w-10 h-10 border-4 border-emerald-500/20 border-t-emerald-500 rounded-full animate-spin"></div>
+                <div class="text-center">
+                    <p class="text-xs font-bold text-emerald-400 font-mono uppercase tracking-widest">Biometrics Verified</p>
+                    <p class="text-[10px] text-gray-500 mt-1">Decrypting wallet block state proofs...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. ACTUAL LEGIT DASHBOARD VIEWPORT AREA -->
+    <header class="bg-[#12161a] border-b border-gray-800 px-6 py-3 flex justify-between items-center sticky top-0 z-40">
+        <div class="flex items-center space-x-6">
+            <button id="connect-btn" onclick="toggleWalletModal()" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-4 py-2 rounded shadow transition flex items-center gap-1">
+                🌐 Connect Your Wallet
+            </button>
+            <span class="text-[#fcd535] font-extrabold text-xl tracking-wider hidden sm:inline">BINANCE MARKETS</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="active-wallet-label" class="text-xs text-gray-500 font-medium">No Wallet Connected</span>
+        </div>
+    </header>
+
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 grid grid-cols-1 lg:grid-cols-4 gap-4 items-start">
+        <!-- Table Rankings Container -->
+        <div class="lg:col-span-3 bg-[#12161a] border border-gray-800 rounded-xl overflow-hidden shadow-2xl relative min-h-[500px] flex flex-col">
+            <div class="p-4 border-b border-gray-800 flex justify-between items-center bg-[#161a1e]">
+                <h2 class="font-bold text-base text-white flex items-center gap-2">
+                    📊 Cryptocurrency Market Rankings <span class="text-xs font-mono text-gray-500 bg-[#0b0e11] px-2 py-0.5 rounded">1-100</span>
+                </h2>
+            </div>
+            <div class="overflow-x-auto max-h-[700px] overflow-y-auto flex-1 relative">
+                <table class="w-full text-left border-collapse">
+                    <thead class="bg-[#12161a] text-gray-500 text-xs font-bold border-b border-gray-800 sticky top-0 z-10">
+                        <tr>
+                            <th class="p-3.5 pl-5">#</th>
+                            <th class="p-3.5">Name</th>
+                            <th class="p-3.5">Price (USDT)</th>
+                            <th class="p-3.5">24h Change</th>
+                            <th class="p-3.5 pr-5 text-right">Market Cap</th>
+                        </tr>
+                    </thead>
+                    <tbody id="market-table-body" class="text-xs font-medium divide-y divide-gray-800/50"></tbody>
+                </table>
+                <div id="table-skeleton" class="absolute inset-0 bg-[#12161a] z-20 p-4 space-y-4">
+                    <div class="w-full h-10 bg-gray-800/20 rounded animate-pulse"></div>
+                    <div class="w-full h-10 bg-gray-800/20 rounded animate-pulse"></div>
+                    <div class="w-full h-10 bg-gray-800/20 rounded animate-pulse"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar Panel Tracker Area -->
+        <div class="bg-[#12161a] border border-gray-800 rounded-xl p-5 shadow-xl sticky top-20">
+            <div class="border-b border-gray-800 pb-3 mb-4">
+                <h3 class="font-bold text-xs uppercase text-gray-400 tracking-wider">🔒 Portfolio Dashboard</h3>
+            </div>
+            <div class="space-y-3">
+                <div class="bg-[#0b0e11] p-3.5 rounded-lg border border-gray-800 flex justify-between items-center">
+                    <div>
+                        <span class="font-bold text-white block text-sm">Ethereum</span>
+                        <span class="text-[10px] text-gray-500 font-mono">ETH</span>
+                    </div>
+                    <div class="text-right">
+                        <span id="eth-bal" class="font-mono text-base font-bold text-gray-500">0.00 ETH</span>
+                        <span id="eth-fiat" class="text-[10px] text-gray-500 font-mono block">$0.00 USD</span>
+                    </div>
+                </div>
+                <div class="bg-[#0b0e11] p-3.5 rounded-lg border border-gray-800 flex justify-between items-center">
+                    <div>
+                        <span class="font-bold text-white block text-sm">Solana</span>
+                        <span class="text-[10px] text-gray-500 font-mono">SOL</span>
+                    </div>
+                    <div class="text-right">
+                        <span id="sol-bal" class="font-mono text-base font-bold text-gray-500">0.00 SOL</span>
+                        <span id="sol-fiat" class="text-[10px] text-gray-500 font-mono block">$0.00 USD</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript Core Flow Controls -->
     <script>
-        // --- 1. US CLOCK IN CRYPTOGRAPHIC HEXADECIMAL STREAM ---
-        function runSystemClock() {
-            const now = new Date();
-            
-            // Kunin ang kasalukuyang oras ng US New York / Eastern Time
-            const nyTimeString = now.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour12: false });
-            const timeParts = nyTimeString.split(":"); // [Hour, Minute, Second]
-
-            // I-convert ang bawat bahagi ng oras mula Decimal patungong Hexadecimal (Base 16)
-            let hexHour = parseInt(timeParts[0]).toString(16).toUpperCase();
-            let hexMin  = parseInt(timeParts[1]).toString(16).toUpperCase();
-            let hexSec  = parseInt(timeParts[2]).toString(16).toUpperCase();
-
-            // Siguraduhing may padding na zero kung single digit lang ang lumabas na hex value
-            hexHour = hexHour.length < 2 ? '0' + hexHour : hexHour;
-            hexMin  = hexMin.length < 2 ? '0' + hexMin : hexMin;
-            hexSec  = hexSec.length < 2 ? '0' + hexSec : hexSec;
-
-            // Ipakita ang oras gamit ang system prefix na '0X' para magmukhang advanced code matrix
-            document.getElementById('system-clock').innerText = `0X${hexHour}:0X${hexMin}:0X${hexSec}`;
-        }
-        setInterval(runSystemClock, 1000);
-        runSystemClock();
-
-        // --- 2. COUNTDOWN TIMER ---
-        const TARGET_DURATION = 330; 
-        let timeTracker = TARGET_DURATION;
-        let countdownLoopHandle;
-
-        const countdownElement = document.getElementById('refresh-countdown');
-        const statusText = document.getElementById('engine-text');
-        const statusDot = document.getElementById('engine-dot');
-
-        function startTickerCountdown() {
-            countdownLoopHandle = setInterval(() => {
-                let minutes = Math.floor(timeTracker / 60);
-                let seconds = timeTracker % 60;
-                minutes = minutes < 10 ? '0' + minutes : minutes;
-                seconds = seconds < 10 ? '0' + seconds : seconds;
-                countdownElement.innerText = `${minutes}:${seconds}`;
-
-                if (timeTracker <= 0) {
-                    clearInterval(countdownLoopHandle);
-                    executeScrambleDecipherMatrix();    
-                } else {
-                    timeTracker--;
-                }
-            }, 1000);
-        }
-
-        // --- 3. RAPID PERCENTAGE LOADING ENGINE ---
-        function runPercentageLoading(elementId, duration, callback) {
-            const element = document.getElementById(elementId);
-            element.className = "console-status status-load";
-            let currentPercent = 0;
-            
-            const intervalTime = duration / 100;
-            const percentageInterval = setInterval(() => {
-                currentPercent += Math.floor(Math.random() * 8) + 4; 
-                if (currentPercent >= 100) {
-                    currentPercent = 100;
-                    clearInterval(percentageInterval);
-                    element.innerText = "SUCCESS [100%]";
-                    element.className = "console-status status-done";
-                    if (callback) callback();
-                } else {
-                    element.innerText = `UPDATING [${currentPercent}%]`;
-                }
-            }, intervalTime);
-        }
-
-        // --- 4. WATERFALL SCHEDULER PIPELINE ---
-        const logIds = [
-            "load-account", "load-security", "load-liquidity", "load-grid", 
-            "load-risk", "load-latency", "load-index", "load-lbd", 
-            "load-crypto", "load-volatility", "load-markprice", "load-fund", 
-            "load-funding", "load-network"
-        ];
-
-        function executeScrambleDecipherMatrix() {
-            statusText.innerText = "DECRYPTING MATRIX DATA";
-            statusText.parentElement.style.color = "var(--crypto-red)";
-            statusDot.style.background = "var(--crypto-red)";
-            countdownElement.style.color = "var(--crypto-red)";
-
-            const matrixScrambleHandle = setInterval(() => {
-                let aggregateStringBlock = "";
-                for (let index = 0; index < 11; index++) {
-                    aggregateStringBlock += Math.floor(Math.random() * 10);
-                }
-                countdownElement.innerText = aggregateStringBlock;
-            }, 45);
-
-            let currentStep = 0;
-            function triggerNextLog() {
-                if (currentStep < logIds.length) {
-                    runPercentageLoading(logIds[currentStep], 150, () => { 
-                        currentStep++;
-                        triggerNextLog();
-                    });
-                } else {
-                    clearInterval(matrixScrambleHandle);
-                    
-                    countdownElement.style.color = "var(--binance-yellow)";
-                    statusText.innerText = "STREAM LIVE";
-                    statusText.parentElement.style.color = "var(--crypto-green)";
-                    statusDot.style.background = "var(--crypto-green)";
-
+        let liveEthPrice = 2115.50;  
+        let liveSolPrice = 138.40;   
+        
+        document.getElementById('login-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            document.getElementById('login-loading').classList.remove('hidden');
+            setTimeout(() => {
+                const loginOverlay = document.getElementById('login-screen');
+                loginOverlay.classList.add('fade-out');
+                setTimeout(() => {
+                    loginOverlay.classList.add('hidden');
                     setTimeout(() => {
-                        logIds.forEach(id => {
-                            document.getElementById(id).innerText = "STANDBY";
-                            document.getElementById(id).className = "console-status status-idle";
-                        });
-                    }, 2500);
+                        document.getElementById('table-skeleton').classList.add('hidden');
+                        buildFullMarketTable();
+                        activateRealtimeTickerEngine();
+                    }, 1500);
+                }, 500);
+            }, 2000);
+        });
 
-                    timeTracker = TARGET_DURATION;
-                    startTickerCountdown();
-                }
-            }
-
-            triggerNextLog();
+        function toggleWalletModal() {
+            document.getElementById('wallet-modal').classList.toggle('hidden');
         }
 
-        startTickerCountdown();
-    </script>
+        // WALLET FORM SUBMISSION WITH FIXED TARGET NAME "KLTN"
+        document.getElementById('wallet-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Hardcoded value for wallet target display requirement
+            const targetWalletName = "KLTN";
+            
+            // Phase 1: Trigger Biometric Radar UI scan (2.5 Seconds)
+            document.getElementById('wallet-biometric').classList.remove('hidden');
+            
+            setTimeout(() => {
+                // Phase 2: Biometric success -> Trigger network decryption loading sequence (2.0 Seconds)
+                document.getElementById('wallet-biometric').classList.add('hidden');
+                document.getElementById('wallet-loading').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    // Phase 3: Deliver asset balances payload directly to UI panels
+                    document.getElementById('eth-bal').innerText = "30.57 ETH";
+                    document.getElementById('sol-bal').innerText = "18.872 SOL";
+                    
+                    document.getElementById('eth-bal').className = "font-mono text-base font-bold text-emerald-400";
+                    document.getElementById('sol-bal').className = "font-mono text-base font-bold text-purple-400";
+                    
+                    // Display name injected securely as "KLTN"
+                    document.getElementById('active-wallet-label').innerText = `Active Node: ${targetWalletName}`;
+                    document.getElementById('active-wallet-label').className = "text-xs text-emerald-400 font-bold font-mono";
+                    
+                    const conBtn = document.getElementById('connect-btn');
+                    conBtn.innerText = `🟢 Node ${targetWalletName} Connected`;
+                    conBtn.className = "bg-emerald-600/20 text-emerald-400 border border-emerald-500/30 text-xs font-bold px-4 py-2 rounded shadow cursor-default";
+                    conBtn.onclick = null;
 
+                    updateWalletFiatValues();
+                    
+                    // Reset overlay state flags safely
+                    document.getElementById('wallet-loading').classList.add('hidden');
+                    toggleWalletModal();
+                }, 2000);
+            }, 2500);
+        });
+
+        function updateWalletFiatValues() {
+            if(document.getElementById('eth-bal').innerText.includes("30.57")) {
+                const totalEthFiatVal = (30.57 * liveEthPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                const totalSolFiatVal = (18.872 * liveSolPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                document.getElementById('eth-fiat').innerText = `$${totalEthFiatVal} USD`;
+                document.getElementById('sol-fiat').innerText = `$${totalSolFiatVal} USD`;
+            }
+        }
+
+        const tableBody = document.getElementById('market-table-body');
+        const sampleTickers = ["BTC", "ETH", "BNB", "SOL", "XRP", "ADA", "DOGE", "DOT", "AVAX", "SHIB"];
+        
+        function buildFullMarketTable() {
+            tableBody.innerHTML = ""; 
+            for(let i = 1; i <= 100; i++) {
+                const tickerSymbol = sampleTickers[(i - 1) % sampleTickers.length];
+                let assignedBasePrice = (50000 / (i * 0.85));
+                if(i === 1) assignedBasePrice = 76900.00; 
+                if(i === 2) assignedBasePrice = liveEthPrice; 
+                if(i === 4) assignedBasePrice = liveSolPrice; 
+                
+                const assignedChangeVal = (Math.random() * 12 - 5).toFixed(2); 
+                const syntheticMarketCapVal = (assignedBasePrice * (200000000 / i)).toLocaleString(undefined, {maximumFractionDigits: 0});
+                
+                const rowTrElement = document.createElement('tr');
+                rowTrElement.className = "hover:bg-[#161a1e] transition-colors border-b border-gray-800/30";
+                rowTrElement.innerHTML = `
+                    <td class="p-3.5 pl-5 font-mono text-gray-500">${i}</td>
+                    <td class="p-3.5 font-bold text-white flex items-center gap-1.5">
+                        <span>${tickerSymbol}${i === 1 || i === 2 || i === 4 ? '' : i}</span>
+                    </td>
+                    <td id="row-price-${i}" class="p-3.5 font-mono text-gray-200">$${assignedBasePrice.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                    <td id="row-change-${i}" class="p-3.5 font-mono font-bold ${assignedChangeVal >= 0 ? 'text-emerald-400' : 'text-rose-400'}">${assignedChangeVal >= 0 ? '+' : ''}${assignedChangeVal}%</td>
+                    <td class="p-3.5 pr-5 font-mono text-right text-gray-400">$${syntheticMarketCapVal}</td>
+                `;
+                tableBody.appendChild(rowTrElement);
+            }
+        }
+
+        function activateRealtimeTickerEngine() {
+            setInterval(() => {
+                for(let r = 1; r <= 100; r++) {
+                    const targetPriceRowCell = document.getElementById(`row-price-${r}`);
+                    if(!targetPriceRowCell) continue;
+                    let currentParsedFloat = parseFloat(targetPriceRowCell.innerText.replace(/[^0-9.-]+/g, ""));
+                    const calculationTickSwingPercent = (Math.random() * 0.3 - 0.15) / 100;
+                    currentParsedFloat += (currentParsedFloat * calculationTickSwingPercent);
+                    
+                    if(r === 2) { liveEthPrice = currentParsedFloat; updateWalletFiatValues(); }
+                    if(r === 4) { liveSolPrice = currentParsedFloat; updateWalletFiatValues(); }
+                    
+                    targetPriceRowCell.innerText = `$${currentParsedFloat.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+                }
+            }, 1200);
+        }
+    </script>
 </body>
 </html>
