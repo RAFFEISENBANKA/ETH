@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Binance Futures Live Terminal</title>
     <style>
-        /* OFFICIAL SPECIFICATION VARIABLES PROVIDED BY RECOVERY4.8 HISTORY LOGS */
-        :root, body.theme-dark {
+        /* OFFICIAL SPECIFICATION VARIABLES FOR RECOVERY4.8 INTERFACE */
+        :root {
             --color-BasicBg: #181A20;
             --color-SecondaryBg: #0B0E11;
             --color-Input: #29313D;
@@ -23,212 +23,242 @@
             --color-CardBg: #202630;
         }
 
-        /* LIGHT MODE COMPONENT STYLING FOR THE REQS OVERVIEW */
-        body.theme-light {
-            --color-BasicBg: #FFFFFF;
-            --color-SecondaryBg: #F0F2F5;
-            --color-Input: #EAECEF;
-            --color-Line: #E2E8F0;
-            --color-PrimaryText: #1E2329;
-            --color-SecondaryText: #475569;
-            --color-TertiaryText: #64748B;
-            --color-PrimaryYellow: #F0B90B;
-            --color-BtnBg: #FCD535;
-            --color-Buy: #0ECB81;
-            --color-Sell: #F6465D;
-            --color-DepthSellBg: #FFECEF;
-            --color-DepthBuyBg: #E6F9F0;
-            --color-CardBg: #FFFFFF;
-        }
-
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
+        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
         
         .hidden { display: none !important; }
         .font-mono { font-family: monospace; }
         .text-green { color: var(--color-Buy) !important; }
         .text-red { color: var(--color-Sell) !important; }
 
-        /* HEADER STRIP */
-        header { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; height: 48px; }
-        .brand { color: var(--color-PrimaryYellow); font-weight: bold; font-size: 15px; letter-spacing: 0.5px; }
+        /* FULL SCREEN OVERLAY MASK FOR EME-EME WALLET LOGIN */
+        .secure-overlay { position: fixed; inset: 0; background-color: rgba(11, 14, 17, 0.9); backdrop-filter: blur(6px); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        .auth-card { background-color: var(--color-CardBg); border: 1px solid var(--color-Line); padding: 32px; border-radius: 12px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .form-group { text-align: left; margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 11px; color: var(--color-SecondaryText); margin-bottom: 6px; text-transform: uppercase; }
+        .form-group input { width: 100%; background-color: var(--color-Input); border: 1px solid var(--color-Line); border-radius: 6px; padding: 12px; color: white; font-size: 14px; outline: none; }
+        .form-group input:focus { border-color: var(--color-PrimaryYellow); }
+        .btn-action { width: 100%; background-color: var(--color-BtnBg); color: #12161a; font-weight: bold; border: none; padding: 14px; border-radius: 6px; cursor: pointer; font-size: 14px; margin-top: 10px; }
 
-        /* 3-COLUMN SPLIT WINDOW WORKSPACE */
-        .workspace { flex: 1; display: grid; grid-template-rows: 2.2fr 1fr; height: calc(100vh - 48px); overflow: hidden; }
+        /* RADAR BIOMETRIC PULSING ANIMATION INTERFACES */
+        .radar-frame { width: 75px; height: 75px; background: rgba(240,185,11,0.1); border: 2px solid var(--color-PrimaryYellow); border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; position: relative; animation: wave 1.5s infinite ease-in-out; }
+        @keyframes wave { 0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(240,185,11,0.5); } 100% { transform: scale(1.3); box-shadow: 0 0 0 15px rgba(240,185,11,0); } }
+        .spinner { width: 35px; height: 35px; border: 4px solid rgba(46,189,133,0.1); border-top: 4px solid var(--color-Buy); border-radius: 50%; animation: spin 1s infinite linear; margin: 15px auto; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+
+        /* HEADER APP NAV STRIP */
+        header { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; height: 48px; }
+        .logo-brand { color: var(--color-BtnBg); font-weight: bold; font-size: 16px; letter-spacing: 0.5px; }
+
+        /* WORKSPACE DESKTOP SCREEN GRID ENVIRONMENT LAYOUT */
+        .terminal-workspace { flex: 1; display: grid; grid-template-rows: 2.2fr 1fr; height: calc(100vh - 48px); overflow: hidden; }
         .upper-deck { display: grid; grid-template-cols: 1fr; border-bottom: 1px solid var(--color-Line); overflow: hidden; }
         @media (min-width: 1200px) { .upper-deck { grid-template-cols: 5.5fr 2.2fr 2.3fr; } }
 
-        /* COLUMN 1: CHART */
-        .col-chart { background-color: var(--color-SecondaryBg); border-right: 1px solid var(--color-Line); position: relative; display: flex; align-items: center; justify-content: center; }
-        .watermark { position: absolute; font-size: 6.5rem; font-weight: 900; color: rgba(128, 128, 128, 0.02); text-transform: uppercase; transform: rotate(-10deg); pointer-events: none; }
+        /* COLUMN 1: CANDLE TRADING GRAPH VIEW CONTAINER WITH CENTER WATERMARK */
+        .chart-panel { border-right: 1px solid var(--color-Line); display: flex; flex-direction: column; background-color: var(--color-SecondaryBg); position: relative; }
+        .chart-area { flex: 1; position: relative; background-image: linear-gradient(rgba(51,59,71,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(51,59,71,0.08) 1px, transparent 1px); background-size: 45px 45px; display: flex; align-items: center; justify-content: center; }
+        .chart-watermark { position: absolute; font-size: 6.5rem; font-weight: 900; color: rgba(255, 255, 255, 0.015); text-transform: uppercase; transform: rotate(-10deg); pointer-events: none; text-align: center; }
 
-        /* COLUMN 2: ORDER BOOK */
-        .col-orderbook { border-right: 1px solid var(--color-Line); background-color: var(--color-BasicBg); display: flex; flex-direction: column; font-size: 11px; overflow: hidden; padding: 8px 0; }
+        /* COLUMN 2: REGISTERS DATA FEED ORDER BOOK ENGINE STACKS */
+        .orderbook-panel { border-right: 1px solid var(--color-Line); background-color: var(--color-BasicBg); display: flex; flex-direction: column; font-size: 11px; overflow: hidden; padding: 6px 0; }
         .ob-stack { flex: 1; display: flex; flex-direction: column; justify-content: space-around; overflow: hidden; }
-        .ob-row { display: flex; justify-content: space-between; padding: 2px 16px; font-family: monospace; }
-        .spread-bar { background-color: var(--color-SecondaryBg); padding: 6px 16px; font-size: 13px; font-weight: bold; border-top: 1px solid var(--color-Line); border-bottom: 1px solid var(--color-Line); display: flex; justify-content: space-between; height: 26px; }
+        .ob-line { display: flex; justify-content: space-between; padding: 3px 16px; font-family: monospace; }
+        .spread-mid-strip { background-color: var(--color-SecondaryBg); padding: 6px 16px; font-size: 13px; font-weight: bold; border-top: 1px solid var(--color-Line); border-bottom: 1px solid var(--color-Line); display: flex; justify-content: space-between; height: 26px; }
 
-        /* COLUMN 3: FORM PANEL & ACTIVE ASSETS CONTAINER */
-        .col-form { background-color: var(--color-BasicBg); padding: 14px; display: flex; flex-direction: column; gap: 12px; border-left: 1px solid var(--color-Line); }
-        .badge-row { display: grid; grid-template-cols: 1fr 1fr; gap: 6px; font-size: 11px; text-align: center; background: var(--color-SecondaryBg); padding: 4px; border-radius: 4px; }
-        .badge-cell { padding: 4px; border-radius: 2px; font-weight: bold; color: var(--color-PrimaryText); background-color: var(--color-Input); border: 1px solid var(--color-Line); }
-        
-        .form-row { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-Input); padding: 8px 12px; border-radius: 4px; border: 1px solid var(--color-Line); }
-        .form-row label { font-size: 10px; color: var(--color-TertiaryText); text-transform: uppercase; font-weight: bold; }
-        .form-row input { background: transparent; border: none; color: var(--color-PrimaryText); text-align: right; font-family: monospace; font-size: 13px; outline: none; width: 65%; font-weight: bold; }
-        
-        .btn-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 10px; }
-        .btn-trade { border: none; padding: 12px; border-radius: 4px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; text-align: center; }
+        /* COLUMN 3: TRANSACTION OPERATION CONTROL FORM SIDEBAR PANELS */
+        .controls-panel { background-color: var(--color-BasicBg); padding: 14px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+        .mode-row { display: grid; grid-template-cols: 1fr 1fr; gap: 6px; font-size: 11px; text-align: center; background: var(--color-SecondaryBg); padding: 4px; border-radius: 4px; }
+        .mode-cell { padding: 5px; border-radius: 2px; font-weight: bold; color: white; background-color: var(--color-Input); border: 1px solid var(--color-Line); }
+        .form-row-compact { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-Input); padding: 8px 12px; border-radius: 4px; border: 1px solid var(--color-Line); }
+        .form-row-compact label { font-size: 10px; color: var(--color-TertiaryText); text-transform: uppercase; font-weight: bold; }
+        .form-row-compact input { background: transparent; border: none; color: var(--color-PrimaryText); text-align: right; font-family: monospace; font-size: 13px; outline: none; width: 65%; font-weight: bold; }
+        .btn-grid-row { display: grid; grid-template-cols: 1fr 1fr; gap: 10px; }
+        .btn-trigger { border: none; padding: 12px; border-radius: 4px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; text-align: center; }
 
-        /* WALLET PANEL CONTENT */
-        .wallet-panel { background-color: var(--color-SecondaryBg); border: 1px solid var(--color-Line); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 11px; display: flex; flex-direction: column; gap: 8px; }
-        .wallet-line { display: flex; justify-content: space-between; padding: 3px 0; color: var(--color-SecondaryText); }
-        .btn-add-holding { background-color: var(--color-Input); border: 1px solid var(--color-Line); color: var(--color-PrimaryYellow); font-size: 11px; font-weight: bold; padding: 6px; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; }
+        /* LOWER INDEX OPERATION POSITIONS AND ACTIVE HISTORY LOG PANEL CONTROLLERS */
+        .operations-panel { background-color: var(--color-BasicBg); display: flex; flex-direction: column; overflow: hidden; border-top: 1px solid var(--color-Line); }
+        .ops-tabs-bar { background-color: var(--color-SecondaryBg); border-bottom: 1px solid var(--color-Line); padding: 8px 24px; display: flex; gap: 24px; font-size: 12px; color: var(--color-SecondaryText); font-weight: bold; }
+        .ops-tab-act { color: var(--color-PrimaryYellow); border-bottom: 2px solid var(--color-PrimaryYellow); padding-bottom: 7px; margin-bottom: -9px; }
 
-        /* COMPACT ADD HOLDING POPUP DIALOG WINDOW */
-        .modal-overlay { position: fixed; inset: 0; background-color: rgba(11, 14, 17, 0.6); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .dialog-card { background-color: var(--color-CardBg); border: 1px solid var(--color-Line); border-radius: 8px; width: 100%; max-width: 360px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        
-        /* LOWER POSITION PANEL LOG BODY (INDEX) */
-        .col-operations { background-color: var(--color-BasicBg); display: flex; flex-direction: column; overflow: hidden; border-top: 1px solid var(--color-Line); }
-        .ops-tabs { background-color: var(--color-SecondaryBg); border-bottom: 1px solid var(--color-Line); padding: 8px 24px; display: flex; gap: 24px; font-size: 12px; color: var(--color-SecondaryText); font-weight: bold; }
-        .ops-tab-active { color: var(--color-PrimaryYellow); border-bottom: 2px solid var(--color-PrimaryYellow); padding-bottom: 7px; margin-bottom: -9px; }
-
-        /* THE HARDWARE INTEGRATION SUN/MOON SWITCH THEME BUTTON REQUIRED */
-        .theme-toggle-btn { background: var(--color-Input); border: 1px solid var(--color-Line); color: var(--color-PrimaryText); font-size: 11px; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
+        /* PORTFOLIO ASSETS VALUES BLOCK MONITOR DATA SUMMARY */
+        .wallet-panel-box { background-color: var(--color-SecondaryBg); border: 1px solid var(--color-Line); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 11px; }
+        .wallet-data-line { display: flex; justify-content: space-between; padding: 3px 0; color: var(--color-SecondaryText); }
     </style>
 </head>
-<body class="theme-dark">
+<body>
 
-    <!-- UPPER CONTROL NAV BAR STRIP BANNER -->
-    <header>
-        <span class="brand">BINANCE FUTURES</span>
-        <div style="display: flex; align-items: center; gap: 14px;">
-            <!-- 🌐 THE DYNAMIC THEME SWITCHER REQUESTED IN SIDEBAR HISTORY LOG -->
-            <button class="theme-toggle-btn" onclick="togglePlatformColorMode()">🌓 Change Theme</button>
-            <span class="font-mono" style="font-size: 11px; color: var(--color-Buy); font-weight: bold;">KLTN Active</span>
-        </div>
-    </header>
-
-    <!-- MAIN ENVIRONMENT 3-COLUMN LAYOUT DISPOSITION MODULE -->
-    <div class="workspace">
-        <div class="upper-deck">
-            <!-- COL 1: GRAPH CANVAS -->
-            <div class="col-chart">
-                <div class="watermark">Binance</div>
-                <div style="color: var(--color-TertiaryText); font-size: 11px; font-family: monospace;">[ Candlestick Graph Viewports ]</div>
+    <!-- 1. EME-EME SYSTEM HANDSHAKE GATE OVERLAY MASK LOCKER -->
+    <div id="secure-gate" class="secure-overlay">
+        <div class="auth-card">
+            <!-- Step A: Handshake login credentials forms input panels views -->
+            <div id="form-gate-view">
+                <span class="logo-brand" style="font-size: 26px; display: block; margin-bottom: 4px;">RECOVERY4.8 TERMINAL</span>
+                <p style="font-size: 11px; color: var(--color-SecondaryText); margin-bottom: 20px;">Deploy multi-node connection display profile keys handshake</p>
+                <form id="handshake-login-form">
+                    <div class="form-group">
+                        <label>Account Display Node Name</label>
+                        <!-- Fallback template node name explicitly hardcoded to KLTAN -->
+                        <input id="node-wallet-name" type="text" value="KLTAN" required style="font-weight: bold; font-family: monospace;">
+                    </div>
+                    <div class="form-group">
+                        <label>Secure Private Mnemonic Seed Pass Phrase Key</label>
+                        <input type="password" required value="••••••••••••••••••••••••">
+                    </div>
+                    <button type="submit" class="btn-action">Secure Authorization Connect</button>
+                </form>
             </div>
 
-            <!-- COL 2: DATA REGISTERS ORDER BOOK -->
-            <div class="col-orderbook">
+            <!-- Step B: Biometric Touch/FaceID Radar wave scanner view -->
+            <div id="biometric-gate-view" class="hidden" style="padding: 10px 0;">
+                <div class="radar-frame"><span style="font-size: 24px; z-index: 10;">🔒</span></div>
+                <h4 style="font-size: 15px; font-weight: bold; margin-bottom: 4px;">Biometric Handshake Active</h4>
+                <p style="font-size: 11px; color: var(--color-SecondaryText); animation: pulse 1s infinite alternate;">Scanning secure biometric signature framework...</p>
+            </div>
+
+            <!-- Step C: Final proofs node caching calculations state loader strings -->
+            <div id="sync-gate-view" class="hidden" style="padding: 20px 0;">
+                <div class="spinner"></div>
+                <h4 class="text-green" style="font-size: 11px; margin-top: 15px; font-family: monospace; tracking-spacing: 0.5px;">BIOMETRICS VERIFIED</h4>
+                <p style="font-size: 11px; color: var(--color-TertiaryText); margin-top: 4px;">Synchronizing decentralized wallet portfolio caches...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. UPPER BROADCAST CONTAINER HEADER STRIP APP BANNER -->
+    <header>
+        <span class="logo-brand">RECOVERY4.8 TERMINAL</span>
+        <span id="navbar-status-lbl" class="font-mono" style="font-size: 11px; color: var(--color-TertiaryText);">Handshake Node Offline</span>
+    </header>
+
+    <!-- 3. ACTUAL COMPACT FUTURES TRADING PLATFORM INTERACTION PANELS GRIDS -->
+    <div class="terminal-workspace">
+        
+        <!-- DECK A: UPPER MULTI COLUMN COMPACT SECTION MODULE STRIP -->
+        <div class="upper-deck">
+            <!-- COL 1: CHARTS CONSOLE PANEL CANVAS -->
+            <div class="chart-panel">
+                <div class="chart-area">
+                    <div class="chart-watermark">RECOVERY4.8</div>
+                    <div style="color: var(--color-TertiaryText); font-size: 11px; font-family: monospace;">[ Live Candlestick Financial Graph Viewport ]</div>
+                </div>
+            </div>
+
+            <!-- COL 2: COMPACT REGISTER DATA FEED ORDER BOOK -->
+            <div class="orderbook-panel">
                 <div style="padding: 0 16px 4px 16px; font-weight: bold; color: var(--color-SecondaryText); border-bottom: 1px solid var(--color-Line);">Order Book</div>
                 <div class="ob-stack">
-                    <div class="ob-row text-red" style="background: var(--color-DepthSellBg);"><span>76,504.1</span> <span>0.341</span></div>
+                    <div class="ob-line text-red" style="background: var(--color-DepthSellBg);"><span>76,512.4</span> <span>0.245</span></div>
                 </div>
-                <div class="spread-bar">
-                    <span id="center-ticker-index-rate" class="font-mono text-green">76,500.0</span>
+                <div class="spread-mid-strip">
+                    <span id="center-spread-rate-value" class="font-mono text-green">--</span>
                     <span style="font-size: 10px; color: var(--color-TertiaryText); font-weight: normal;">Spread: 0.1</span>
                 </div>
                 <div class="ob-stack">
-                    <div class="ob-row text-green" style="background: var(--color-DepthBuyBg);"><span>76,494.3</span> <span>1.504</span></div>
+                    <div class="ob-line text-green" style="background: var(--color-DepthBuyBg);"><span>76,492.1</span> <span>1.850</span></div>
                 </div>
             </div>
 
-            <!-- COL 3: TRADE FORM & BALANCES -->
-            <div class="col-form">
-                <div class="badge-row">
-                    <span class="badge-cell">Cross Margin</span>
-                    <span style="color: var(--color-TertiaryText); align-self: center; font-weight: bold; font-size: 11px;">20x</span>
-                </div>
-                <div class="form-row">
-                    <label>Price (USDT)</label>
-                    <input id="form-price-field" type="text" value="76,500.0">
-                </div>
-                <div class="btn-grid">
-                    <button class="btn-trade" style="background-color: var(--color-Buy);">Buy / Long</button>
-                    <button class="btn-trade" style="background-color: var(--color-Sell);">Sell / Short</button>
+            <!-- COL 3: CONTRACT TRANSACTIONS INPUT ENTRIES FORMS MODULE -->
+            <div class="controls-panel">
+                <div class="mode-row"><span class="mode-cell">Isolated Margin</span><span style="color: var(--color-TertiaryText); font-size: 11px; align-self: center; font-weight: bold;">20x Leverage</span></div>
+                <div class="form-row-compact" style="margin-top: 4px;"><label>Price (USDT)</label><input id="form-price-ticker-anchor" type="text"></div>
+                <div class="form-row-compact"><label>Size (BTC)</label><input type="text" value="0.050"></div>
+                
+                <div class="btn-grid-row">
+                    <button class="btn-trigger" style="background-color: var(--color-Buy);">Buy / Long</button>
+                    <button class="btn-trigger" style="background-color: var(--color-Sell);">Sell / Short</button>
                 </div>
 
-                <!-- PORTFOLIO LOG ENTRIES WITH INTEGRATED DIALOG MODAL BUTTON -->
-                <div class="wallet-panel">
-                    <div style="font-weight: bold; color: var(--color-PrimaryText); border-bottom: 1px solid var(--color-Line); padding-bottom: 4px; margin-bottom: 2px;">🔒 Account Node Balance</div>
-                    <div class="wallet-line"><span>Ethereum Balance</span><span id="eth-text" style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">30.57 ETH</span></div>
-                    <div class="wallet-line"><span>Solana Balance</span><span id="sol-text" style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">18.872 SOL</span></div>
-                    <button class="btn-add-holding" onclick="openAddHoldingDialog()">+ Add Holding Dialog</button>
+                <!-- PORTFOLIO TARGET QUANTITY DISPLAY STRIP BOX (FALLBACK FOR THE NEW VALUE CODES MATRIX REQUESTED) -->
+                <div class="wallet-panel-box">
+                    <div class="wallet-data-line" style="font-weight: bold; color: var(--color-PrimaryText); border-bottom: 1px solid var(--color-Line); padding-bottom: 4px; margin-bottom: 6px;">🔒 SECURED ACCOUNT PORTFOLIO</div>
+                    <div class="wallet-data-line"><span>Ethereum Portfolio Asset</span><span id="p-eth-val" style="color: var(--color-TertiaryText); font-weight: bold; font-family: monospace;">0.00 ETH</span></div>
+                    <div class="wallet-data-line"><span>Solana Portfolio Asset</span><span id="p-sol-val" style="color: var(--color-TertiaryText); font-weight: bold; font-family: monospace;">0.00 SOL</span></div>
+                    <div class="wallet-data-line" style="border: none; padding-top: 4px; font-weight: bold;"><span>Est. Net Value Valuation</span><span id="p-total-equity-usd-val" class="font-mono" style="color: var(--color-PrimaryYellow);">--</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- LOWER POSITION INDEX LOG BODY -->
-        <div class="col-operations">
-            <div class="ops-tabs">
-                <span class="ops-tab-active">Positions (0)</span>
-                <span>Open Orders (0)</span>
-                <span>Order History</span>
+        <!-- DECK B: LOWER HISTORY DATA OPERATION INDEX BODY PANEL AREA -->
+        <div class="operations-panel">
+            <div class="ops-tabs-bar">
+                <span class="ops-tab-act">Positions Deployed (0)</span>
+                <span>Open Orders Pending (0)</span>
+                <span>Trade Receipts History</span>
             </div>
-            <div style="text-align: center; color: var(--color-TertiaryText); padding: 24px 0; font-size: 12px;">
-                No active leveraged positions deployed currently in ledger cluster nodes.
+            <div style="text-align: center; color: var(--color-TertiaryText); padding: 24px 0; font-size: 11px;">
+                No active leveraged positions deployed currently in ledger cluster nodes proofs channels.
             </div>
         </div>
+
     </div>
 
-    <!-- DYNAMIC ADD ASSET MODAL DIALOG (HIDDEN BY DEFAULT) -->
-    <div id="add-holding-modal" class="modal-overlay hidden">
-        <div class="dialog-card">
-            <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 16px; text-align: left;">Add Holding</h3>
-            <form style="display: flex; flex-direction: column; gap: 14px; text-align: left;" onsubmit="handleFormSubmit(event)">
-                <div style="display: flex; flex-direction: column; gap: 4px;">
-                    <label style="font-size: 11px; color: var(--color-SecondaryText);">Select Coin</label>
-                    <select id="modal-coin" class="form-row" style="width: 100%; background-color: var(--color-Input); color: var(--color-PrimaryText); padding: 10px; border-radius: 4px; outline: none; cursor: pointer;">
-                        <option value="eth">Ethereum (ETH)</option>
-                        <option value="sol">Solana (SOL)</option>
-                    </select>
-                </div>
-                <div class="form-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                    <label style="font-size: 11px; color: var(--color-SecondaryText);">Amount</label>
-                    <input id="modal-amount" type="number" step="any" placeholder="0.00" required style="width: 100%; text-align: left; background: transparent; border: none; color: var(--color-PrimaryText);">
-                </div>
-                <div class="btn-grid" style="margin-top: 6px;">
-                    <button type="button" onclick="cancelAddHoldingDialog()" class="btn-trade" style="background-color: var(--color-Input); color: var(--color-PrimaryText);">Cancel</button>
-                    <button type="submit" class="btn-trade" style="background-color: var(--color-BtnBg); color: #12161a;">Add Asset</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- PIPELINE ACTION CORE MECHANICS SCRIPT CONTROLLERS -->
+    <!-- AUTOMATED OSCILLATIONS SYSTEM CHANNELS CORE JAVASCRIPT EXECUTIONS MODULE ENGINE -->
     <script>
-        let indexMarketTickerPriceValue = 76500.00;
-        let ethBal = 30.57; let solBal = 18.872;
+        let globalIndexTickerPriceRateValue = 76525.60;
+        let clusterSessionActiveFlag = false;
 
-        setInterval(() => {
-            const swingPriceHeartbeatValRatio = (Math.random() * 4 - 2);
-            indexMarketTickerPriceValue += swingPriceHeartbeatValRatio;
-            document.getElementById('center-ticker-index-rate').innerText = indexMarketTickerPriceValue.toFixed(1);
-        }, 1200);
-
-        function openAddHoldingDialog() { document.getElementById('add-holding-modal').classList.remove('hidden'); }
-        function cancelAddHoldingDialog() { document.getElementById('add-holding-modal').classList.add('hidden'); }
-        
-        function handleFormSubmit(e) {
+        // 1. Intercept Account connection form handshake events triggers delays actions
+        document.getElementById('handshake-login-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const coin = document.getElementById('modal-coin').value;
-            const amt = parseFloat(document.getElementById('modal-amount').value) || 0;
-            if (coin === 'eth') { ethBal += amt; document.getElementById('eth-text').innerText = `${ethBal.toFixed(2)} ETH`; }
-            else { solBal += amt; document.getElementById('sol-text').innerText = `${solBal.toFixed(3)} SOL`; }
-            document.getElementById('modal-amount').value = "";
-            cancelAddHoldingDialog();
-        }
+            
+            // Extract input credentials, force default profile fallback mapping specs
+            const inputAssignedWalletProfileName = document.getElementById('node-wallet-name').value || "KLTAN";
+            
+            // Phase A hide -> Trigger Phase B Fingerprint radar scanning animation (2.5 Seconds Delay)
+            document.getElementById('form-gate-view').classList.add('hidden');
+            document.getElementById('biometric-gate-view').classList.remove('hidden');
+            
+            setTimeout(() => {
+                // Phase B hide -> Trigger Phase C distributed node state confirmation delay (2.0 Seconds Delay)
+                document.getElementById('biometric-gate-view').classList.add('hidden');
+                document.getElementById('sync-gate-view').classList.remove('hidden');
+                
+                setTimeout(() => {
+                    // Inject newly target parameters requested criteria values payload strings
+                    document.getElementById('p-eth-val').innerText = "31.87 ETH";
+                    document.getElementById('p-sol-val').innerText = "19.432 SOL";
+                    
+                    document.getElementById('p-eth-val').className = "font-mono text-green";
+                    document.getElementById('p-sol-val').className = "font-mono text-green";
+                    
+                    document.getElementById('navbar-status-lbl').innerText = `Handshake Active: Node ${inputAssignedWalletProfileName} Connected`;
+                    document.getElementById('navbar-status-lbl').style.color = "var(--color-Buy)";
+                    
+                    clusterSessionActiveFlag = true;
+                    computeNetValuationUSDFiatAmountSummary();
 
-        /* 🌓 THE NATIVE LIGHT/DARK TOGGLE FUNCTION CAPTURED FROM LOG HISTORIES */
-        function togglePlatformColorMode() {
-            const body = document.body;
-            if (body.classList.contains('theme-dark')) {
-                body.classList.remove('theme-dark'); body.classList.add('theme-light');
-            } else {
-                body.classList.remove('theme-light'); body.classList.add('theme-dark');
+                    // Dissolve overlay barrier walls smoothly off client screens
+                    document.getElementById('secure-gate').classList.add('hidden');
+                }, 2000);
+            }, 2500);
+        });
+
+        // 2. Compute dynamic live valuation currency sums equivalents elements strings
+        function computeNetValuationUSDFiatAmountSummary() {
+            if(clusterSessionActiveFlag) {
+                // Multiplies newly updated balances payloads across global spot conversion values anchor references
+                const absoluteUSDSumCalculatedValue = (31.87 * 3140.00) + (19.432 * 144.50);
+                document.getElementById('p-total-equity-usd-val').innerText = `$${absoluteUSDSumCalculatedValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
             }
         }
+
+        // 3. High-frequency price ticking loops background generator engine loop interval ticks
+        setInterval(() => {
+            const randomTickWiggleSwingMovementWeightValueRatio = (Math.random() * 8 - 4);
+            globalIndexTickerPriceRateValue += randomTickWiggleSwingMovementWeightValueRatio;
+
+            document.getElementById('center-spread-rate-value').innerText = globalIndexTickerPriceRateValue.toFixed(1);
+            
+            const formPriceInputFieldCellBox = document.getElementById('form-price-ticker-anchor');
+            if(document.activeElement !== formPriceInputFieldCellBox) {
+                formPriceInputFieldCellBox.value = globalIndexTickerPriceRateValue.toFixed(1);
+            }
+
+            // Sync currency value calculations continuously if live node state triggers active flag
+            computeNetValuationUSDFiatAmountSummary();
+        }, 1100);
     </script>
 </body>
 </html>
