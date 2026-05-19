@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Terminal Simulation</title>
+    <title>Binance Futures Terminal Simulation - Full Logs</title>
     <style>
         :root {
             --bg-main: #0b0e11;        
@@ -47,15 +47,48 @@
             margin-bottom: 20px;
         }
 
+        .branding-zone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .binance-logo {
+            width: 24px;
+            height: 24px;
+            fill: var(--binance-yellow);
+        }
+
+        .brand-text {
+            font-size: 14px;
+            font-weight: bold;
+            color: var(--text-primary);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .futures-badge {
+            font-size: 10px;
+            background-color: var(--binance-yellow);
+            color: var(--bg-main);
+            padding: 1px 4px;
+            border-radius: 2px;
+            font-weight: bold;
+            margin-left: 2px;
+        }
+
         .ticker-info {
             display: flex;
             align-items: center;
             gap: 12px;
+            border-left: 1px solid var(--border-color);
+            padding-left: 16px;
+            margin-left: 4px;
         }
 
-        .pair-title { font-size: 16px; font-weight: 600; }
-        .live-price { color: var(--crypto-green); font-size: 16px; font-weight: 700; font-family: monospace; }
-        .price-change { color: var(--crypto-green); font-size: 12px; background: rgba(14, 203, 129, 0.15); padding: 2px 6px; border-radius: 2px; }
+        .pair-title { font-size: 15px; font-weight: 600; }
+        .live-price { color: var(--crypto-green); font-size: 15px; font-weight: 700; font-family: monospace; }
+        .price-change { color: var(--crypto-green); font-size: 11px; background: rgba(14, 203, 129, 0.15); padding: 2px 6px; border-radius: 2px; }
 
         .widget-grid {
             display: grid;
@@ -91,7 +124,7 @@
         #system-clock { color: var(--text-primary); }
         #refresh-countdown { color: var(--binance-yellow); min-width: 220px; display: inline-block; }
 
-        /* MAS PINALAWAK NA CONSOLE LOG PANEL */
+        /* PINUNONG LOADING MODULE CONSOLE */
         .console-panel {
             background-color: #020406;
             border: 1px solid var(--border-color);
@@ -101,8 +134,8 @@
             font-size: 11px;
             color: var(--text-secondary);
             margin-bottom: 20px;
-            min-height: 220px;
-            line-height: 1.9;
+            min-height: 310px;
+            line-height: 1.8;
         }
 
         .console-row {
@@ -135,17 +168,25 @@
 
     <div class="terminal-layout">
         <div class="terminal-header">
-            <div class="ticker-info">
-                <span class="pair-title">BTCUSDT Perpetual</span>
-                <span class="live-price">77,042.0</span>
-                <span class="price-change">+1.54%</span>
+            <div style="display: flex; align-items: center;">
+                <div class="branding-zone">
+                    <svg class="binance-logo" viewBox="0 0 24 24">
+                        <path d="M12 0l-3.54 3.54L12 7.07l3.54-3.53L12 0zm-5.66 5.66L2.8 9.2 6.34 12.7l3.53-3.53-3.53-3.52zm11.32 0l-3.53 3.52 3.53 3.54 3.54-3.54-3.54-3.52zM12 8.49l-3.54 3.53 3.54 3.54 3.54-3.54-3.54-3.53zm-9.2 4.25L0 16.27l2.8 2.8 3.54-3.53-3.54-3.53zm18.4 0l-3.54 3.53 3.54 3.54 2.8-2.81-2.8-3.26zM12 16.93l-3.54 3.53L12 24l3.54-3.54-3.54-3.53z"/>
+                    </svg>
+                    <span class="brand-text">Binance<span class="futures-badge">FUTURES</span></span>
+                </div>
+                <div class="ticker-info">
+                    <span class="pair-title">BTCUSDT Perpetual</span>
+                    <span class="live-price">77,042.0</span>
+                    <span class="price-change">+1.54%</span>
+                </div>
             </div>
-            <div style="font-size: 12px; color: var(--text-secondary);">Binance Futures Engine v4.11</div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Engine v4.11</div>
         </div>
 
         <div class="widget-grid">
             <div class="crypto-widget">
-                <div class="widget-label">System Event Time (Local)</div>
+                <div class="widget-label">System Event Time (US Eastern)</div>
                 <div id="system-clock" class="output-value">00:00:00 AM</div>
             </div>
 
@@ -155,44 +196,22 @@
             </div>
         </div>
 
-        <!-- MGA DINAGDAGANG SYSTEM LOG LINES (DAMIHAN) -->
+        <!-- MGA PINUNONG FILE AT NODE LOG LINES -->
         <div class="console-panel">
-            <div class="console-row">
-                <span class="console-label">> USER ACCOUNT SECURITY AUTH:</span>
-                <span id="load-account" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> SECURITY INTEGRITY CHECK:</span>
-                <span id="load-security" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> LIQUIDITY POOL SYNC:</span>
-                <span id="load-liquidity" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> ORDER BOOK GRID RE-INDEX:</span>
-                <span id="load-grid" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> MARGIN LEVERAGE CALCULATION:</span>
-                <span id="load-margin" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> RISK ENGINE RISK-LIMITS NODE:</span>
-                <span id="load-risk" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> WEBSOCKET DATA STREAM LATENCY:</span>
-                <span id="load-latency" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> INDEX PRICE RE-SYNC PIPELINE:</span>
-                <span id="load-index" class="console-status status-idle">STANDBY</span>
-            </div>
-            <div class="console-row">
-                <span class="console-label">> LBD MATRIX MONITOR BUFFER:</span>
-                <span id="load-lbd" class="console-status status-idle">STANDBY</span>
-            </div>
+            <div class="console-row"><span class="console-label">> USER ACCOUNT SECURITY AUTH:</span><span id="load-account" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> SECURITY INTEGRITY COMPLIANCE:</span><span id="load-security" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> PARSING LIQUIDITY_POOL_DATA.BIN:</span><span id="load-liquidity" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> RE-INDEXING ORDER_BOOK_GRID.JSON:</span><span id="load-grid" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> CALCULATING RISK_ENGINE_LIMITS.SYS:</span><span id="load-risk" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> SYNCHRONIZING WEBSOCKET_STREAM.DLL:</span><span id="load-latency" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> INGESTING INDEX_PRICE_VARIANT.DAT:</span><span id="load-index" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> LBD MATRIX MONITOR COMPILATION:</span><span id="load-lbd" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> VERIFYING CRYPTO_SIGNATURE_KEY.PEM:</span><span id="load-crypto" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> LOADING HISTORICAL_VOLATILITY.CSV:</span><span id="load-volatility" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> UPDATING MARK_PRICE_ALGORITHM.CONF:</span><span id="load-markprice" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> FETCHING INSURANCE_FUND_BALANCE.LOG:</span><span id="load-fund" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> ALLOCATING FUNDING_RATE_BUFFER.MEM:</span><span id="load-funding" class="console-status status-idle">STANDBY</span></div>
+            <div class="console-row"><span class="console-label">> NETWORK CORE CONNECTION TUNNELING:</span><span id="load-network" class="console-status status-idle">STANDBY</span></div>
         </div>
 
         <div class="control-footer">
@@ -205,18 +224,18 @@
     </div>
 
     <script>
-        // --- 1. SYSTEM CLOCK ---
+        // --- 1. US CLOCK (EASTERN TIME - NY) ---
         function runSystemClock() {
-            const timeObject = new Date();
-            let hours = timeObject.getHours();
-            let minutes = timeObject.getMinutes();
-            let seconds = timeObject.getSeconds();
-            const periodMarker = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
-            hours = hours < 10 ? '0' + hours : hours;
-            minutes = minutes < 10 ? '0' + minutes : minutes;
-            seconds = seconds < 10 ? '0' + seconds : seconds;
-            document.getElementById('system-clock').innerText = `${hours}:${minutes}:${seconds} ${periodMarker}`;
+            const now = new Date();
+            const options = {
+                timeZone: "America/New_York",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+                hour12: true
+            };
+            const formatter = new Intl.DateTimeFormat("en-US", options);
+            document.getElementById('system-clock').innerText = formatter.format(now);
         }
         setInterval(runSystemClock, 1000);
         runSystemClock();
@@ -247,7 +266,7 @@
             }, 1000);
         }
 
-        // --- 3. PERCENTAGE LOADING LOGIC ---
+        // --- 3. RAPID PERCENTAGE LOADING ENGINE ---
         function runPercentageLoading(elementId, duration, callback) {
             const element = document.getElementById(elementId);
             element.className = "console-status status-load";
@@ -255,7 +274,7 @@
             
             const intervalTime = duration / 100;
             const percentageInterval = setInterval(() => {
-                currentPercent += Math.floor(Math.random() * 5) + 2; // Bahagyang mas mabilis para sa mas maraming logs
+                currentPercent += Math.floor(Math.random() * 8) + 4; // Ginawang mas mabilis dahil napakaraming files
                 if (currentPercent >= 100) {
                     currentPercent = 100;
                     clearInterval(percentageInterval);
@@ -268,8 +287,13 @@
             }, intervalTime);
         }
 
-        // --- 4. SCRAMBLE ENGINE & WATERFALL PIPELINE ---
-        const logIds = ["load-account", "load-security", "load-liquidity", "load-grid", "load-margin", "load-risk", "load-latency", "load-index", "load-lbd"];
+        // --- 4. WATERFALL SCHEDULER PIPELINE ---
+        const logIds = [
+            "load-account", "load-security", "load-liquidity", "load-grid", 
+            "load-risk", "load-latency", "load-index", "load-lbd", 
+            "load-crypto", "load-volatility", "load-markprice", "load-fund", 
+            "load-funding", "load-network"
+        ];
 
         function executeScrambleDecipherMatrix() {
             statusText.innerText = "DECRYPTING MATRIX DATA";
@@ -285,16 +309,14 @@
                 countdownElement.innerText = aggregateStringBlock;
             }, 45);
 
-            // Sunod-sunod na pag-trigger ng mahabang listahan ng logs
             let currentStep = 0;
             function triggerNextLog() {
                 if (currentStep < logIds.length) {
-                    runPercentageLoading(logIds[currentStep], 300, () => {
+                    runPercentageLoading(logIds[currentStep], 150, () => { // Maikling loading time bawat line
                         currentStep++;
                         triggerNextLog();
                     });
                 } else {
-                    // Kapag nakumpleto na ang lahat ng logs:
                     clearInterval(matrixScrambleHandle);
                     
                     countdownElement.style.color = "var(--binance-yellow)";
@@ -302,7 +324,6 @@
                     statusText.parentElement.style.color = "var(--crypto-green)";
                     statusDot.style.background = "var(--crypto-green)";
 
-                    // I-reset pabalik sa standby pagkatapos ng 2.5 segundo
                     setTimeout(() => {
                         logIds.forEach(id => {
                             document.getElementById(id).innerText = "STANDBY";
