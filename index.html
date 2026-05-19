@@ -1,293 +1,119 @@
+
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BINANCE RECOVERY WALLET</title>
+    <title>Trading Update Timer</title>
     <style>
-        /* TAMANG KULAY NG BINANCE DARK THEME */
-        :root { 
-            --bg: #0b0e11; 
-            --sidebar: #12161c; 
-            --card: #1e2329; 
-            --border: #2b3139; 
-            --yellow: #f3ba2f; 
-            --text: #eaecef; 
-            --text-gray: #848e9c; 
-            --up: #0ecb81; 
-            --down: #f6465d; 
-        }
-        
-        body { 
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg); 
-            color: var(--text); 
-            margin: 0; 
-            display: flex; 
-            height: 100vh; 
-            overflow: hidden; 
-        }
-
-        /* 1. LOGIN OVERLAY SCREEN */
-        #auth-overlay { 
-            position: fixed; 
-            inset: 0; 
-            background: var(--bg); 
-            z-index: 100000; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-        }
-        .auth-card { 
-            background: var(--card); 
-            padding: 40px; 
-            border-radius: 16px; 
-            width: 420px; 
-            text-align: left; 
-            border: 1px solid var(--border); 
-            box-sizing: border-box; 
-            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
-        }
-
-        input { 
-            width: 100%; 
-            padding: 13px 16px; 
-            margin: 8px 0 16px 0; 
-            border-radius: 8px; 
-            border: 1px solid var(--border); 
-            background: var(--bg); 
-            color: white; 
-            box-sizing: border-box; 
-            font-size: 14px; 
-            outline: none; 
-        }
-        input:focus { border-color: var(--yellow); }
-
-        .btn-yellow { 
-            width: 100%; 
-            padding: 14px; 
-            background: var(--yellow); 
-            color: black; 
-            border: none; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            margin-top: 10px; 
-            font-size: 15px; 
-        }
-        .btn-yellow:hover { opacity: 0.9; }
-
-        /* 2. 10-SECONDS COUNTDOWN SCREEN */
-        #sync-loading-overlay {
-            position: fixed;
-            inset: 0;
-            background: var(--bg);
-            z-index: 105000;
-            display: none;
-            flex-direction: column;
+        /* Estilo para bumagay sa dark mode ng Binance Futures interface mo */
+        body {
+            background-color: #161a1e;
+            color: #eaecef;
+            font-family: Arial, sans-serif;
+            display: flex;
             justify-content: center;
             align-items: center;
-        }
-        .binance-spinner { 
-            width: 50px; 
-            height: 50px; 
-            border: 5px solid rgba(243, 186, 47, 0.1); 
-            border-radius: 50%; 
-            border-top-color: var(--yellow); 
-            animation: spin 1s linear infinite; 
-            margin-bottom: 20px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* 3. CORE DASHBOARD STRUCTURE */
-        #sidebar-navigation { 
-            width: 260px; 
-            background: var(--sidebar); 
-            border-right: 1px solid var(--border); 
-            padding: 25px 20px; 
-            display: none; /* Lalabas ito pagkatapos ng loading */
-            flex-direction: column; 
-            box-sizing: border-box; 
-        }
-        .nav-link-item { 
-            padding: 12px 16px; 
-            border-radius: 8px; 
-            color: var(--text-gray); 
-            cursor: pointer; 
-            margin-bottom: 5px; 
-            font-size: 14px; 
-            font-weight: 500; 
-        }
-        .nav-link-item.active { background: var(--card); color: white; }
-
-        #main-workspace-frame { 
-            flex: 1; 
-            display: none; /* Lalabas ito pagkatapos ng loading */
-            flex-direction: column; 
-            overflow-y: auto; 
-            box-sizing: border-box;
-        }
-        
-        .top-navbar {
-            background: var(--sidebar);
-            border-bottom: 1px solid var(--border);
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 13px;
+            height: 100vh;
+            margin: 0;
         }
 
-        .dashboard-body {
-            padding: 40px;
-            box-sizing: border-box;
+        .timer-container {
+            background-color: #1e2329;
+            border: 1px solid #474d57;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
 
-        /* ESTIMATED BALANCE FORMAT */
-        .balance-label { font-size: 14px; color: var(--text-gray); margin-bottom: 6px; }
-        .balance-amount { font-size: 36px; font-weight: 700; color: white; }
-        
-        .action-row { display: flex; gap: 10px; margin: 20px 0 40px 0; }
-        .action-btn { background: #2b3139; color: white; border: none; padding: 10px 18px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; }
-        .action-btn.yellow-btn { background: var(--yellow); color: black; }
+        .timer-label {
+            font-size: 14px;
+            color: #848e9c;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-        /* ASSET PORTFOLIO TABLE */
-        .table-box { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-        table { width: 100%; border-collapse: collapse; text-align: left; }
-        th { padding: 14px 20px; background: #1e2329; color: var(--text-gray); font-size: 12px; text-transform: uppercase; }
-        td { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        #timer-display {
+            font-size: 48px;
+            font-weight: bold;
+            color: #f0b90b; /* Binance yellow gold color */
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .status-message {
+            margin-top: 10px;
+            font-size: 12px;
+            color: #0ecb81; /* Green color para sa update status */
+        }
     </style>
 </head>
 <body>
 
-<!-- STAGE 1: GATEWAY LOGIN -->
-<div id="auth-overlay">
-    <div class="auth-card">
-        <h2 style="color: var(--yellow); margin: 0 0 5px 0; font-size: 26px;">BINANCE</h2>
-        <p style="color:var(--text-gray); margin-bottom: 30px; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; font-weight: bold;">Wallet Recovery System</p>
-        
-        <label style="font-size: 13px; color: var(--text-gray);">Account Email / Recovery Profile</label>
-        <input type="text" id="user-name" placeholder="Enter session identifier">
-        
-        <label style="font-size: 13px; color: var(--text-gray);">Wallet Network Address</label>
-        <input type="text" id="user-key" placeholder="Enter Public Wallet Address (0x...)">
-        
-        <button class="btn-yellow" type="button" onclick="checkFormAndStart()">Recover Wallet</button>
+    <div class="timer-container">
+        <div class="timer-label">Susunod na Awtomatikong Update</div>
+        <div id="timer-display">05:30</div>
+        <div id="status-text" class="status-message">Aktibo ang koneksyon sa merkado...</div>
     </div>
-</div>
 
-<!-- STAGE 2: 10-SECONDS COUNTDOWN LAYOUT VIEW -->
-<div id="sync-loading-overlay">
-    <div class="binance-spinner"></div>
-    <p id="countdown-text" style="color: var(--text); font-weight: 600; font-size: 15px; margin: 0;">Synchronizing Blockchain Node Ledger Stream... 10s</p>
-</div>
+    <script>
+        // 5 minuto at 30 segundo = 330 segundo kabuuan
+        const STARTING_TIME = 330; 
+        let timeRemaining = STARTING_TIME;
 
-<!-- STAGE 3: LEGIT BINANCE WALLET DASHBOARD OVERVIEW -->
-<nav id="sidebar-navigation">
-    <div style="font-size: 20px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; padding-left: 15px;">BINANCE</div>
-    <div class="nav-link-item active">Overview</div>
-    <div class="nav-link-item">Fiat and Spot</div>
-    <div class="nav-link-item">Margin</div>
-    <div class="nav-link-item">Futures</div>
-    <div class="nav-link-item" onclick="location.reload()" style="margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px;">Log Out</div>
-</nav>
+        const timerDisplay = document.getElementById('timer-display');
+        const statusText = document.getElementById('status-text');
 
-<div id="main-workspace-frame">
-    <header class="top-navbar">
-        <div style="font-weight: 600; text-transform: uppercase;">Ledger Status: <span style="color:var(--up)">Live Connected</span></div>
-        <div id="operator-display" style="color: var(--text-gray);">User: Offline_Session</div>
-    </header>
-    
-    <main class="dashboard-body">
-        <!-- WALLET OVERVIEW SUMMARY AREA -->
-        <div class="wallet-balance-card">
-            <div class="balance-label">Wallet Overview / Estimated Balance</div>
-            <div class="balance-amount">31.72 ETH</div>
-            <div style="color: var(--text-gray); font-size: 14px; margin-top: 5px;">
-                ≈ $79,117.13 USD <span style="color: var(--up); font-weight: 500; margin-left: 6px;">+1.77% (24h)</span>
-            </div>
-            
-            <div class="action-row">
-                <button class="action-btn yellow-btn">Deposit</button>
-                <button class="action-btn">Withdraw</button>
-                <button class="action-btn">Send</button>
-                <button class="action-btn">Transfer</button>
-                <button class="action-btn">Transaction History</button>
-            </div>
-        </div>
+        function startCountdown() {
+            const countdownInterval = setInterval(() => {
+                // Pag-compute sa minuto at segundo
+                let minutes = Math.floor(timeRemaining / 60);
+                let seconds = timeRemaining % 60;
 
-        <!-- FIXED TABLE (ETH & SOL COINS ONLY) -->
-        <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">Account Balance Breakdown</h3>
-        <div class="table-box">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Wallet Name</th>
-                        <th>Asset Name</th>
-                        <th>Total Balance</th>
-                        <th>Estimated Value (USD)</th>
-                        <th>24h Change</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><b>kltn</b> <span style="background:#2b3139; color:var(--yellow); padding:2px 6px; font-size:11px; border-radius:4px; margin-left:6px;">Default</span></td>
-                        <td><b>ETH</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Ethereum</span></td>
-                        <td>28.73 ETH</td>
-                        <td>$71,529.46</td>
-                        <td style="color: var(--up)">+1.77%</td>
-                    </tr>
-                    <tr>
-                        <td><b>Solana Wallet</b></td>
-                        <td><b>SOL</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Solana</span></td>
-                        <td>8.79 SOL</td>
-                        <td>$22,416.32</td>
-                        <td style="color: var(--up)">+2.10%</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </main>
-</div>
+                // Lagyan ng zero sa unahan kung single digit na lang ang numero
+                minutes = minutes < 10 ? '0' + minutes : minutes;
+                seconds = seconds < 10 ? '0' + seconds : seconds;
 
-<!-- JAVASCRIPT ANIMATION MACHINE -->
-<script>
-    function checkFormAndStart() {
-        const name = document.getElementById('user-name').value.trim();
-        const key = document.getElementById('user-key').value.trim();
+                // Ipakita ang tumatakbong oras sa screen
+                timerDisplay.innerText = `${minutes}:${seconds}`;
 
-        // MATIK KAPAG BLANK: HINDI MAKAKADIRETSO
-        if (name === "" || key === "") {
-            alert("Error: All operational input parameters are strictly required. Cannot remain blank!");
-            return;
+                // Kapag umabot na sa 0:00 ang timer
+                if (timeRemaining <= 0) {
+                    clearInterval(countdownInterval); // Itigil ang kasalukuyang timer loop
+                    
+                    triggerUpdate(); // Patakbuhin ang code para mag-update ng data
+                    
+                    timeRemaining = STARTING_TIME; // I-reset muli ang oras sa 5:30
+                    startCountdown(); // Muling simulan ang countdown
+                } else {
+                    timeRemaining--; // Bawasan ng isang segundo kada takbo
+                }
+            }, 1000); // 1000 milliseconds = 1 segundo
         }
 
-        // I-set up ang loading transition screen
-        document.getElementById('auth-overlay').style.display = 'none';
-        document.getElementById('sync-loading-overlay').style.display = 'flex';
+        // Dito mo ilalagay ang mangyayari kapag natapos ang 5:30 mins
+        function triggerUpdate() {
+            statusText.innerText = "Nag-a-update ng mga presyo...";
+            statusText.style.color = "#f0b90b"; // Gawing dilaw habang nag-a-update
 
-        let secondsLeft = 10; // Eksaktong 10 Seconds Counter
-        const countdownLabel = document.getElementById('countdown-text');
+            console.log("Nagsimula ang pag-update ng datos ng merkado.");
 
-        const timerEngine = setInterval(() => {
-            secondsLeft--;
-            if (countdownLabel) {
-                countdownLabel.innerText = "Synchronizing Blockchain Node Ledger Stream... " + secondsLeft + "s";
-            }
+            // KUNG GUSTONG I-REFRESH ANG BUONG WEB PAGE:
+            // window.location.reload();
 
-            // Kapag ubos na ang 10 segundo, maglo-load ang main overview page
-            if (secondsLeft <= 0) {
-                clearInterval(timerEngine);
+            // KUNG DATA FETCHING LANG ANG GAGAWIN:
+            // Pagkatapos ng kunwaring update (isang segundo), ibalik sa berde ang status text
+            setTimeout(() => {
+                statusText.innerText = "Matagumpay na na-update ang mga presyo!";
+                statusText.style.color = "#0ecb81";
+            }, 1000);
+        }
 
-                document.getElementById('sync-loading-overlay').style.display = 'none';
-                document.getElementById('sidebar-navigation').style.display = 'flex';
-                document.getElementById('main-workspace-frame').style.display = 'flex';
-                
-                document.getElementById('operator-display').innerText = "Operator: " + name;
-            }
-        }, 1000);
-    }
-</script>
+        // Awtomatikong patakbuhin ang countdown pagkabukas na pagkabukas ng page
+        startCountdown();
+    </script>
+
 </body>
 </html>
-
