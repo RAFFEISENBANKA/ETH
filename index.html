@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Terminal</title>
+    <title>Binance Futures Live Terminal</title>
     <style>
-        /* OFFICIAL BINANCE THEME ROOT VARIATION COLORS DEFINED */
+        /* OFFICIAL BINANCE CONFIGURATION COLORS FROM THE CODES RULES */
         :root {
             --color-BasicBg: #181A20;
             --color-SecondaryBg: #0B0E11;
@@ -22,420 +22,236 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; flex-direction: column; user-select: none; overflow-x: hidden; }
+        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
         
         .hidden { display: none !important; }
         .font-mono { font-family: monospace; }
         .text-green { color: var(--color-Buy) !important; }
         .text-red { color: var(--color-Sell) !important; }
 
-        /* 1. SECURE DEPLOYMENT HANDSHAKE GATE OVERLAY MODULES */
-        .overlay { position: fixed; inset: 0; background-color: var(--color-SecondaryBg); z-index: 200; display: flex; align-items: center; justify-content: center; padding: 20px; }
-        .card { background-color: var(--color-CardBg); border: 1px solid var(--color-Line); padding: 32px; border-radius: 12px; width: 100%; max-width: 380px; text-align: center; box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
-        .brand { color: var(--color-BtnBg); font-weight: 800; font-size: 24px; letter-spacing: 1px; margin-bottom: 6px; display: block; }
-        .desc { color: var(--color-SecondaryText); font-size: 12px; margin-bottom: 24px; }
-        
-        .form-group { text-align: left; margin-bottom: 14px; }
-        label { display: block; font-size: 11px; color: var(--color-SecondaryText); margin-bottom: 5px; }
-        input { width: 100%; background-color: var(--color-Input); border: 1px solid var(--color-Line); border-radius: 4px; padding: 10px; color: white; font-size: 13px; outline: none; }
-        input:focus { border-color: var(--color-PrimaryYellow); }
-        .btn-main { width: 100%; background-color: var(--color-BtnBg); color: #12161a; font-weight: 700; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-size: 13px; }
+        /* FIXED APPLICATION HEADER BANNER STRIP */
+        header { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 8px 16px; display: flex; justify-content: space-between; align-items: center; height: 45px; }
+        .ticker-data-strip { display: flex; align-items: center; gap: 24px; font-size: 11px; }
+        .pair-title { font-size: 14px; font-weight: bold; color: white; display: flex; align-items: center; gap: 4px; }
+        .ticker-block { display: flex; flex-direction: column; gap: 1px; }
+        .ticker-lbl { color: var(--color-TertiaryText); font-size: 9px; }
 
-        .radar-box { width: 70px; height: 70px; background: rgba(240,185,11,0.1); border: 2px solid var(--color-PrimaryYellow); border-radius: 50%; margin: 15px auto; display: flex; align-items: center; justify-content: center; position: relative; animation: sonar 1.4s infinite ease-in-out; }
-        @keyframes sonar { 0% { transform: scale(0.95); opacity: 1; } 100% { transform: scale(1.35); opacity: 0; } }
+        /* THE 3-COLUMN SPLIT DESKTOP WORKSPACE LAYOUT GRID REQUIRED */
+        .pro-split-workspace { flex: 1; display: grid; grid-template-cols: 1fr; height: calc(100vh - 45px); overflow: hidden; }
+        @media (min-width: 1200px) { .pro-split-workspace { grid-template-cols: 5.5fr 2.2fr 2.3fr; } }
 
-        /* INTERACTIVE POP-UP TOAST FRAME NOTIFICATIONS */
-        #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 250; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background-color: var(--color-CardBg); border-left: 4px solid var(--color-PrimaryYellow); color: var(--color-PrimaryText); padding: 14px 20px; border-radius: 6px; font-size: 12px; font-weight: 600; box-shadow: 0 10px 25px rgba(0,0,0,0.5); display: flex; align-items: center; gap: 10px; animation: slideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; }
-        @keyframes slideIn { 0% { transform: translateX(120%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
-
-        /* 2. MAIN HEADER LAYOUT NAVIGATION STRIP */
-        header { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 12px 24px; display: flex; justify-content: space-between; align-items: center; }
-        .ticker-strip { display: flex; align-items: center; gap: 24px; font-size: 12px; }
-        .pair-label { font-size: 16px; font-weight: bold; color: white; display: flex; align-items: center; gap: 6px; }
-        .strip-box { display: flex; flex-direction: column; gap: 2px; }
-        .strip-lbl { color: var(--color-TertiaryText); font-size: 10px; }
-
-        /* 3. CORE CLIENT WORKSPACE CONTAINER */
-        .workspace { flex: 1; display: grid; grid-template-cols: 1fr; height: calc(100vh - 55px); overflow: hidden; }
-        @media (min-width: 1200px) { .workspace { grid-template-cols: 5fr 2fr 2fr; } }
-
-        /* LEFT WORKSPACE WINDOW: CANDLESTICK CHART CONTAINER */
-        .chart-panel { border-right: 1px solid var(--color-Line); display: flex; flex-direction: column; background-color: var(--color-SecondaryBg); position: relative; }
-        .chart-tabs { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 8px 16px; font-size: 11px; color: var(--color-SecondaryText); display: flex; gap: 16px; }
+        /* COLUMN 1: LIVE INTERACTIVE TECHNICAL CANDLESTICK CHART CONTAINER */
+        .chart-viewport { border-right: 1px solid var(--color-Line); display: flex; flex-direction: column; background-color: var(--color-SecondaryBg); position: relative; }
+        .chart-top-tabs { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 6px 16px; font-size: 11px; color: var(--color-SecondaryText); display: flex; gap: 14px; }
         .tab-active { color: var(--color-PrimaryYellow); font-weight: bold; }
         
-        /* INTEGRATED BACKGROUND GRAPHIC WATERMARK LOGOS CANVAS FIELD */
-        .canvas-container { flex: 1; position: relative; background-image: linear-gradient(rgba(51,59,71,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(51,59,71,0.12) 1px, transparent 1px); background-size: 40px 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .watermark-logo { position: absolute; font-size: 9rem; font-weight: 900; color: rgba(255, 255, 255, 0.02); text-transform: uppercase; letter-spacing: 4px; pointer-events: none; transform: rotate(-12deg); z-index: 1; }
-        .watermark-sub { font-size: 1.5rem; letter-spacing: 12px; margin-top: -10px; color: rgba(240, 185, 11, 0.022); display: block; text-align: center; }
+        .chart-canvas-area { flex: 1; position: relative; background-image: linear-gradient(rgba(51,59,71,0.12) 1px, transparent 1px), linear-gradient(90deg, rgba(51,59,71,0.12) 1px, transparent 1px); background-size: 40px 40px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .binance-watermark { position: absolute; font-size: 8rem; font-weight: 900; color: rgba(255, 255, 255, 0.02); text-transform: uppercase; letter-spacing: 2px; transform: rotate(-10deg); pointer-events: none; z-index: 1; text-align: center; }
 
-        .candles-frame { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: space-around; padding: 40px; pointer-events: none; }
-        .candle { width: 14px; background-color: var(--color-Sell); position: relative; border-radius: 1px; }
-        .candle::before { content:''; position: absolute; width: 2px; background: inherit; height: 140%; left: 6px; top: -20%; }
-        .c-up { background-color: var(--color-Buy); }
+        .candles-wrapper { position: absolute; inset: 0; z-index: 5; display: flex; align-items: center; justify-content: space-around; padding: 40px; pointer-events: none; }
+        .bar-candle { width: 12px; background-color: var(--color-Sell); position: relative; }
+        .bar-candle::before { content:''; position: absolute; width: 2px; background: inherit; height: 140%; left: 5px; top: -20%; }
+        .candle-green { background-color: var(--color-Buy); }
 
-        /* MIDDLE WORKSPACE WINDOW: ORDER BOOK FEED PANELS */
-        .orderbook-panel { border-right: 1px solid var(--color-Line); background-color: var(--color-BasicBg); display: flex; flex-direction: column; font-size: 12px; }
-        .ob-list-box { flex: 1; overflow-y: hidden; padding: 6px 0; display: flex; flex-direction: column; justify-content: flex-end; }
-        .ob-row-line { display: flex; justify-content: space-between; padding: 3px 16px; font-family: monospace; position: relative; }
-        .ob-fill-red { position: absolute; right: 0; top: 0; bottom: 0; background: rgba(246,70,93,0.07); z-index: 1; }
-        .ob-fill-green { position: absolute; right: 0; top: 0; bottom: 0; background: rgba(46,189,133,0.07); z-index: 1; }
+        /* COLUMN 2: SYMMETRICAL INTERLOCKING DEPTH REGISTER ORDER BOOK */
+        .orderbook-viewport { border-right: 1px solid var(--color-Line); background-color: var(--color-BasicBg); display: flex; flex-direction: column; font-size: 11px; overflow: hidden; }
+        .ob-stack-box { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; padding: 4px 0; overflow: hidden; }
+        .ob-line-row { display: flex; justify-content: space-between; padding: 3px 16px; font-family: monospace; position: relative; }
+        .depth-bg-red { position: absolute; right: 0; top: 0; bottom: 0; background: rgba(246,70,93,0.08); z-index: 1; }
+        .depth-bg-green { position: absolute; right: 0; top: 0; bottom: 0; background: rgba(46,189,133,0.08); z-index: 1; }
+        .spread-mid-strip { background-color: var(--color-SecondaryBg); padding: 6px 16px; font-size: 13px; font-weight: bold; border-top: 1px solid var(--color-Line); border-bottom: 1px solid var(--color-Line); display: flex; justify-content: space-between; align-items: center; height: 28px; z-index: 10; }
 
-        /* RIGHT SIDE WORKSPACE PANEL: ORDER EXECUTION CONTROLS */
-        .controls-panel { background-color: var(--color-BasicBg); padding: 16px; display: flex; flex-direction: column; gap: 14px; }
-        .toggle-row { display: grid; grid-template-cols: 1fr 1fr; gap: 8px; font-size: 11px; text-align: center; background: var(--color-SecondaryBg); padding: 4px; border-radius: 4px; }
-        .toggle-item { padding: 6px; border-radius: 4px; cursor: pointer; color: var(--color-SecondaryText); }
-        .toggle-active { background-color: var(--color-Input); font-weight: bold; color: white; }
+        /* COLUMN 3: FUTURE ORDER FORM ENTRY CONTROLLER MODULE SIDEBAR PANELS */
+        .control-viewport { background-color: var(--color-BasicBg); padding: 14px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; }
+        .toggle-selector-row { display: grid; grid-template-cols: 1fr 1fr; gap: 6px; font-size: 11px; text-align: center; background: var(--color-SecondaryBg); padding: 4px; border-radius: 4px; }
+        .selector-cell { padding: 5px; border-radius: 4px; color: var(--color-SecondaryText); cursor: pointer; }
+        .selector-cell.active { background-color: var(--color-Input); font-weight: bold; color: white; border: 1px solid var(--color-Line); }
+        
+        .form-compact-row { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-Input); padding: 8px 12px; border-radius: 4px; border: 1px solid var(--color-Line); }
+        .form-compact-row label { font-size: 10px; color: var(--color-SecondaryText); text-transform: uppercase; }
+        .form-compact-row input { background: transparent; border: none; color: white; text-align: right; font-family: monospace; font-size: 13px; outline: none; width: 65%; font-weight: bold; }
+        
+        .action-btns-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 10px; margin-top: 4px; }
+        .execution-btn { border: none; padding: 12px; border-radius: 4px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; text-align: center; }
 
-        /* INTERACTIVE RANGE LEVERAGE SLIDER COMPONENT AREA STYLE */
-        .leverage-slider-area { margin: 4px 0; display: flex; flex-direction: column; gap: 6px; }
-        .slider-header { display: flex; justify-content: space-between; font-size: 11px; color: var(--color-SecondaryText); }
-        .range-input { -webkit-appearance: none; width: 100%; background: var(--color-Input); height: 5px; border-radius: 3px; outline: none; cursor: pointer; }
-        .range-input::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: var(--color-PrimaryYellow); border: 2px solid var(--color-BasicBg); }
-        .slider-ticks { display: flex; justify-content: space-between; padding: 0 2px; font-size: 9px; color: var(--color-TertiaryText); font-family: monospace; }
-
-        .action-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 10px; margin-top: 5px; }
-        .action-btn { border: none; padding: 12px; border-radius: 4px; color: white; font-weight: bold; font-size: 13px; cursor: pointer; transition: opacity 0.15s; }
-        .action-btn:hover { opacity: 0.9; }
-
-        /* SECURE USER ASSETS panel ACCOUNT INFORMATION STRUCTURE */
-        .portfolio-sub-card { background: var(--color-SecondaryBg); border: 1px solid var(--color-Line); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 12px; }
-        .p-info-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(51,59,71,0.25); }
-        .p-lbl-txt { color: var(--color-TertiaryText); }
-        .p-token-val { font-weight: bold; color: #c084fc; font-family: monospace; }
+        /* SECURED LOCAL ACCOUNT QUANTITIES BLOCK DISPLAY SUB MODULE STORAGE BOX */
+        .secure-assets-summary-panel { background: var(--color-SecondaryBg); border: 1px solid var(--color-Line); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 11px; }
+        .asset-panel-line-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid rgba(51,59,71,0.2); }
+        .node-token-lbl { font-weight: bold; color: #b794f4; font-family: monospace; }
     </style>
 </head>
 <body>
 
-    <!-- CONTAINER NOTIFICATIONS NOTIFICATION LAYER BOX -->
-    <div id="toast-container"></div>
-
-    <!-- 1. DEPLOYMENT HANDSHAKE INPUT CURTAIN OVERLAY -->
-    <div id="auth-gate" class="overlay">
-        <div class="card">
-            <div id="gate-inputs-box">
-                <span class="brand">BINANCE FUTURES</span>
-                <p class="desc">Deployment authentication node signature parameters</p>
-                <form id="gate-form">
-                    <div class="form-group">
-                        <label>Account Display Name</label>
-                        <input id="node-wallet-id" type="text" value="KLTN" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Cryptographic Node Security Phrase String</label>
-                        <input type="password" required value="••••••••••••••••••••••••">
-                    </div>
-                    <button type="submit" class="btn-main">Deploy Secured Handshake</button>
-                </form>
-            </div>
-            
-            <!-- Biometric radar scanner frame module -->
-            <div id="gate-biometric-box" class="hidden">
-                <div class="radar-box"><span style="font-size: 24px; z-index: 10;">🔒</span></div>
-                <h4 style="margin-bottom: 4px; font-size: 15px;">Biometric Handshake Scanning</h4>
-                <p class="desc" style="color: var(--color-PrimaryYellow); font-weight: 500;">Reading hardware node signature credentials...</p>
-            </div>
-
-            <!-- Ledger sync pipeline proof states spinner overlay -->
-            <div id="gate-sync-box" class="hidden" style="padding: 10px 0;">
-                <div class="spinner" style="border-top-color: var(--color-Buy);"></div>
-                <h4 class="text-green" style="font-size: 12px; margin-top: 15px; font-family: monospace; letter-spacing: 0.5px;">BIOMETRICS VERIFIED</h4>
-                <p class="desc" style="font-size: 11px; margin-top: 4px;">Decrypting cluster token index data mappings...</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. NAVBAR RUNNING MARKETS TICKERS INFORMATION BAR -->
+    <!-- 1. HEADER HIGH REFRESH DATA INFO STRIP BAR -->
     <header>
-        <div class="ticker-strip">
-            <span class="pair-label">
-                <span style="color: white; font-weight: 800;">BTCUSDT</span> 
-                <span style="font-size: 10px; color: var(--color-SecondaryText); background: var(--color-Input); padding: 2px 5px; border-radius: 2px; font-weight: 500;">Perpetual</span>
-            </span>
-            <div class="strip-box"><span id="strip-price-val" class="font-mono text-green" style="font-size: 14px; font-weight: bold;">--</span></div>
-            <div class="strip-box"><span class="strip-lbl">24h Change Ratio</span><span id="strip-change-val" class="font-mono text-green">--</span></div>
-            <div class="strip-box"><span class="strip-lbl">24h Indices High</span><span id="strip-high-val" class="font-mono" style="color: white;">--</span></div>
-            <div class="strip-box"><span class="strip-lbl">24h Indices Low</span><span id="strip-low-val" class="font-mono" style="color: white;">--</span></div>
+        <div class="ticker-data-strip">
+            <span class="pair-title">BTCUSDT <span style="font-size: 10px; color: var(--color-SecondaryText); background: var(--color-Input); padding: 1px 4px; border-radius: 2px; font-weight: normal;">Perpetual</span></span>
+            <div class="ticker-block"><span id="live-banner-price" class="font-mono text-green" style="font-size: 13px; font-weight: bold;">--</span></div>
+            <div class="ticker-block"><span class="ticker-lbl">24h Change</span><span id="live-banner-change" class="font-mono text-green">--</span></div>
+            <div class="ticker-block"><span class="ticker-lbl">24h High</span><span id="live-banner-high" class="font-mono" style="color:white;">--</span></div>
+            <div class="ticker-block"><span class="ticker-lbl">24h Low</span><span id="live-banner-low" class="font-mono" style="color:white;">--</span></div>
         </div>
-        <span id="active-node-tag" class="font-mono" style="font-size: 11px; color: var(--color-TertiaryText);">System Standby</span>
+        <span class="font-mono" style="font-size: 10px; color: var(--color-Buy); font-weight: bold;">Handshake Node: KLTN Online</span>
     </header>
 
-    <!-- 3. ACTUAL FUTURES CLIENT TRADING DESKTOP MULTI-PANEL GRIDS -->
-    <div class="workspace">
+    <!-- 2. MAIN 3-COLUMN DESKTOP WORKSPACE VIEWPORT GRID -->
+    <div class="pro-split-workspace">
         
-        <!-- COLUMN LEFT MODULES FRAME: CORE INTERACTIVE FINANCIAL CANDLESTICK CHART CONTAINER -->
-        <div class="chart-panel">
-            <div class="chart-tabs">
-                <span class="tab-active">Technical Chart Canvas</span>
-                <span>Original Exchange View</span>
-                <span style="margin-left: auto; color: var(--color-TertiaryText);">Interval: <span class="tab-active">15m</span> 1h 4h 1D</span>
+        <!-- COLUMN 1: LIVE CHART CANVAS VIEWPORT AREA -->
+        <div class="chart-viewport">
+            <div class="chart-top-tabs">
+                <span class="tab-active">Technical Chart</span>
+                <span>Order Depth</span>
+                <span style="margin-left: auto; color: var(--color-TertiaryText);">Time: <span class="tab-active">15m</span> 1h 4h 1D</span>
             </div>
             
-            <div class="canvas-container">
-                <!-- ACCURATE DESKTOP WATERMARK BACKGROUND POSITIONED LAYERED BEHIND CHART GRAPH BARS -->
-                <div class="watermark-logo">
+            <div class="chart-canvas-area">
+                <div class="binance-watermark">
                     <span>Binance</span>
-                    <span class="watermark-sub">Futures</span>
+                    <div style="font-size: 1.3rem; letter-spacing: 8px; color: rgba(240,185,11,0.02); margin-top: -4px;">Futures</div>
                 </div>
                 
-                <!-- Financial graphic indicators bars layout elements vectors over layer -->
-                <div class="candles-frame">
-                    <div class="candle c-up" style="height: 120px; transform: translateY(10px);"></div>
-                    <div class="candle" style="height: 150px; transform: translateY(-30px);"></div>
-                    <div class="candle c-up" style="height: 90px; transform: translateY(40px);"></div>
-                    <div class="candle" style="height: 190px; transform: translateY(-20px);"></div>
-                    <div class="candle" style="height: 80px; transform: translateY(15px);"></div>
-                    <div class="candle c-up" style="height: 210px; transform: translateY(-60px);"></div>
-                    <div class="candle c-up" style="height: 140px; transform: translateY(-10px);"></div>
+                <div class="candles-wrapper">
+                    <div class="bar-candle candle-green" style="height: 150px; top: 10px;"></div>
+                    <div class="bar-candle" style="height: 120px; top: -20px;"></div>
+                    <div class="bar-candle candle-green" style="height: 170px; top: 30px;"></div>
+                    <div class="bar-candle" style="height: 190px; top: -40px;"></div>
+                    <div class="bar-candle candle-green" style="height: 110px; top: 15px;"></div>
                 </div>
             </div>
         </div>
 
-        <!-- COLUMN MIDDLE MODULES FRAME: STREAMING LIVE SPREAD DEPTH ORDER BOOKS PANELS -->
-        <div class="orderbook-panel">
-            <div style="padding: 12px 16px; font-size: 11px; font-weight: bold; border-bottom: 1px solid var(--color-Line);">Index Order Book Feed</div>
+        <!-- COLUMN 2: REGISTERS ORDER BOOK WITH VOLATILITY FILL WIDTH INDICATORS -->
+        <div class="orderbook-viewport">
+            <div style="padding: 10px 16px; font-size: 11px; font-weight: bold; border-bottom:1px solid var(--color-Line);">Order Book</div>
             
-            <!-- Sells Ask rows stacks -->
-            <div id="asks-box-container" class="ob-list-box" style="justify-content: flex-end;"></div>
+            <!-- Red selling asks layout lists -->
+            <div id="ob-asks-stack-box" class="ob-stack-box"></div>
             
-            <!-- Real time spreads divider index rows header -->
-            <div style="background-color: var(--color-SecondaryBg); padding: 8px 16px; font-size: 14px; font-weight: bold; border-top: 1px solid var(--color-Line); border-bottom: 1px solid var(--color-Line); display: flex; justify-content: space-between;">
-                <span id="center-spread-ticker" class="font-mono text-green">--</span>
-                <span style="font-size: 11px; color: var(--color-TertiaryText); font-weight: normal; align-self: center;">Spread: 0.1</span>
+            <!-- Mid Spread register marker index bar line stripe -->
+            <div class="spread-mid-strip">
+                <span id="center-ticker-spread-rate-cell" class="font-mono text-green">--</span>
+                <span style="font-size: 10px; color: var(--color-TertiaryText); font-weight: normal;">Spread: 0.1</span>
             </div>
             
-            <!-- Buys Bid rows stacks -->
-            <div id="bids-box-container" class="ob-list-box" style="justify-content: flex-start;"></div>
+            <!-- Green buying bids layout lists -->
+            <div id="ob-bids-stack-box" class="ob-stack-box" style="justify-content: flex-start;"></div>
         </div>
 
-        <!-- COLUMN RIGHT MODULES FRAME: INPUT EXECUTION FORM AND PORTFOLIO CONTROLLER SYSTEM -->
-        <div class="controls-panel">
-            <div class="toggle-row">
-                <span class="toggle-item toggle-active">Isolated Margin</span>
-                <span class="toggle-item">Cross Mode</span>
+        <!-- COLUMN 3: FUTURES CONTRACT FORMS PANELS CONTROL WINDOW -->
+        <div class="control-viewport">
+            <div class="toggle-selector-row">
+                <span class="selector-cell active">Cross Margin</span>
+                <span class="selector-cell">20x Leverage</span>
             </div>
-            
-            <div class="toggle-row" style="margin-top: -4px;">
-                <span class="toggle-item toggle-active" style="background: none; color: var(--color-PrimaryYellow);">Limit</span>
-                <span class="toggle-item">Market Order</span>
-            </div>
-
-            <!-- INTERACTIVE SLIDER GRAPHIC COMPONENT ADDED FOR USER TESTING PREPARATION -->
-            <div class="leverage-slider-area" style="margin-top: 5px;">
-                <div class="slider-header">
-                    <span>Adjust Leverage Selector</span>
-                    <span id="leverage-val-label" class="font-mono" style="color: var(--color-PrimaryYellow); font-weight: bold;">20x</span>
-                </div>
-                <input id="leverage-range-input" type="range" min="1" max="125" value="20" class="range-input" oninput="handleSliderChangeAdjustmentAction(this.value)">
-                <div class="slider-ticks">
-                    <span>1x</span>
-                    <span>25x</span>
-                    <span>50x</span>
-                    <span>75x</span>
-                    <span>100x</span>
-                    <span>125x</span>
-                </div>
+            <div class="toggle-selector-row">
+                <span class="selector-cell active" style="background:none; color: var(--color-PrimaryYellow);">Limit Order</span>
+                <span class="selector-cell">Market Order</span>
             </div>
 
-            <div class="form-group" style="margin-top: 5px;">
-                <label>Target Execution Price (USDT)</label>
-                <input id="input-price-field" type="text" class="font-mono" style="text-align: right; font-weight: bold; color: white;">
+            <div class="form-compact-row" style="margin-top: 4px;">
+                <label>Price (USDT)</label>
+                <input id="form-input-price-ticker-anchor" type="text">
+            </div>
+            <div class="form-compact-row">
+                <label>Size (BTC)</label>
+                <input type="text" value="0.045">
             </div>
 
-            <div class="form-group" style="margin-top: -4px;">
-                <label>Order Size Value (BTC)</label>
-                <input id="input-size-field" type="text" value="0.025" class="font-mono" style="text-align: right;">
+            <div class="action-btns-grid">
+                <button class="execution-btn" style="background-color: var(--color-Buy);">Buy / Long</button>
+                <button class="execution-btn" style="background-color: var(--color-Sell);">Sell / Short</button>
             </div>
 
-            <!-- Trade button action listeners added triggers -->
-            <div class="action-grid">
-                <button class="action-btn" style="background-color: var(--color-Buy);" onclick="triggerActionToastReceiptNotification('Buy / Long')">Buy / Long</button>
-                <button class="action-btn" style="background-color: var(--color-Sell);" onclick="triggerActionToastReceiptNotification('Sell / Short')">Sell / Short</button>
-            </div>
-
-            <!-- SECURE PORTFOLIO VALUATION MATRIX DATA BLOCK WITH TARGET DATA CONFIGURATION VALUES -->
-            <div class="portfolio-sub-card">
-                <div class="p-info-row" style="border-bottom: 1px solid var(--color-Line); padding-bottom: 6px; margin-bottom: 4px;">
-                    <span style="font-weight: bold; font-size: 11px; text-transform: uppercase; color: var(--color-SecondaryText);">🔒 Secured Asset Nodes Panel</span>
+            <!-- THE LOCAL ASSET BALANCE STORAGE DETAILS BOX (FALLBACK FOR KLTN ASSIGNED PORTFOLIOS) -->
+            <div class="secure-assets-summary-panel">
+                <div class="asset-panel-line-row" style="border-bottom:1px solid var(--color-Line); padding-bottom:5px; margin-bottom:4px; font-weight:bold; color: var(--color-SecondaryText);">
+                    <span>🔒 SECURED ASSETS PORTFOLIOS</span>
                 </div>
-                <div class="p-info-row">
-                    <span class="p-lbl-txt">Ethereum Balance Ledger</span>
-                    <span id="p-eth-display" class="p-token-val">0.000 ETH</span>
+                <div class="asset-panel-line-row">
+                    <span style="color: var(--color-TertiaryText);">Ethereum Wallet</span>
+                    <span class="node-token-lbl">30.57 ETH</span>
                 </div>
-                <div class="p-info-row">
-                    <span class="p-lbl-txt">Solana Balance Ledger</span>
-                    <span id="p-sol-display" class="p-token-val">0.000 SOL</span>
+                <div class="asset-panel-line-row">
+                    <span style="color: var(--color-TertiaryText);">Solana Wallet</span>
+                    <span class="node-token-lbl">18.872 SOL</span>
                 </div>
-                <div class="p-info-row" style="border: none; padding-top: 6px;">
-                    <span class="p-lbl-txt">Calculated Valuation Sum</span>
-                    <span id="p-total-equity-usd" class="font-mono text-green" style="font-weight: bold;">\$0.00 USD</span>
+                <div class="asset-panel-line-row" style="border:none; padding-top:5px; font-weight:bold;">
+                    <span style="color: var(--color-TertiaryText);">Estimated Total Equity</span>
+                    <span id="summary-net-worth-fiat-usd" class="font-mono text-green" style="font-weight: bold;">$0.00 USD</span>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- DATA ARRAYS COMPUTATION OPERATIONS CORE AUTOMATIONS LOGIC JAVASCRIPT -->
+    <!-- PIPELINE LOOP RUNTIME BACKGROUND OSCILLATOR ENGINE JAVASCRIPT LOGIC -->
     <script>
-        let indexMarketPriceAnchor = 76552.45;
-        let internalActiveEthPrice = 3120.50;
-        let internalActiveSolPrice = 142.10;
-        let systemHandshakeOnlineFlag = false;
+        let liveGlobalIndexMarketRateValue = 76458.40;
+        const indexSymbolsArrayCatalogKeys = ["BTC", "ETH", "BNB", "SOL", "XRP"];
 
-        // 1. Manage Initial Login Curtain Handshake Delay Sequences
-        document.getElementById('gate-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const automaticNodeFallbackName = document.getElementById('node-wallet-id').value || "KLTN";
-            
-            // Switch inputs box visibility layer off, activate Step B Biometric scanning radar lines (2.5s)
-            document.getElementById('gate-inputs-box').classList.add('hidden');
-            document.getElementById('gate-biometric-box').classList.remove('hidden');
-            
-            setTimeout(() => {
-                // Biometrics complete -> Switch radar view off, trigger Step C ledger decryption check delays (2.0s)
-                document.getElementById('gate-biometric-box').classList.add('hidden');
-                document.getElementById('gate-sync-box').classList.remove('hidden');
+        // Initialize element arrays models immediate outputs display loops 
+        generateOrderBookPanelRowsList();
+
+        // 1. Build and populate split column orderbook ticks layers safely
+        function generateOrderBookPanelRowsList() {
+            const boxAsks = document.getElementById('ob-asks-stack-box');
+            const boxBids = document.getElementById('ob-bids-stack-box');
+            boxAsks.innerHTML = ""; boxBids.innerHTML = "";
+
+            // Red Asks (6 rows compact design lines)
+            for(let a = 6; a >= 1; a--) {
+                const rowPrice = liveGlobalIndexMarketRateValue + (a * 0.5);
+                const sizeVal = (Math.random() * 2 + 0.01).toFixed(3);
+                const widthPct = Math.floor(Math.random() * 60) + 10;
                 
-                setTimeout(() => {
-                    // Populate explicit payload criteria array configurations requested variables
-                    document.getElementById('p-eth-display').innerText = "30.57 ETH";
-                    document.getElementById('p-sol-display').innerText = "18.872 SOL";
-                    
-                    document.getElementById('p-eth-display').className = "font-mono text-green";
-                    document.getElementById('p-sol-display').className = "font-mono text-green";
-                    
-                    document.getElementById('active-node-tag').innerText = `Cluster Node: ${automaticNodeFallbackName} Online`;
-                    document.getElementById('active-node-tag').style.color = "var(--color-Buy)";
-                    
-                    systemHandshakeOnlineFlag = true;
-                    computePortfolioEquityEvaluationsPanel();
-                    buildOrderBookStaticMatrixListings();
+                const div = document.createElement('div'); div.className = "ob-line-row text-red";
+                div.innerHTML = `<div class="depth-bg-red" style="width: ${widthPct}%;"></div><span style="z-index:5;">${rowPrice.toFixed(1)}</span><span style="z-index:5; color:white;">${sizeVal}</span>`;
+                boxAsks.appendChild(div);
+            }
 
-                    // Dissolve initialization curtains block frames layers smoothly off viewport
-                    document.getElementById('auth-gate').classList.add('hidden');
-                    
-                    // Fire up initial welcome message notification toast for team presentation feel
-                    createPopupToastMessage(`Handshake Secure Node '${automaticNodeFallbackName}' Connection Established.`);
-                }, 2000);
-            }, 2500);
-        });
-
-        // 2. Adjust leverage slide numeric indicator text tag real-time inputs handler
-        function handleSliderChangeAdjustmentAction(sliderCurrentNumericValue) {
-            document.getElementById('leverage-val-label').innerText = `${sliderCurrentNumericValue}x`;
-        }
-
-        // 3. Fire up interactive live action logging receipts indicators onto side panels
-        function triggerActionToastReceiptNotification(selectedOrderDirectionTypeString) {
-            if(!systemHandshakeOnlineFlag) return;
-            
-            const currentSizeQuantityValue = document.getElementById('input-size-field').value;
-            const currentLeverageMultiplier = document.getElementById('leverage-val-label').innerText;
-            
-            const formattedToastAlertString = `Futures Order Submitted: Open ${selectedOrderDirectionTypeString} | Size: ${currentSizeQuantityValue} BTC @ ${currentLeverageMultiplier} Leverage.`;
-            createPopupToastMessage(formattedToastAlertString);
-        }
-
-        function createPopupToastMessage(textMessageContentBody) {
-            const containerBox = document.getElementById('toast-container');
-            const toastDiv = document.createElement('div');
-            toastDiv.className = "toast";
-            toastDiv.innerHTML = `<span>🔔</span> <span>${textMessageContentBody}</span>`;
-            
-            containerBox.appendChild(toastDiv);
-            
-            // Clean up elements off DOM array automatically once transition expiration timeframe concludes
-            setTimeout(() => {
-                toastDiv.style.opacity = "0";
-                toastDiv.style.transition = "opacity 0.4s ease, transform 0.4s ease";
-                toastDiv.style.transform = "translateY(-20px)";
-                setTimeout(() => toastDiv.remove(), 400);
-            }, 4000); // Display on screen duration parameters
-        }
-
-        // 4. Compute total valuation parameters direct equivalents summaries
-        function computePortfolioEquityEvaluationsPanel() {
-            if(systemHandshakeOnlineFlag) {
-                const computedTotalUSDFiatSum = (30.57 * internalActiveEthPrice) + (18.872 * internalActiveSolPrice);
-                document.getElementById('p-total-equity-usd').innerText = `$${computedTotalUSDFiatSum.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+            // Green Bids (6 rows compact design lines)
+            for(let b = 1; b <= 6; b++) {
+                const rowPrice = liveGlobalIndexMarketRateValue - (b * 0.5);
+                const sizeVal = (Math.random() * 2 + 0.01).toFixed(3);
+                const widthPct = Math.floor(Math.random() * 60) + 10;
+                
+                const div = document.createElement('div'); div.className = "ob-line-row text-green";
+                div.innerHTML = `<div class="depth-bg-green" style="width: ${widthPct}%;"></div><span style="z-index:5;">${rowPrice.toFixed(1)}</span><span style="z-index:5; color:white;">${sizeVal}</span>`;
+                boxBids.appendChild(div);
             }
         }
 
-        // 5. Generate Order Book Depth rows logs arrays programmatically inside loops
-        function buildOrderBookStaticMatrixListings() {
-            const asksContainer = document.getElementById('asks-box-container');
-            const bidsContainer = document.getElementById('bids-box-container');
-            
-            asksContainer.innerHTML = "";
-            bidsContainer.innerHTML = "";
-
-            // Red selling asks depth stack orders configuration loop
-            for(let r = 8; r >= 1; r--) {
-                const assignedPriceLine = indexMarketPriceAnchor + (r * 0.45) + (Math.random() * 0.15);
-                const assignedSizeLine = (Math.random() * 3.1 + 0.005).toFixed(3);
-                const computedFillWidth = Math.floor(Math.random() * 65) + 15;
-                
-                const divLine = document.createElement('div');
-                divLine.className = "ob-row-line text-red";
-                divLine.innerHTML = `
-                    <div class="ob-fill-red" style="width: ${computedFillWidth}%;"></div>
-                    <span style="z-index: 2;">${assignedPriceLine.toFixed(1)}</span>
-                    <span style="z-index: 2; color: white;">${assignedSizeLine}</span>
-                `;
-                asksContainer.appendChild(divLine);
-            }
-
-            // Green buying bids depth stack orders configuration loop
-            for(let b = 1; b <= 8; b++) {
-                const assignedPriceLine = indexMarketPriceAnchor - (b * 0.45) - (Math.random() * 0.15);
-                const assignedSizeLine = (Math.random() * 3.1 + 0.005).toFixed(3);
-                const computedFillWidth = Math.floor(Math.random() * 65) + 15;
-                
-                const divLine = document.createElement('div');
-                divLine.className = "ob-row-line text-green";
-                divLine.innerHTML = `
-                    <div class="ob-fill-green" style="width: ${computedFillWidth}%;"></div>
-                    <span style="z-index: 2;">${assignedPriceLine.toFixed(1)}</span>
-                    <span style="z-index: 2; color: white;">${assignedSizeLine}</span>
-                `;
-                bidsContainer.appendChild(divLine);
-            }
-        }
-
-        // 6. Active background price oscillation ticker intervals loop configurations
+        // 2. High-frequency price ticking loops background generator engine loop interval ticks
         setInterval(() => {
-            // Market heartbeat updates ranges settings computations adjustments delta
-            const continuousOscillationWiggleDeltaWeight = (Math.random() * 10 - 5);
-            indexMarketPriceAnchor += continuousOscillationWiggleDeltaWeight;
-            
-            internalActiveEthPrice += (Math.random() * 0.3 - 0.15);
-            internalActiveSolPrice += (Math.random() * 0.05 - 0.025);
+            const swingWeightDeltaRatioIntervalRatioValue = (Math.random() * 6 - 3);
+            liveGlobalIndexMarketRateValue += swingWeightDeltaRatioIntervalRatioValue;
 
-            document.getElementById('strip-price-val').innerText = indexMarketPriceAnchor.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-            document.getElementById('center-spread-ticker').innerText = indexMarketPriceAnchor.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            // Synchronize variable updates content strings down into target layout boxes views
+            document.getElementById('live-banner-price').innerText = liveGlobalIndexMarketRateValue.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
+            document.getElementById('center-ticker-spread-rate-cell').innerText = liveGlobalIndexMarketRateValue.toLocaleString(undefined, {minimumFractionDigits: 1, maximumFractionDigits: 1});
             
-            const targetInputFieldText = document.getElementById('input-price-field');
-            if(document.activeElement !== targetInputFieldText) {
-                targetInputFieldText.value = indexMarketPriceAnchor.toFixed(1);
+            const formPriceInputCellField = document.getElementById('form-input-price-ticker-anchor');
+            if(document.activeElement !== formPriceInputCellField) {
+                formPriceInputCellField.value = liveGlobalIndexMarketRateValue.toFixed(1);
             }
 
-            const changePctCalculatedMockStringValue = (continuousOscillationWiggleDeltaWeight >= 0 ? '+' : '') + (continuousOscillationWiggleDeltaWeight * 0.012).toFixed(2) + "%";
-            const topStripChangeElement = document.getElementById('strip-change-val');
-            topStripChangeElement.innerText = changePctCalculatedMockStringValue;
-            topStripChangeElement.className = continuousOscillationWiggleDeltaWeight >= 0 ? "font-mono text-green" : "font-mono text-red";
-            
-            document.getElementById('strip-high-val').innerText = (indexMarketPriceAnchor + 220).toFixed(1);
-            document.getElementById('strip-low-val').innerText = (indexMarketPriceAnchor - 140).toFixed(1);
+            const changePctCalculatedMockLabelValue = (swingWeightDeltaRatioIntervalRatioValue >= 0 ? '+' : '') + (swingWeightDeltaRatioIntervalRatioValue * 0.014).toFixed(3) + "%";
+            const topChangeLabelElementField = document.getElementById('live-banner-change');
+            topChangeLabelElementField.innerText = changePctCalculatedMockLabelValue;
+            topChangeLabelElementField.className = swingWeightDeltaRatioIntervalRatioValue >= 0 ? "font-mono text-green" : "font-mono text-red";
 
-            // Continuously process equity evaluation shifts and shuffle depths occasionally
-            computePortfolioEquityEvaluationsPanel();
-            if(systemHandshakeOnlineFlag && Math.random() > 0.5) {
-                buildOrderBookStaticMatrixListings();
+            document.getElementById('live-banner-high').innerText = (liveGlobalIndexMarketRateValue + 210).toFixed(1);
+            document.getElementById('live-banner-low').innerText = (liveGlobalIndexMarketRateValue - 140).toFixed(1);
+
+            // Compute automated total valuation sum for KLTN account portfolio
+            const absoluteCalculatedSumUSDValue = (30.57 * 3140.00) + (18.872 * 145.00);
+            document.getElementById('summary-net-worth-fiat-usd').innerText = `$${absoluteCalculatedSumUSDValue.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} USD`;
+
+            if(Math.random() > 0.45) {
+                generateOrderBookPanelRowsList();
             }
         }, 1100);
-
-        
-</script>
-        </body>
+    </script>
+</body>
 </html>
