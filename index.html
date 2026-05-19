@@ -5,23 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Binance Futures Terminal Simulation</title>
     <style>
-        /* Exact Binance Futures Dark Mode Theme Color Palette */
         :root {
-            --bg-main: #0b0e11;        /* Deep terminal background */
-            --bg-card: #161a1e;        /* Panel container backgrounds */
-            --bg-input: #24292e;       /* Interactive order components */
-            --border-color: #2b3139;   /* UI structural division borders */
-            --text-primary: #eaecef;   /* High-contrast crisp numeric data */
-            --text-secondary: #848e9c; /* Inactive headers and subtitle tabs */
-            --binance-yellow: #f0b90b; /* Signature brand accent/alert highlights */
-            --crypto-green: #0ecb81;   /* Buy / Long metric tracking alerts */
-            --crypto-red: #f6465d;     /* Sell / Short metric tracking alerts */
+            --bg-main: #0b0e11;        
+            --bg-card: #161a1e;        
+            --border-color: #2b3139;   
+            --text-primary: #eaecef;   
+            --text-secondary: #848e9c; 
+            --binance-yellow: #f0b90b; 
+            --crypto-green: #0ecb81;   
+            --crypto-red: #f6465d;     
         }
 
         body {
             background-color: var(--bg-main);
             color: var(--text-primary);
-            font-family: "BinancePlex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-family: "BinancePlex", -apple-system, BlinkMacSystemFont, Arial, sans-serif;
             margin: 0;
             padding: 16px;
             display: flex;
@@ -40,7 +38,6 @@
             box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
         }
 
-        /* Top Header Metadata Bar */
         .terminal-header {
             display: flex;
             justify-content: space-between;
@@ -56,32 +53,15 @@
             gap: 12px;
         }
 
-        .pair-title {
-            font-size: 16px;
-            font-weight: 600;
-        }
+        .pair-title { font-size: 16px; font-weight: 600; }
+        .live-price { color: var(--crypto-green); font-size: 16px; font-weight: 700; font-family: monospace; }
+        .price-change { color: var(--crypto-green); font-size: 12px; background: rgba(14, 203, 129, 0.15); padding: 2px 6px; border-radius: 2px; }
 
-        .live-price {
-            color: var(--crypto-green);
-            font-size: 16px;
-            font-weight: 700;
-            font-family: monospace;
-        }
-
-        .price-change {
-            color: var(--crypto-green);
-            font-size: 12px;
-            background: rgba(14, 203, 129, 0.15);
-            padding: 2px 6px;
-            border-radius: 2px;
-        }
-
-        /* Monitoring Widget Grid Panel */
         .widget-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 16px;
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         .crypto-widget {
@@ -108,17 +88,35 @@
             letter-spacing: 1.5px;
         }
 
-        #system-clock {
-            color: var(--text-primary);
+        #system-clock { color: var(--text-primary); }
+        #refresh-countdown { color: var(--binance-yellow); min-width: 220px; display: inline-block; }
+
+        /* MAS PINALAWAK NA CONSOLE LOG PANEL */
+        .console-panel {
+            background-color: #020406;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 14px 18px;
+            font-family: monospace;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            min-height: 220px;
+            line-height: 1.9;
         }
 
-        #refresh-countdown {
-            color: var(--binance-yellow);
-            min-width: 220px;
-            display: inline-block;
+        .console-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        /* Bottom Control Panel Layout Strip */
+        .console-label { color: var(--text-primary); }
+        .console-status { font-weight: bold; }
+        .status-idle { color: var(--text-secondary); }
+        .status-load { color: var(--binance-yellow); }
+        .status-done { color: var(--crypto-green); }
+
         .control-footer {
             display: flex;
             justify-content: space-between;
@@ -129,27 +127,13 @@
             color: var(--text-secondary);
         }
 
-        .status-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 600;
-            color: var(--crypto-green);
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--crypto-green);
-            border-radius: 50%;
-            display: inline-block;
-        }
+        .status-badge { display: flex; align-items: center; gap: 6px; font-weight: 600; color: var(--crypto-green); }
+        .status-dot { width: 8px; height: 8px; background-color: var(--crypto-green); border-radius: 50%; display: inline-block; }
     </style>
 </head>
 <body>
 
     <div class="terminal-layout">
-        <!-- Binance Global Header Strip Component -->
         <div class="terminal-header">
             <div class="ticker-info">
                 <span class="pair-title">BTCUSDT Perpetual</span>
@@ -159,22 +143,58 @@
             <div style="font-size: 12px; color: var(--text-secondary);">Binance Futures Engine v4.11</div>
         </div>
 
-        <!-- Integrated Timing Matrix Widgets -->
         <div class="widget-grid">
-            <!-- 1. Real-Time System Clock -->
             <div class="crypto-widget">
                 <div class="widget-label">System Event Time (Local)</div>
                 <div id="system-clock" class="output-value">00:00:00 AM</div>
             </div>
 
-            <!-- 2. Auto-Loop Execution Timer Component -->
             <div class="crypto-widget">
                 <div class="widget-label">Next Ticker Stream Matrix Sync</div>
                 <div id="refresh-countdown" class="output-value">05:30</div>
             </div>
         </div>
 
-        <!-- Control Footer Logging Module -->
+        <!-- MGA DINAGDAGANG SYSTEM LOG LINES (DAMIHAN) -->
+        <div class="console-panel">
+            <div class="console-row">
+                <span class="console-label">> USER ACCOUNT SECURITY AUTH:</span>
+                <span id="load-account" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> SECURITY INTEGRITY CHECK:</span>
+                <span id="load-security" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> LIQUIDITY POOL SYNC:</span>
+                <span id="load-liquidity" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> ORDER BOOK GRID RE-INDEX:</span>
+                <span id="load-grid" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> MARGIN LEVERAGE CALCULATION:</span>
+                <span id="load-margin" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> RISK ENGINE RISK-LIMITS NODE:</span>
+                <span id="load-risk" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> WEBSOCKET DATA STREAM LATENCY:</span>
+                <span id="load-latency" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> INDEX PRICE RE-SYNC PIPELINE:</span>
+                <span id="load-index" class="console-status status-idle">STANDBY</span>
+            </div>
+            <div class="console-row">
+                <span class="console-label">> LBD MATRIX MONITOR BUFFER:</span>
+                <span id="load-lbd" class="console-status status-idle">STANDBY</span>
+            </div>
+        </div>
+
         <div class="control-footer">
             <div>Engine Status: Ready</div>
             <div id="engine-status" class="status-badge">
@@ -185,30 +205,24 @@
     </div>
 
     <script>
-        // --- SECTION 1: NATIVE SYSTEM CLOCK CONTROLLER ---
+        // --- 1. SYSTEM CLOCK ---
         function runSystemClock() {
             const timeObject = new Date();
             let hours = timeObject.getHours();
             let minutes = timeObject.getMinutes();
             let seconds = timeObject.getSeconds();
             const periodMarker = hours >= 12 ? 'PM' : 'AM';
-
-            hours = hours % 12;
-            hours = hours ? hours : 12; // Formats zero-hour indexing to 12
-
-            // Zero padding execution block
+            hours = hours % 12 || 12;
             hours = hours < 10 ? '0' + hours : hours;
             minutes = minutes < 10 ? '0' + minutes : minutes;
             seconds = seconds < 10 ? '0' + seconds : seconds;
-
             document.getElementById('system-clock').innerText = `${hours}:${minutes}:${seconds} ${periodMarker}`;
         }
         setInterval(runSystemClock, 1000);
-        runSystemClock(); // Ignition fire on runtime execution initialization
+        runSystemClock();
 
-
-        // --- SECTION 2: TIMEOUT COUNTDOWN LOOP SYSTEM ---
-        const TARGET_DURATION = 330; // 5 minutes 30 seconds = 330 seconds total
+        // --- 2. COUNTDOWN TIMER ---
+        const TARGET_DURATION = 330; 
         let timeTracker = TARGET_DURATION;
         let countdownLoopHandle;
 
@@ -220,57 +234,90 @@
             countdownLoopHandle = setInterval(() => {
                 let minutes = Math.floor(timeTracker / 60);
                 let seconds = timeTracker % 60;
-
                 minutes = minutes < 10 ? '0' + minutes : minutes;
                 seconds = seconds < 10 ? '0' + seconds : seconds;
-
                 countdownElement.innerText = `${minutes}:${seconds}`;
 
                 if (timeTracker <= 0) {
-                    clearInterval(countdownLoopHandle); // Terminate current counter interval
-                    executeScrambleDecipherMatrix();    // Shift execution context to scrambler loop
+                    clearInterval(countdownLoopHandle);
+                    executeScrambleDecipherMatrix();    
                 } else {
                     timeTracker--;
                 }
             }, 1000);
         }
 
+        // --- 3. PERCENTAGE LOADING LOGIC ---
+        function runPercentageLoading(elementId, duration, callback) {
+            const element = document.getElementById(elementId);
+            element.className = "console-status status-load";
+            let currentPercent = 0;
+            
+            const intervalTime = duration / 100;
+            const percentageInterval = setInterval(() => {
+                currentPercent += Math.floor(Math.random() * 5) + 2; // Bahagyang mas mabilis para sa mas maraming logs
+                if (currentPercent >= 100) {
+                    currentPercent = 100;
+                    clearInterval(percentageInterval);
+                    element.innerText = "SUCCESS [100%]";
+                    element.className = "console-status status-done";
+                    if (callback) callback();
+                } else {
+                    element.innerText = `UPDATING [${currentPercent}%]`;
+                }
+            }, intervalTime);
+        }
 
-        // --- SECTION 3: NUMBER SCRAMBLE MATRIX ENGINE ---
+        // --- 4. SCRAMBLE ENGINE & WATERFALL PIPELINE ---
+        const logIds = ["load-account", "load-security", "load-liquidity", "load-grid", "load-margin", "load-risk", "load-latency", "load-index", "load-lbd"];
+
         function executeScrambleDecipherMatrix() {
-            // Update terminal state properties to Warning Mode
             statusText.innerText = "DECRYPTING MATRIX DATA";
             statusText.parentElement.style.color = "var(--crypto-red)";
             statusDot.style.background = "var(--crypto-red)";
             countdownElement.style.color = "var(--crypto-red)";
 
-            // Loop parameters: Rapid number strings generated every 45 milliseconds
             const matrixScrambleHandle = setInterval(() => {
                 let aggregateStringBlock = "";
-                // Creates an unreadable 11-digit continuous data output cluster
                 for (let index = 0; index < 11; index++) {
                     aggregateStringBlock += Math.floor(Math.random() * 10);
                 }
                 countdownElement.innerText = aggregateStringBlock;
             }, 45);
 
-            // Terminate processing artifacts and reset loop structural states after 2.8 seconds
-            setTimeout(() => {
-                clearInterval(matrixScrambleHandle); // Halt generation mechanics
-                
-                // Return variables back to normal parameters
-                countdownElement.style.color = "var(--binance-yellow)";
-                statusText.innerText = "STREAM LIVE";
-                statusText.parentElement.style.color = "var(--crypto-green)";
-                statusDot.style.background = "var(--crypto-green)";
+            // Sunod-sunod na pag-trigger ng mahabang listahan ng logs
+            let currentStep = 0;
+            function triggerNextLog() {
+                if (currentStep < logIds.length) {
+                    runPercentageLoading(logIds[currentStep], 300, () => {
+                        currentStep++;
+                        triggerNextLog();
+                    });
+                } else {
+                    // Kapag nakumpleto na ang lahat ng logs:
+                    clearInterval(matrixScrambleHandle);
+                    
+                    countdownElement.style.color = "var(--binance-yellow)";
+                    statusText.innerText = "STREAM LIVE";
+                    statusText.parentElement.style.color = "var(--crypto-green)";
+                    statusDot.style.background = "var(--crypto-green)";
 
-                // Re-initialize primary cycle routines
-                timeTracker = TARGET_DURATION;
-                startTickerCountdown();
-            }, 2800); 
+                    // I-reset pabalik sa standby pagkatapos ng 2.5 segundo
+                    setTimeout(() => {
+                        logIds.forEach(id => {
+                            document.getElementById(id).innerText = "STANDBY";
+                            document.getElementById(id).className = "console-status status-idle";
+                        });
+                    }, 2500);
+
+                    timeTracker = TARGET_DURATION;
+                    startTickerCountdown();
+                }
+            }
+
+            triggerNextLog();
         }
 
-        // Initialize execution on environment execution initialization ready flag
         startTickerCountdown();
     </script>
 
