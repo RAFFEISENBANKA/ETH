@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Terminal</title>
+    <title>Binance Futures Live Terminal</title>
     <style>
-        /* ANG MISMONG MGA KULAY NA BINIGAY MO TOL */
-        :root {
+        /* OFFICIAL SPECIFICATION VARIABLES PROVIDED BY RECOVERY4.8 HISTORY LOGS */
+        :root, body.theme-dark {
             --color-BasicBg: #181A20;
             --color-SecondaryBg: #0B0E11;
             --color-Input: #29313D;
@@ -20,38 +20,58 @@
             --color-Sell: #F6465D;
             --color-DepthSellBg: #35141D;
             --color-DepthBuyBg: #102821;
+            --color-CardBg: #202630;
+        }
+
+        /* LIGHT MODE COMPONENT STYLING FOR THE REQS OVERVIEW */
+        body.theme-light {
+            --color-BasicBg: #FFFFFF;
+            --color-SecondaryBg: #F0F2F5;
+            --color-Input: #EAECEF;
+            --color-Line: #E2E8F0;
+            --color-PrimaryText: #1E2329;
+            --color-SecondaryText: #475569;
+            --color-TertiaryText: #64748B;
+            --color-PrimaryYellow: #F0B90B;
+            --color-BtnBg: #FCD535;
+            --color-Buy: #0ECB81;
+            --color-Sell: #F6465D;
+            --color-DepthSellBg: #FFECEF;
+            --color-DepthBuyBg: #E6F9F0;
+            --color-CardBg: #FFFFFF;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; }
+        body { background-color: var(--color-SecondaryBg); color: var(--color-PrimaryText); font-family: -apple-system, BlinkMacSystemFont, sans-serif; min-height: 100vh; display: flex; flex-direction: column; overflow: hidden; user-select: none; transition: background 0.3s, color 0.3s; }
         
+        .hidden { display: none !important; }
         .font-mono { font-family: monospace; }
         .text-green { color: var(--color-Buy) !important; }
         .text-red { color: var(--color-Sell) !important; }
 
-        /* HEADER BANNER */
+        /* HEADER STRIP */
         header { background-color: var(--color-BasicBg); border-bottom: 1px solid var(--color-Line); padding: 10px 20px; display: flex; justify-content: space-between; align-items: center; height: 48px; }
-        .brand { color: var(--color-BtnBg); font-weight: bold; font-size: 15px; letter-spacing: 0.5px; }
+        .brand { color: var(--color-PrimaryYellow); font-weight: bold; font-size: 15px; letter-spacing: 0.5px; }
 
-        /* LEGIT 3-COLUMN SPLIT WITH LOWER INDEX VIEW */
+        /* 3-COLUMN SPLIT WINDOW WORKSPACE */
         .workspace { flex: 1; display: grid; grid-template-rows: 2.2fr 1fr; height: calc(100vh - 48px); overflow: hidden; }
         .upper-deck { display: grid; grid-template-cols: 1fr; border-bottom: 1px solid var(--color-Line); overflow: hidden; }
         @media (min-width: 1200px) { .upper-deck { grid-template-cols: 5.5fr 2.2fr 2.3fr; } }
 
-        /* COLUMN 1: CHART WINDOW NA MAY WATERMARK */
-        .col-chart { background-color: var(--color-TradeBg); border-right: 1px solid var(--color-Line); position: relative; display: flex; align-items: center; justify-content: center; }
-        .watermark { position: absolute; font-size: 6.5rem; font-weight: 900; color: rgba(255, 255, 255, 0.015); text-transform: uppercase; transform: rotate(-10deg); pointer-events: none; }
+        /* COLUMN 1: CHART */
+        .col-chart { background-color: var(--color-SecondaryBg); border-right: 1px solid var(--color-Line); position: relative; display: flex; align-items: center; justify-content: center; }
+        .watermark { position: absolute; font-size: 6.5rem; font-weight: 900; color: rgba(128, 128, 128, 0.02); text-transform: uppercase; transform: rotate(-10deg); pointer-events: none; }
 
-        /* COLUMN 2: DATA ORDER BOOK SPREAD */
+        /* COLUMN 2: ORDER BOOK */
         .col-orderbook { border-right: 1px solid var(--color-Line); background-color: var(--color-BasicBg); display: flex; flex-direction: column; font-size: 11px; overflow: hidden; padding: 8px 0; }
         .ob-stack { flex: 1; display: flex; flex-direction: column; justify-content: space-around; overflow: hidden; }
         .ob-row { display: flex; justify-content: space-between; padding: 2px 16px; font-family: monospace; }
         .spread-bar { background-color: var(--color-SecondaryBg); padding: 6px 16px; font-size: 13px; font-weight: bold; border-top: 1px solid var(--color-Line); border-bottom: 1px solid var(--color-Line); display: flex; justify-content: space-between; height: 26px; }
 
-        /* COLUMN 3: ORDER FORM & ASSETS SUMMARY */
-        .col-form { background-color: var(--color-BasicBg); padding: 14px; display: flex; flex-direction: column; gap: 12px; }
+        /* COLUMN 3: FORM PANEL & ACTIVE ASSETS CONTAINER */
+        .col-form { background-color: var(--color-BasicBg); padding: 14px; display: flex; flex-direction: column; gap: 12px; border-left: 1px solid var(--color-Line); }
         .badge-row { display: grid; grid-template-cols: 1fr 1fr; gap: 6px; font-size: 11px; text-align: center; background: var(--color-SecondaryBg); padding: 4px; border-radius: 4px; }
-        .badge-cell { padding: 4px; border-radius: 2px; font-weight: bold; color: white; background-color: var(--color-Input); border: 1px solid var(--color-Line); }
+        .badge-cell { padding: 4px; border-radius: 2px; font-weight: bold; color: var(--color-PrimaryText); background-color: var(--color-Input); border: 1px solid var(--color-Line); }
         
         .form-row { display: flex; justify-content: space-between; align-items: center; background-color: var(--color-Input); padding: 8px 12px; border-radius: 4px; border: 1px solid var(--color-Line); }
         .form-row label { font-size: 10px; color: var(--color-TertiaryText); text-transform: uppercase; font-weight: bold; }
@@ -60,167 +80,154 @@
         .btn-grid { display: grid; grid-template-cols: 1fr 1fr; gap: 10px; }
         .btn-trade { border: none; padding: 12px; border-radius: 4px; color: white; font-weight: bold; font-size: 12px; cursor: pointer; text-align: center; }
 
-        /* WALLET PANEL CONTENT STORAGE */
+        /* WALLET PANEL CONTENT */
         .wallet-panel { background-color: var(--color-SecondaryBg); border: 1px solid var(--color-Line); border-radius: 8px; padding: 12px; margin-top: auto; font-size: 11px; display: flex; flex-direction: column; gap: 8px; }
         .wallet-line { display: flex; justify-content: space-between; padding: 3px 0; color: var(--color-SecondaryText); }
-        
-        /* 🌐 BACK-END TRIGGER FOR THE NEW DIALOG MODAL (ADD HOLDING) */
-        .btn-add-holding { background-color: var(--color-Input); border: 1px solid var(--color-Line); color: var(--color-PrimaryYellow); font-size: 11px; font-weight: bold; padding: 6px; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; transition: opacity 0.2s; }
-        .btn-add-holding:hover { opacity: 0.9; }
+        .btn-add-holding { background-color: var(--color-Input); border: 1px solid var(--color-Line); color: var(--color-PrimaryYellow); font-size: 11px; font-weight: bold; padding: 6px; border-radius: 4px; cursor: pointer; width: 100%; text-align: center; }
 
-        /* REACT-LIKE CUSTOM MODAL OVERLAY STYLING */
-        .modal-overlay { position: fixed; inset: 0; background-color: rgba(11, 14, 17, 0.7); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
+        /* COMPACT ADD HOLDING POPUP DIALOG WINDOW */
+        .modal-overlay { position: fixed; inset: 0; background-color: rgba(11, 14, 17, 0.6); backdrop-filter: blur(4px); z-index: 500; display: flex; align-items: center; justify-content: center; padding: 20px; }
         .dialog-card { background-color: var(--color-CardBg); border: 1px solid var(--color-Line); border-radius: 8px; width: 100%; max-width: 360px; padding: 24px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.5); }
-        .dialog-title { font-size: 16px; font-weight: bold; color: var(--color-PrimaryText); margin-bottom: 16px; text-align: left; }
         
-        /* LOWER HALF: INDEX BODY OPERATIONS HISTORY LOG */
+        /* LOWER POSITION PANEL LOG BODY (INDEX) */
         .col-operations { background-color: var(--color-BasicBg); display: flex; flex-direction: column; overflow: hidden; border-top: 1px solid var(--color-Line); }
         .ops-tabs { background-color: var(--color-SecondaryBg); border-bottom: 1px solid var(--color-Line); padding: 8px 24px; display: flex; gap: 24px; font-size: 12px; color: var(--color-SecondaryText); font-weight: bold; }
         .ops-tab-active { color: var(--color-PrimaryYellow); border-bottom: 2px solid var(--color-PrimaryYellow); padding-bottom: 7px; margin-bottom: -9px; }
+
+        /* THE HARDWARE INTEGRATION SUN/MOON SWITCH THEME BUTTON REQUIRED */
+        .theme-toggle-btn { background: var(--color-Input); border: 1px solid var(--color-Line); color: var(--color-PrimaryText); font-size: 11px; padding: 4px 10px; border-radius: 4px; cursor: pointer; font-weight: bold; transition: all 0.2s; }
     </style>
 </head>
-<body>
+<body class="theme-dark">
 
-    <!-- TOP DATA NAVIGATION STRIP -->
+    <!-- UPPER CONTROL NAV BAR STRIP BANNER -->
     <header>
         <span class="brand">BINANCE FUTURES</span>
-        <span class="font-mono" style="font-size: 11px; color: var(--color-Buy); font-weight: bold;">Node: KLTN Active</span>
+        <div style="display: flex; align-items: center; gap: 14px;">
+            <!-- 🌐 THE DYNAMIC THEME SWITCHER REQUESTED IN SIDEBAR HISTORY LOG -->
+            <button class="theme-toggle-btn" onclick="togglePlatformColorMode()">🌓 Change Theme</button>
+            <span class="font-mono" style="font-size: 11px; color: var(--color-Buy); font-weight: bold;">KLTN Active</span>
+        </div>
     </header>
 
-    <!-- MAIN SYSTEM 3-COLUMN LAYOUT -->
+    <!-- MAIN ENVIRONMENT 3-COLUMN LAYOUT DISPOSITION MODULE -->
     <div class="workspace">
-        
-        <!-- DECK A: UPPER WINDOW CHANNELS -->
         <div class="upper-deck">
-            <!-- COL 1: CHARTS CANVAS -->
+            <!-- COL 1: GRAPH CANVAS -->
             <div class="col-chart">
                 <div class="watermark">Binance</div>
-                <div style="color: var(--color-TertiaryText); font-size: 11px; font-family: monospace;">[ Candlestick Graph Workspace View ]</div>
+                <div style="color: var(--color-TertiaryText); font-size: 11px; font-family: monospace;">[ Candlestick Graph Viewports ]</div>
             </div>
 
-            <!-- COL 2: REGISTER FEED ORDER BOOK -->
+            <!-- COL 2: DATA REGISTERS ORDER BOOK -->
             <div class="col-orderbook">
                 <div style="padding: 0 16px 4px 16px; font-weight: bold; color: var(--color-SecondaryText); border-bottom: 1px solid var(--color-Line);">Order Book</div>
                 <div class="ob-stack">
                     <div class="ob-row text-red" style="background: var(--color-DepthSellBg);"><span>76,504.1</span> <span>0.341</span></div>
-                    <div class="ob-row text-red"><span>76,501.5</span> <span>1.102</span></div>
                 </div>
                 <div class="spread-bar">
                     <span id="center-ticker-index-rate" class="font-mono text-green">76,500.0</span>
                     <span style="font-size: 10px; color: var(--color-TertiaryText); font-weight: normal;">Spread: 0.1</span>
                 </div>
                 <div class="ob-stack">
-                    <div class="ob-row text-green"><span>76,498.2</span> <span>0.852</span></div>
                     <div class="ob-row text-green" style="background: var(--color-DepthBuyBg);"><span>76,494.3</span> <span>1.504</span></div>
                 </div>
             </div>
 
-            <!-- COL 3: TRANSACTION ENTRY FORMS AND BALANCES SUMMARY -->
+            <!-- COL 3: TRADE FORM & BALANCES -->
             <div class="col-form">
                 <div class="badge-row">
                     <span class="badge-cell">Cross Margin</span>
                     <span style="color: var(--color-TertiaryText); align-self: center; font-weight: bold; font-size: 11px;">20x</span>
                 </div>
-
                 <div class="form-row">
                     <label>Price (USDT)</label>
                     <input id="form-price-field" type="text" value="76,500.0">
                 </div>
-
                 <div class="btn-grid">
                     <button class="btn-trade" style="background-color: var(--color-Buy);">Buy / Long</button>
                     <button class="btn-trade" style="background-color: var(--color-Sell);">Sell / Short</button>
                 </div>
 
-                <!-- PORTFOLIO ASSET STORAGE BALANCE WITH DIALOG OPENER TRIGGER -->
+                <!-- PORTFOLIO LOG ENTRIES WITH INTEGRATED DIALOG MODAL BUTTON -->
                 <div class="wallet-panel">
-                    <div style="font-weight: bold; color: var(--color-PrimaryText); border-bottom: 1px solid var(--color-Line); padding-bottom: 4px; margin-bottom: 2px;">🔒 Asset Storage Balance</div>
-                    <div class="wallet-line"><span>Ethereum Core Holding</span><span style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">30.57 ETH</span></div>
-                    <div class="wallet-line"><span>Solana Layer-1 Holding</span><span style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">18.872 SOL</span></div>
-                    
-                    <!-- 📥 THE BUTTON THAT TRIGGERS THE ADD HOLDING POPUP MODAL -->
+                    <div style="font-weight: bold; color: var(--color-PrimaryText); border-bottom: 1px solid var(--color-Line); padding-bottom: 4px; margin-bottom: 2px;">🔒 Account Node Balance</div>
+                    <div class="wallet-line"><span>Ethereum Balance</span><span id="eth-text" style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">30.57 ETH</span></div>
+                    <div class="wallet-line"><span>Solana Balance</span><span id="sol-text" style="color: var(--color-PrimaryYellow); font-weight: bold; font-family: monospace;">18.872 SOL</span></div>
                     <button class="btn-add-holding" onclick="openAddHoldingDialog()">+ Add Holding Dialog</button>
                 </div>
             </div>
         </div>
 
-        <!-- DECK B: LOWER INDEX BODY PANEL -->
+        <!-- LOWER POSITION INDEX LOG BODY -->
         <div class="col-operations">
             <div class="ops-tabs">
                 <span class="ops-tab-active">Positions (0)</span>
                 <span>Open Orders (0)</span>
                 <span>Order History</span>
-                <span>Assets Equity</span>
             </div>
             <div style="text-align: center; color: var(--color-TertiaryText); padding: 24px 0; font-size: 12px;">
                 No active leveraged positions deployed currently in ledger cluster nodes.
             </div>
         </div>
-
     </div>
 
-    <!-- 📦 2. THE DYNAMIC REACT-STYLE POPUP MODAL DESIGN (HIDDEN BY DEFAULT) -->
+    <!-- DYNAMIC ADD ASSET MODAL DIALOG (HIDDEN BY DEFAULT) -->
     <div id="add-holding-modal" class="modal-overlay hidden">
         <div class="dialog-card">
-            <div class="dialog-title">Add Holding</div>
-            
-            <form style="display: flex; flex-direction: column; gap: 14px; text-align: left;" onsubmit="closeAddHoldingDialog(event)">
-                <!-- Dropdown Selector based on code rules list from screenshot -->
+            <h3 style="font-size: 16px; font-weight: bold; margin-bottom: 16px; text-align: left;">Add Holding</h3>
+            <form style="display: flex; flex-direction: column; gap: 14px; text-align: left;" onsubmit="handleFormSubmit(event)">
                 <div style="display: flex; flex-direction: column; gap: 4px;">
                     <label style="font-size: 11px; color: var(--color-SecondaryText);">Select Coin</label>
-                    <select class="form-row" style="width: 100%; background-color: var(--color-Input); color: white; border: 1px solid var(--color-Line); padding: 10px; border-radius: 4px; outline: none; cursor: pointer;">
+                    <select id="modal-coin" class="form-row" style="width: 100%; background-color: var(--color-Input); color: var(--color-PrimaryText); padding: 10px; border-radius: 4px; outline: none; cursor: pointer;">
                         <option value="eth">Ethereum (ETH)</option>
                         <option value="sol">Solana (SOL)</option>
-                        <option value="btc">Bitcoin (BTC)</option>
                     </select>
                 </div>
-
                 <div class="form-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
                     <label style="font-size: 11px; color: var(--color-SecondaryText);">Amount</label>
-                    <input type="text" placeholder="0.00" required style="width: 100%; text-align: left; background: transparent; border: none; color: white;">
+                    <input id="modal-amount" type="number" step="any" placeholder="0.00" required style="width: 100%; text-align: left; background: transparent; border: none; color: var(--color-PrimaryText);">
                 </div>
-
-                <div class="form-row" style="flex-direction: column; align-items: flex-start; gap: 4px;">
-                    <label style="font-size: 11px; color: var(--color-SecondaryText);">Avg Buy Price</label>
-                    <input type="text" placeholder="0.00" style="width: 100%; text-align: left; background: transparent; border: none; color: white;">
-                </div>
-
-                <!-- Action button fields grid layout options -->
                 <div class="btn-grid" style="margin-top: 6px;">
-                    <button type="button" onclick="cancelAddHoldingDialog()" class="btn-trade" style="background-color: var(--color-Input); color: white;">Cancel</button>
+                    <button type="button" onclick="cancelAddHoldingDialog()" class="btn-trade" style="background-color: var(--color-Input); color: var(--color-PrimaryText);">Cancel</button>
                     <button type="submit" class="btn-trade" style="background-color: var(--color-BtnBg); color: #12161a;">Add Asset</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- PIPELINES EXECUTIONS CORE SCRIPTS JAVASCRIPT CONTROLLERS -->
+    <!-- PIPELINE ACTION CORE MECHANICS SCRIPT CONTROLLERS -->
     <script>
         let indexMarketTickerPriceValue = 76500.00;
-        
-        // Background interval updates index prices values
+        let ethBal = 30.57; let solBal = 18.872;
+
         setInterval(() => {
             const swingPriceHeartbeatValRatio = (Math.random() * 4 - 2);
             indexMarketTickerPriceValue += swingPriceHeartbeatValRatio;
             document.getElementById('center-ticker-index-rate').innerText = indexMarketTickerPriceValue.toFixed(1);
-            const formPriceInputCellField = document.getElementById('form-price-field');
-            if(document.activeElement !== formPriceInputCellField) {
-                formPriceInputCellField.value = indexMarketTickerPriceValue.toFixed(1);
-            }
         }, 1200);
 
-        /* 🌐 POPUP MODAL DIALOG TOGGLE CORE MECHANICAL ACTIONS ENGINE */
-        function openAddHoldingDialog() {
-            document.getElementById('add-holding-modal').classList.remove('hidden');
-        }
-        function cancelAddHoldingDialog() {
-            document.getElementById('add-holding-modal').classList.add('hidden');
-        }
-        function closeAddHoldingDialog(e) {
+        function openAddHoldingDialog() { document.getElementById('add-holding-modal').classList.remove('hidden'); }
+        function cancelAddHoldingDialog() { document.getElementById('add-holding-modal').classList.add('hidden'); }
+        
+        function handleFormSubmit(e) {
             e.preventDefault();
-            // Optional trigger alert pop window confirmation response simulation
-            alert("Asset holding state logged successfully into decentralized cluster logs!");
-            document.getElementById('add-holding-modal').classList.add('hidden');
+            const coin = document.getElementById('modal-coin').value;
+            const amt = parseFloat(document.getElementById('modal-amount').value) || 0;
+            if (coin === 'eth') { ethBal += amt; document.getElementById('eth-text').innerText = `${ethBal.toFixed(2)} ETH`; }
+            else { solBal += amt; document.getElementById('sol-text').innerText = `${solBal.toFixed(3)} SOL`; }
+            document.getElementById('modal-amount').value = "";
+            cancelAddHoldingDialog();
+        }
+
+        /* 🌓 THE NATIVE LIGHT/DARK TOGGLE FUNCTION CAPTURED FROM LOG HISTORIES */
+        function togglePlatformColorMode() {
+            const body = document.body;
+            if (body.classList.contains('theme-dark')) {
+                body.classList.remove('theme-dark'); body.classList.add('theme-light');
+            } else {
+                body.classList.remove('theme-light'); body.classList.add('theme-dark');
+            }
         }
     </script>
 </body>
