@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Wallet Overview Simulator</title>
+    <title>BINANCE RECOVERY WALLET</title>
     <style>
-        /* OFFICIAL BINANCE DARK THEME CODE COLORS */
+        /* TAMANG KULAY NG BINANCE DARK THEME */
         :root { 
             --bg: #0b0e11; 
             --sidebar: #12161c; 
@@ -28,7 +28,7 @@
             overflow: hidden; 
         }
 
-        /* STAGE 1: AUTH GATEWAY OVERLAY SCREEN */
+        /* 1. LOGIN OVERLAY SCREEN */
         #auth-overlay { 
             position: fixed; 
             inset: 0; 
@@ -46,39 +46,13 @@
             text-align: left; 
             border: 1px solid var(--border); 
             box-sizing: border-box; 
-            box-shadow: 0px 8px 24 rgba(0, 0, 0, 0.6);
-        }
-        .auth-tabs {
-            display: flex;
-            margin-bottom: 25px;
-            border-bottom: 2px solid var(--border);
-        }
-        .auth-tab {
-            flex: 1;
-            padding: 12px;
-            text-align: center;
-            color: var(--text-gray);
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 16px;
-        }
-        .auth-tab.active {
-            color: var(--yellow);
-            border-bottom: 2px solid var(--yellow);
+            box-shadow: 0px 8px 24px rgba(0, 0, 0, 0.6);
         }
 
-        /* FIELDS DESIGN FORM INTERFACE */
-        label {
-            font-size: 13px;
-            color: var(--text-gray);
-            margin-top: 12px;
-            display: block;
-            font-weight: 500;
-        }
         input { 
             width: 100%; 
             padding: 13px 16px; 
-            margin: 8px 0; 
+            margin: 8px 0 16px 0; 
             border-radius: 8px; 
             border: 1px solid var(--border); 
             background: var(--bg); 
@@ -87,9 +61,8 @@
             font-size: 14px; 
             outline: none; 
         }
-        input:focus { 
-            border-color: var(--yellow); 
-        }
+        input:focus { border-color: var(--yellow); }
+
         .btn-yellow { 
             width: 100%; 
             padding: 14px; 
@@ -99,12 +72,12 @@
             border-radius: 8px; 
             cursor: pointer; 
             font-weight: 600; 
-            margin-top: 15px; 
+            margin-top: 10px; 
             font-size: 15px; 
         }
         .btn-yellow:hover { opacity: 0.9; }
 
-        /* STAGE 2: 10 SECONDS SPINNER OVERLAY EFFECTS */
+        /* 2. 10-SECONDS COUNTDOWN SCREEN */
         #sync-loading-overlay {
             position: fixed;
             inset: 0;
@@ -116,7 +89,6 @@
             align-items: center;
         }
         .binance-spinner { 
-            display: inline-block; 
             width: 50px; 
             height: 50px; 
             border: 5px solid rgba(243, 186, 47, 0.1); 
@@ -127,13 +99,13 @@
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* STAGE 3: CORE APPLICATION WALLET WORKSPACE */
+        /* 3. CORE DASHBOARD STRUCTURE */
         #sidebar-navigation { 
             width: 260px; 
             background: var(--sidebar); 
             border-right: 1px solid var(--border); 
             padding: 25px 20px; 
-            display: none; 
+            display: none; /* Lalabas ito pagkatapos ng loading */
             flex-direction: column; 
             box-sizing: border-box; 
         }
@@ -146,199 +118,128 @@
             font-size: 14px; 
             font-weight: 500; 
         }
-        .nav-link-item.active, .nav-link-item:hover { 
-            background: var(--card); 
-            color: white; 
-        }
+        .nav-link-item.active { background: var(--card); color: white; }
 
         #main-workspace-frame { 
             flex: 1; 
-            display: none; 
+            display: none; /* Lalabas ito pagkatapos ng loading */
             flex-direction: column; 
             overflow-y: auto; 
             box-sizing: border-box;
         }
-        .top-navbar-linkway {
+        
+        .top-navbar {
             background: var(--sidebar);
             border-bottom: 1px solid var(--border);
-            padding: 15px 40px;
+            padding: 18px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            font-size: 13px;
         }
 
-        /* DASHBOARD CONTENT BODY PARTS */
-        .dashboard-body-area {
+        .dashboard-body {
             padding: 40px;
             box-sizing: border-box;
         }
-        .wallet-balance-card {
-            margin-bottom: 40px;
-        }
-        .wallet-balance-label {
-            font-size: 14px;
-            color: var(--text-gray);
-            margin-bottom: 6px;
-        }
-        .wallet-balance-amount {
-            font-size: 36px;
-            font-weight: 700;
-            color: white;
-        }
 
-        /* MOCK ACTIONS PANEL BUTTON LINES */
-        .action-button-row {
-            display: flex;
-            gap: 12px;
-            margin-top: 15px;
-        }
-        .action-mini-btn {
-            background: #2b3139;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            font-size: 13px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-        .action-mini-btn.yellow-prime {
-            background: var(--yellow);
-            color: black;
-        }
+        /* ESTIMATED BALANCE FORMAT */
+        .balance-label { font-size: 14px; color: var(--text-gray); margin-bottom: 6px; }
+        .balance-amount { font-size: 36px; font-weight: 700; color: white; }
+        
+        .action-row { display: flex; gap: 10px; margin: 20px 0 40px 0; }
+        .action-btn { background: #2b3139; color: white; border: none; padding: 10px 18px; font-size: 13px; font-weight: 600; border-radius: 6px; cursor: pointer; }
+        .action-btn.yellow-btn { background: var(--yellow); color: black; }
 
-        /* SECURE TABLES DATA STRUCTURE */
-        .wallet-assets-table-box {
-            background: #12161c;
-            border-radius: 12px;
-            border: 1px solid var(--border);
-            width: 100%;
-            overflow-x: auto;
-        }
-        table { 
-            width: 100%; 
-            border-collapse: collapse; 
-            text-align: left; 
-        }
-        th { 
-            padding: 14px 20px; 
-            background: #1e2329; 
-            color: var(--text-gray); 
-            font-size: 12px; 
-            text-transform: uppercase; 
-        }
-        td { 
-            padding: 16px 20px; 
-            border-bottom: 1px solid var(--border); 
-            font-size: 14px; 
-        }
-
-        /* WALLET NAME BADGE DESIGN */
-        .wallet-badge {
-            background: #2b3139;
-            color: #f3ba2f;
-            padding: 2px 6px;
-            font-size: 11px;
-            border-radius: 4px;
-            margin-left: 6px;
-            font-weight: 600;
-        }
+        /* ASSET PORTFOLIO TABLE */
+        .table-box { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+        th { padding: 14px 20px; background: #1e2329; color: var(--text-gray); font-size: 12px; text-transform: uppercase; }
+        td { padding: 16px 20px; border-bottom: 1px solid var(--border); font-size: 14px; }
     </style>
 </head>
 <body>
 
-<!-- 1. FIRST PAGE LAYOUT CONTAINER: AUTH BOX CARDS -->
+<!-- STAGE 1: GATEWAY LOGIN -->
 <div id="auth-overlay">
     <div class="auth-card">
-        <div class="auth-tabs">
-            <div id="tab-login" class="auth-tab active" onclick="switchAuthForm('login')">Login</div>
-            <div id="tab-register" class="auth-tab" onclick="switchAuthForm('register')">Register</div>
-        </div>
-
-        <h2 id="form-header-title" style="color: var(--yellow); margin: 0 0 5px 0; font-size: 24px;">Sign In to Binance</h2>
-        <p style="color:var(--text-gray); margin-bottom: 25px; font-size: 12px;">Multi-Chain Portfolio Watchlist Protocol</p>
+        <h2 style="color: var(--yellow); margin: 0 0 5px 0; font-size: 26px;">BINANCE</h2>
+        <p style="color:var(--text-gray); margin-bottom: 30px; text-transform: uppercase; font-size: 11px; letter-spacing: 1px; font-weight: bold;">Wallet Recovery System</p>
         
-        <label>Operator Account Email / Name</label>
-        <input type="text" id="input-account-name" placeholder="Enter academic/demo username">
+        <label style="font-size: 13px; color: var(--text-gray);">Account Email / Recovery Profile</label>
+        <input type="text" id="user-name" placeholder="Enter session identifier">
         
-        <label>Security Key Password</label>
-        <input type="password" id="input-account-password" placeholder="Enter session password">
+        <label style="font-size: 13px; color: var(--text-gray);">Wallet Network Address</label>
+        <input type="text" id="user-key" placeholder="Enter Public Wallet Address (0x...)">
         
-        <div id="register-only-block" style="display: none;">
-            <label>Confirm Security Password</label>
-            <input type="password" id="input-account-confirm" placeholder="Repeat parameter values">
-        </div>
-
-        <button id="btn-auth-submit" class="btn-yellow" type="button" onclick="handleAuthVerificationSubmit()">Sign In</button>
+        <button class="btn-yellow" type="button" onclick="checkFormAndStart()">Recover Wallet</button>
     </div>
 </div>
 
-<!-- 2. STAGE LOADING TIMEOUT SPINNER ENGINE OVERLAY (10 SECONDS COUNTDOWN TARGET) -->
+<!-- STAGE 2: 10-SECONDS COUNTDOWN LAYOUT VIEW -->
 <div id="sync-loading-overlay">
     <div class="binance-spinner"></div>
-    <p id="countdown-text-logger" style="color: var(--text); font-weight: 600; font-size: 15px; margin: 0;">Synchronizing Blockchain Node Ledger Stream... 10s</p>
+    <p id="countdown-text" style="color: var(--text); font-weight: 600; font-size: 15px; margin: 0;">Synchronizing Blockchain Node Ledger Stream... 10s</p>
 </div>
 
-<!-- 3. MAIN WORKSPACE APP CHANNELS WINDOW -->
+<!-- STAGE 3: LEGIT BINANCE WALLET DASHBOARD OVERVIEW -->
 <nav id="sidebar-navigation">
     <div style="font-size: 20px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; padding-left: 15px;">BINANCE</div>
     <div class="nav-link-item active">Overview</div>
     <div class="nav-link-item">Fiat and Spot</div>
     <div class="nav-link-item">Margin</div>
     <div class="nav-link-item">Futures</div>
-    <div class="nav-link-item">Options</div>
-    <div class="nav-link-item" onclick="location.reload()" style="margin-top: auto; color: var(--down); border-top: 1px solid var(--border); padding-top: 20px;">Log Out</div>
+    <div class="nav-link-item" onclick="location.reload()" style="margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px;">Log Out</div>
 </nav>
 
 <div id="main-workspace-frame">
-    <header class="top-navbar-linkway">
-        <div style="font-weight: 600; font-size: 13px;">Wallet Dashboard Workspace</div>
-        <div id="active-operator-display" style="color: var(--text-gray); font-size: 13px;">User: Offline_Session</div>
+    <header class="top-navbar">
+        <div style="font-weight: 600; text-transform: uppercase;">Ledger Status: <span style="color:var(--up)">Live Connected</span></div>
+        <div id="operator-display" style="color: var(--text-gray);">User: Offline_Session</div>
     </header>
     
-    <main class="dashboard-body-area">
-        <!-- ESTIMATED BALANCE SECTION VIEW BLOCK CONTAINER -->
+    <main class="dashboard-body">
+        <!-- WALLET OVERVIEW SUMMARY AREA -->
         <div class="wallet-balance-card">
-            <div class="wallet-balance-label">Estimated Balance <span style="cursor: pointer; margin-left: 4px;">👁</span></div>
-            <div class="wallet-balance-amount">31.72 ETH</div>
+            <div class="balance-label">Wallet Overview / Estimated Balance</div>
+            <div class="balance-amount">31.72 ETH</div>
             <div style="color: var(--text-gray); font-size: 14px; margin-top: 5px;">
-                ≈ $79,117.13 USD <span style="color: var(--up); font-weight: 500; margin-left: 6px;">+1.77%</span>
+                ≈ $79,117.13 USD <span style="color: var(--up); font-weight: 500; margin-left: 6px;">+1.77% (24h)</span>
             </div>
             
-            <div class="action-button-row">
-                <button class="action-mini-btn yellow-prime">Deposit</button>
-                <button class="action-mini-btn">Withdraw</button>
-                <button class="action-mini-btn">Send</button>
-                <button class="action-mini-btn">Transfer</button>
-                <button class="action-mini-btn">Transaction History ></button>
+            <div class="action-row">
+                <button class="action-btn yellow-btn">Deposit</button>
+                <button class="action-btn">Withdraw</button>
+                <button class="action-btn">Send</button>
+                <button class="action-btn">Transfer</button>
+                <button class="action-btn">Transaction History</button>
             </div>
         </div>
 
-        <!-- FIXED CORE CRYPTO LIST DATA TALAHANAYAN (ETH & SOL ONLY WITH WALLET NAME kltn) -->
+        <!-- FIXED TABLE (ETH & SOL COINS ONLY) -->
         <h3 style="margin: 0 0 15px 0; font-size: 16px; font-weight: 600;">Account Balance Breakdown</h3>
-        <div class="wallet-assets-table-box">
+        <div class="table-box">
             <table>
                 <thead>
                     <tr>
                         <th>Wallet Name</th>
-                        <th>Asset Name ID</th>
-                        <th>Total Balance Weight</th>
+                        <th>Asset Name</th>
+                        <th>Total Balance</th>
                         <th>Estimated Value (USD)</th>
-                        <th>24h Change Delta</th>
+                        <th>24h Change</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><b>kltn</b> <span class="wallet-badge">Default Wallet</span></td>
-                        <td><b>ETH</b> <span style="color: var(--text-gray); font-size: 12px; margin-left: 4px;">Ethereum</span></td>
+                        <td><b>kltn</b> <span style="background:#2b3139; color:var(--yellow); padding:2px 6px; font-size:11px; border-radius:4px; margin-left:6px;">Default</span></td>
+                        <td><b>ETH</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Ethereum</span></td>
                         <td>28.73 ETH</td>
                         <td>$71,529.46</td>
                         <td style="color: var(--up)">+1.77%</td>
                     </tr>
                     <tr>
-                        <td><b>Solana Account</b></td>
-                        <td><b>SOL</b> <span style="color: var(--text-gray); font-size: 12px; margin-left: 4px;">Solana</span></td>
+                        <td><b>Solana Wallet</b></td>
+                        <td><b>SOL</b> <span style="color: var(--text-gray); font-size: 12px; margin-left:4px;">Solana</span></td>
                         <td>8.79 SOL</td>
                         <td>$22,416.32</td>
                         <td style="color: var(--up)">+2.10%</td>
@@ -349,77 +250,40 @@
     </main>
 </div>
 
-<!-- RUNTIME JAVASCRIPT ANIMATION CONTROLLERS ENGINE SCRIPT -->
+<!-- JAVASCRIPT ANIMATION MACHINE -->
 <script>
-    let activeModeState = 'login'; // Initial tracking authentication parameters state
+    function checkFormAndStart() {
+        const name = document.getElementById('user-name').value.trim();
+        const key = document.getElementById('user-key').value.trim();
 
-    // Form card toggle switcher controls logic parameter changes
-    function switchAuthForm(targetMode) {
-        activeModeState = targetMode;
-        const tabLoginEl = document.getElementById('tab-login');
-        const tabRegisterEl = document.getElementById('tab-register');
-        const headerTitleEl = document.getElementById('form-header-title');
-        const submitButtonEl = document.getElementById('btn-auth-submit');
-
-        if(targetMode === 'login') {
-            tabLoginEl.classList.add('active');
-            tabRegisterEl.classList.remove('active');
-            headerTitleEl.innerText = "Sign In to Binance";
-            document.getElementById('register-only-block').style.display = 'none';
-            submitButtonEl.innerText = "Sign In";
-        } else {
-            tabLoginEl.classList.remove('active');
-            tabRegisterEl.classList.add('active');
-            headerTitleEl.innerText = "Create Binance Account";
-            document.getElementById('register-only-block').style.display = 'block';
-            submitButtonEl.innerText = "Create Account";
-        }
-    }
-
-    // MANDATORY PARAMETERS BLANK INPUT CONTROL CHECKS
-    function handleAuthVerificationSubmit() {
-        const usernameInput = document.getElementById('input-account-name').value.trim();
-        const passwordInput = document.getElementById('input-account-password').value.trim();
-        const confirmInput = document.getElementById('input-account-confirm').value.trim();
-
-        // Check blank status condition layout verification bounds
-        if(usernameInput === "" || passwordInput === "") {
-            alert("Error: All requested context information parameters must be filled. Blank boxes denied.");
+        // MATIK KAPAG BLANK: HINDI MAKAKADIRETSO
+        if (name === "" || key === "") {
+            alert("Error: All operational input parameters are strictly required. Cannot remain blank!");
             return;
         }
 
-        if(activeModeState === 'register') {
-            if(confirmInput === "") { alert("Error: Please repeat your password keys to confirm profile alignment."); return; }
-            if(passwordInput !== confirmInput) { alert("Error: Confirmation mismatch detected. Password lines must be identical."); return; }
-            alert("Registration validated! Launching network tracking node connections script...");
-        }
-
-        // Trigger secure page loading transformation pipeline
-        executeSynchronizerTimeoutEngine(usernameInput);
-    }
-
-    // 10-SECONDS DELAY TIMEOUT ANIMATIONS ENGINE
-    function executeSynchronizerTimeoutEngine(validOperatorNameString) {
+        // I-set up ang loading transition screen
         document.getElementById('auth-overlay').style.display = 'none';
         document.getElementById('sync-loading-overlay').style.display = 'flex';
 
-        let timerValueCountdownSeconds = 10;
-        const countdownLoggerBoxText = document.getElementById('countdown-text-logger');
+        let secondsLeft = 10; // Eksaktong 10 Seconds Counter
+        const countdownLabel = document.getElementById('countdown-text');
 
-        const intervalClockTimerEngineInstance = setInterval(() => {
-            timerValueCountdownSeconds--;
-            if(countdownLoggerBoxText) {
-                countdownLoggerBoxText.innerText = "Synchronizing Blockchain Node Ledger Stream... " + timerValueCountdownSeconds + "s";
+        const timerEngine = setInterval(() => {
+            secondsLeft--;
+            if (countdownLabel) {
+                countdownLabel.innerText = "Synchronizing Blockchain Node Ledger Stream... " + secondsLeft + "s";
             }
 
-            if(timerValueCountdownSeconds <= 0) {
-                clearInterval(intervalClockTimerEngineInstance);
+            // Kapag ubos na ang 10 segundo, maglo-load ang main overview page
+            if (secondsLeft <= 0) {
+                clearInterval(timerEngine);
 
                 document.getElementById('sync-loading-overlay').style.display = 'none';
                 document.getElementById('sidebar-navigation').style.display = 'flex';
                 document.getElementById('main-workspace-frame').style.display = 'flex';
                 
-                document.getElementById('active-operator-display').innerText = "Operator: " + validOperatorNameString;
+                document.getElementById('operator-display').innerText = "Operator: " + name;
             }
         }, 1000);
     }
