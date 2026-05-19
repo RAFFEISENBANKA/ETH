@@ -1,118 +1,277 @@
-
-
 <!DOCTYPE html>
-<html lang="tl">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trading Update Timer</title>
+    <title>Binance Futures Terminal Simulation</title>
     <style>
-        /* Estilo para bumagay sa dark mode ng Binance Futures interface mo */
+        /* Exact Binance Futures Dark Mode Theme Color Palette */
+        :root {
+            --bg-main: #0b0e11;        /* Deep terminal background */
+            --bg-card: #161a1e;        /* Panel container backgrounds */
+            --bg-input: #24292e;       /* Interactive order components */
+            --border-color: #2b3139;   /* UI structural division borders */
+            --text-primary: #eaecef;   /* High-contrast crisp numeric data */
+            --text-secondary: #848e9c; /* Inactive headers and subtitle tabs */
+            --binance-yellow: #f0b90b; /* Signature brand accent/alert highlights */
+            --crypto-green: #0ecb81;   /* Buy / Long metric tracking alerts */
+            --crypto-red: #f6465d;     /* Sell / Short metric tracking alerts */
+        }
+
         body {
-            background-color: #161a1e;
-            color: #eaecef;
-            font-family: Arial, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            font-family: "BinancePlex", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            margin: 0;
+            padding: 16px;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            min-height: 95vh;
         }
 
-        .timer-container {
-            background-color: #1e2329;
-            border: 1px solid #474d57;
+        .terminal-layout {
+            width: 100%;
+            max-width: 960px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
             padding: 20px;
-            border-radius: 8px;
-            text-align: center;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
         }
 
-        .timer-label {
-            font-size: 14px;
-            color: #848e9c;
-            margin-bottom: 5px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        /* Top Header Metadata Bar */
+        .terminal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 20px;
         }
 
-        #timer-display {
-            font-size: 48px;
-            font-weight: bold;
-            color: #f0b90b; /* Binance yellow gold color */
-            font-family: 'Courier New', Courier, monospace;
+        .ticker-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .status-message {
-            margin-top: 10px;
+        .pair-title {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .live-price {
+            color: var(--crypto-green);
+            font-size: 16px;
+            font-weight: 700;
+            font-family: monospace;
+        }
+
+        .price-change {
+            color: var(--crypto-green);
             font-size: 12px;
-            color: #0ecb81; /* Green color para sa update status */
+            background: rgba(14, 203, 129, 0.15);
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        /* Monitoring Widget Grid Panel */
+        .widget-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .crypto-widget {
+            background-color: var(--bg-main);
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .widget-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .output-value {
+            font-size: 32px;
+            font-weight: 700;
+            font-family: "Courier New", Courier, monospace;
+            letter-spacing: 1.5px;
+        }
+
+        #system-clock {
+            color: var(--text-primary);
+        }
+
+        #refresh-countdown {
+            color: var(--binance-yellow);
+            min-width: 220px;
+            display: inline-block;
+        }
+
+        /* Bottom Control Panel Layout Strip */
+        .control-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--border-color);
+            padding-top: 12px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .status-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            color: var(--crypto-green);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--crypto-green);
+            border-radius: 50%;
+            display: inline-block;
         }
     </style>
 </head>
 <body>
 
-    <div class="timer-container">
-        <div class="timer-label">Susunod na Awtomatikong Update</div>
-        <div id="timer-display">05:30</div>
-        <div id="status-text" class="status-message">Aktibo ang koneksyon sa merkado...</div>
+    <div class="terminal-layout">
+        <!-- Binance Global Header Strip Component -->
+        <div class="terminal-header">
+            <div class="ticker-info">
+                <span class="pair-title">BTCUSDT Perpetual</span>
+                <span class="live-price">77,042.0</span>
+                <span class="price-change">+1.54%</span>
+            </div>
+            <div style="font-size: 12px; color: var(--text-secondary);">Binance Futures Engine v4.11</div>
+        </div>
+
+        <!-- Integrated Timing Matrix Widgets -->
+        <div class="widget-grid">
+            <!-- 1. Real-Time System Clock -->
+            <div class="crypto-widget">
+                <div class="widget-label">System Event Time (Local)</div>
+                <div id="system-clock" class="output-value">00:00:00 AM</div>
+            </div>
+
+            <!-- 2. Auto-Loop Execution Timer Component -->
+            <div class="crypto-widget">
+                <div class="widget-label">Next Ticker Stream Matrix Sync</div>
+                <div id="refresh-countdown" class="output-value">05:30</div>
+            </div>
+        </div>
+
+        <!-- Control Footer Logging Module -->
+        <div class="control-footer">
+            <div>Engine Status: Ready</div>
+            <div id="engine-status" class="status-badge">
+                <span id="engine-dot" class="status-dot"></span>
+                <span id="engine-text">STREAM LIVE</span>
+            </div>
+        </div>
     </div>
 
     <script>
-        // 5 minuto at 30 segundo = 330 segundo kabuuan
-        const STARTING_TIME = 330; 
-        let timeRemaining = STARTING_TIME;
+        // --- SECTION 1: NATIVE SYSTEM CLOCK CONTROLLER ---
+        function runSystemClock() {
+            const timeObject = new Date();
+            let hours = timeObject.getHours();
+            let minutes = timeObject.getMinutes();
+            let seconds = timeObject.getSeconds();
+            const periodMarker = hours >= 12 ? 'PM' : 'AM';
 
-        const timerDisplay = document.getElementById('timer-display');
-        const statusText = document.getElementById('status-text');
+            hours = hours % 12;
+            hours = hours ? hours : 12; // Formats zero-hour indexing to 12
 
-        function startCountdown() {
-            const countdownInterval = setInterval(() => {
-                // Pag-compute sa minuto at segundo
-                let minutes = Math.floor(timeRemaining / 60);
-                let seconds = timeRemaining % 60;
+            // Zero padding execution block
+            hours = hours < 10 ? '0' + hours : hours;
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            seconds = seconds < 10 ? '0' + seconds : seconds;
 
-                // Lagyan ng zero sa unahan kung single digit na lang ang numero
+            document.getElementById('system-clock').innerText = `${hours}:${minutes}:${seconds} ${periodMarker}`;
+        }
+        setInterval(runSystemClock, 1000);
+        runSystemClock(); // Ignition fire on runtime execution initialization
+
+
+        // --- SECTION 2: TIMEOUT COUNTDOWN LOOP SYSTEM ---
+        const TARGET_DURATION = 330; // 5 minutes 30 seconds = 330 seconds total
+        let timeTracker = TARGET_DURATION;
+        let countdownLoopHandle;
+
+        const countdownElement = document.getElementById('refresh-countdown');
+        const statusText = document.getElementById('engine-text');
+        const statusDot = document.getElementById('engine-dot');
+
+        function startTickerCountdown() {
+            countdownLoopHandle = setInterval(() => {
+                let minutes = Math.floor(timeTracker / 60);
+                let seconds = timeTracker % 60;
+
                 minutes = minutes < 10 ? '0' + minutes : minutes;
                 seconds = seconds < 10 ? '0' + seconds : seconds;
 
-                // Ipakita ang tumatakbong oras sa screen
-                timerDisplay.innerText = `${minutes}:${seconds}`;
+                countdownElement.innerText = `${minutes}:${seconds}`;
 
-                // Kapag umabot na sa 0:00 ang timer
-                if (timeRemaining <= 0) {
-                    clearInterval(countdownInterval); // Itigil ang kasalukuyang timer loop
-                    
-                    triggerUpdate(); // Patakbuhin ang code para mag-update ng data
-                    
-                    timeRemaining = STARTING_TIME; // I-reset muli ang oras sa 5:30
-                    startCountdown(); // Muling simulan ang countdown
+                if (timeTracker <= 0) {
+                    clearInterval(countdownLoopHandle); // Terminate current counter interval
+                    executeScrambleDecipherMatrix();    // Shift execution context to scrambler loop
                 } else {
-                    timeRemaining--; // Bawasan ng isang segundo kada takbo
+                    timeTracker--;
                 }
-            }, 1000); // 1000 milliseconds = 1 segundo
-        }
-
-        // Dito mo ilalagay ang mangyayari kapag natapos ang 5:30 mins
-        function triggerUpdate() {
-            statusText.innerText = "Nag-a-update ng mga presyo...";
-            statusText.style.color = "#f0b90b"; // Gawing dilaw habang nag-a-update
-
-            console.log("Nagsimula ang pag-update ng datos ng merkado.");
-
-            // KUNG GUSTONG I-REFRESH ANG BUONG WEB PAGE:
-            // window.location.reload();
-
-            // KUNG DATA FETCHING LANG ANG GAGAWIN:
-            // Pagkatapos ng kunwaring update (isang segundo), ibalik sa berde ang status text
-            setTimeout(() => {
-                statusText.innerText = "Matagumpay na na-update ang mga presyo!";
-                statusText.style.color = "#0ecb81";
             }, 1000);
         }
 
-        // Awtomatikong patakbuhin ang countdown pagkabukas na pagkabukas ng page
-        startCountdown();
+
+        // --- SECTION 3: NUMBER SCRAMBLE MATRIX ENGINE ---
+        function executeScrambleDecipherMatrix() {
+            // Update terminal state properties to Warning Mode
+            statusText.innerText = "DECRYPTING MATRIX DATA";
+            statusText.parentElement.style.color = "var(--crypto-red)";
+            statusDot.style.background = "var(--crypto-red)";
+            countdownElement.style.color = "var(--crypto-red)";
+
+            // Loop parameters: Rapid number strings generated every 45 milliseconds
+            const matrixScrambleHandle = setInterval(() => {
+                let aggregateStringBlock = "";
+                // Creates an unreadable 11-digit continuous data output cluster
+                for (let index = 0; index < 11; index++) {
+                    aggregateStringBlock += Math.floor(Math.random() * 10);
+                }
+                countdownElement.innerText = aggregateStringBlock;
+            }, 45);
+
+            // Terminate processing artifacts and reset loop structural states after 2.8 seconds
+            setTimeout(() => {
+                clearInterval(matrixScrambleHandle); // Halt generation mechanics
+                
+                // Return variables back to normal parameters
+                countdownElement.style.color = "var(--binance-yellow)";
+                statusText.innerText = "STREAM LIVE";
+                statusText.parentElement.style.color = "var(--crypto-green)";
+                statusDot.style.background = "var(--crypto-green)";
+
+                // Re-initialize primary cycle routines
+                timeTracker = TARGET_DURATION;
+                startTickerCountdown();
+            }, 2800); 
+        }
+
+        // Initialize execution on environment execution initialization ready flag
+        startTickerCountdown();
     </script>
 
 </body>
