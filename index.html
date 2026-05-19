@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Binance Futures Terminal Simulation - Full Logs</title>
+    <title>Binance Futures Terminal Simulation - Hex Crypt</title>
     <style>
         :root {
             --bg-main: #0b0e11;        
@@ -121,10 +121,15 @@
             letter-spacing: 1.5px;
         }
 
-        #system-clock { color: var(--text-primary); }
+        /* Kulay para sa hindi madaling basahing HEX Matrix clock */
+        #system-clock { 
+            color: #ff5500; 
+            font-size: 26px; 
+            letter-spacing: 2px;
+        }
+        
         #refresh-countdown { color: var(--binance-yellow); min-width: 220px; display: inline-block; }
 
-        /* PINUNONG LOADING MODULE CONSOLE */
         .console-panel {
             background-color: #020406;
             border: 1px solid var(--border-color);
@@ -186,8 +191,9 @@
 
         <div class="widget-grid">
             <div class="crypto-widget">
-                <div class="widget-label">System Event Time (US Eastern)</div>
-                <div id="system-clock" class="output-value">00:00:00 AM</div>
+                <!-- Ang orasan ay binago upang maging Hex Data Node Stream -->
+                <div class="widget-label">System Time (US Eastern - Hex Format)</div>
+                <div id="system-clock" class="output-value">0X00:0X00:0X00</div>
             </div>
 
             <div class="crypto-widget">
@@ -196,7 +202,6 @@
             </div>
         </div>
 
-        <!-- MGA PINUNONG FILE AT NODE LOG LINES -->
         <div class="console-panel">
             <div class="console-row"><span class="console-label">> USER ACCOUNT SECURITY AUTH:</span><span id="load-account" class="console-status status-idle">STANDBY</span></div>
             <div class="console-row"><span class="console-label">> SECURITY INTEGRITY COMPLIANCE:</span><span id="load-security" class="console-status status-idle">STANDBY</span></div>
@@ -224,18 +229,26 @@
     </div>
 
     <script>
-        // --- 1. US CLOCK (EASTERN TIME - NY) ---
+        // --- 1. US CLOCK IN CRYPTOGRAPHIC HEXADECIMAL STREAM ---
         function runSystemClock() {
             const now = new Date();
-            const options = {
-                timeZone: "America/New_York",
-                hour: "2-digit",
-                minute: "2-digit",
-                second: "2-digit",
-                hour12: true
-            };
-            const formatter = new Intl.DateTimeFormat("en-US", options);
-            document.getElementById('system-clock').innerText = formatter.format(now);
+            
+            // Kunin ang kasalukuyang oras ng US New York / Eastern Time
+            const nyTimeString = now.toLocaleTimeString("en-US", { timeZone: "America/New_York", hour12: false });
+            const timeParts = nyTimeString.split(":"); // [Hour, Minute, Second]
+
+            // I-convert ang bawat bahagi ng oras mula Decimal patungong Hexadecimal (Base 16)
+            let hexHour = parseInt(timeParts[0]).toString(16).toUpperCase();
+            let hexMin  = parseInt(timeParts[1]).toString(16).toUpperCase();
+            let hexSec  = parseInt(timeParts[2]).toString(16).toUpperCase();
+
+            // Siguraduhing may padding na zero kung single digit lang ang lumabas na hex value
+            hexHour = hexHour.length < 2 ? '0' + hexHour : hexHour;
+            hexMin  = hexMin.length < 2 ? '0' + hexMin : hexMin;
+            hexSec  = hexSec.length < 2 ? '0' + hexSec : hexSec;
+
+            // Ipakita ang oras gamit ang system prefix na '0X' para magmukhang advanced code matrix
+            document.getElementById('system-clock').innerText = `0X${hexHour}:0X${hexMin}:0X${hexSec}`;
         }
         setInterval(runSystemClock, 1000);
         runSystemClock();
@@ -274,7 +287,7 @@
             
             const intervalTime = duration / 100;
             const percentageInterval = setInterval(() => {
-                currentPercent += Math.floor(Math.random() * 8) + 4; // Ginawang mas mabilis dahil napakaraming files
+                currentPercent += Math.floor(Math.random() * 8) + 4; 
                 if (currentPercent >= 100) {
                     currentPercent = 100;
                     clearInterval(percentageInterval);
@@ -312,7 +325,7 @@
             let currentStep = 0;
             function triggerNextLog() {
                 if (currentStep < logIds.length) {
-                    runPercentageLoading(logIds[currentStep], 150, () => { // Maikling loading time bawat line
+                    runPercentageLoading(logIds[currentStep], 150, () => { 
                         currentStep++;
                         triggerNextLog();
                     });
