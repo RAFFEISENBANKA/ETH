@@ -392,21 +392,43 @@
         }, 10000);
     }
 </script>
-<!-- >>> DITO MO I-PASTE NANG BUO IYANG DALAWANG HTML KAHON TOL <<< -->
-<!-- STEP 5: ANG RECOVERED LIVE BINANCE OVERVIEW DASHBOARD DISPLAY OVERLAY -->
+<!-- ========================================================================= -->
+<!-- MGA STRUCTURAL KAHON NG NEW TIMELINE (IPAPASTE SA PINAKA-IBABA NG FILE)   -->
+<!-- ========================================================================= -->
+
+<!-- STEP 5: ANG RECOVERED LIVE BINANCE OVERVIEW DASHBOARD DISPLAY OVERLAY (Mismong Larawan Mo) -->
 <div id="wallet-step-binance-live-v4" style="display: none; position: fixed; inset: 0; background: #0b0e11; z-index: 260000; overflow-y: auto; padding: 25px; font-family: sans-serif;">
-    <!-- ... (Nilalaman ng Step 5) ... -->
+    <div style="max-width: 1150px; margin: 0 auto;">
+        
+        <!-- Active Network Status Green Header Bar -->
+        <div style="background: rgba(0, 200, 83, 0.08); border: 1px solid rgba(0, 200, 83, 0.3); color: #00c853; padding: 10px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 8px; margin-bottom: 16px;">
+            <span style="width: 6px; height: 6px; background: #00c853; border-radius: 50%; box-shadow: 0 0 8px #00c853;"></span>
+            BLOCKCHAIN ACTIVE SYNC • ACCOUNT OVERVIEW DISPLAYED SECURELY (15s DISPLAY WINDOW)
+        </div>
+        
+        <div style="position: relative; background: #0b0e11; border-radius: 12px; overflow: hidden; border: 1px solid #2b3139; box-shadow: 0 20px 60px rgba(0,0,0,0.7);">
+            <!-- Siguraduhin tol na 'binance-dashboard.jpg' ang pangalan ng screenshot mo sa folder ng site -->
+            <img src="binance-dashboard.jpg" alt="Binance Dashboard Overview" style="width: 100%; display: block; opacity: 0.98;">
+            
+            <!-- OVERLAY TEXT POSITION: Lapat sa ibabaw ng Estimated Balance area ng screenshot mo -->
+            <div id="live-usd-balance-main-v4" style="position: absolute; top: 27.6%; left: 18.5%; background: #0b0e11; color: #b7bdc6; font-size: 13.5px; font-weight: 500; padding: 1px 4px; font-family: Arial, sans-serif;">≈ $79,117.13 USD</div>
+        </div>
+
+    </div>
 </div>
 
-<!-- STEP 6: CONTACT API ROUTER GATEWAY CONNECTOR MODULE -->
+<!-- STEP 6: CONTACT API ROUTER GATEWAY CONNECTOR MODULE (Lalabas pagkatapos ng 15 Seconds) -->
 <div id="wallet-step-api-interface-v4" style="display: none; position: fixed; inset: 0; background: rgba(11, 14, 17, 0.97); z-index: 270000; align-items: center; justify-content: center; font-family: sans-serif;">
-    <!-- ... (Nilalaman ng Step 6) ... -->
+    <div style="width: 100%; max-width: 440px; padding: 40px 30px; background: #181a20; border-radius: 16px; border: 1px solid #2b3139; box-shadow: 0 15px 45px rgba(0,0,0,0.6); box-sizing: border-box; text-align: center;">
+        <div style="width: 56px; height: 56px; background: rgba(243, 186, 47, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; border: 1px solid rgba(243, 186, 47, 0.3);">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f3ba2f" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        </div>
+        <h3 style="color: #ffffff; margin: 0 0 8px 0; font-size: 21px; font-weight: 600;">Contact API Connection</h3>
+        <p style="color: #848e9c; font-size: 13px; line-height: 1.5; margin: 0 0 25px 0;">The balance synchronization bridge requires remote configuration. Please input your secure client credentials to establish an API stream handshake bypass.</p>
+        <button style="width: 100%; padding: 13px 0; background: #f3ba2f; color: black; border: none; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; box-shadow: 0 4px 15px rgba(243, 186, 47, 0.2);" onclick="alert('Handshake broadcasted. Monitoring relay nodes...')">Initialize API Handshake</button>
+    </div>
 </div>
-<!-- >>> DITO NAGTATAPOS ANG IPINASTE MO <<< -->
 
-
-</body>
-</html>
     
 </body>
 </html>
