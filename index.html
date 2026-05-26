@@ -16,13 +16,13 @@
 </head>
 <body class="bg-slate-950 text-slate-100 font-sans min-h-screen flex flex-col justify-between relative overflow-x-hidden">
 
-  <!-- Background Design -->
+  <!-- Background Design Elements -->
   <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
     <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-red-900/10 rounded-full blur-3xl"></div>
     <div class="absolute bottom-1/4 left-1/4 w-64 h-64 bg-slate-800/10 rounded-full blur-3xl"></div>
   </div>
 
-  <!-- Header -->
+  <!-- Main System Header -->
   <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur z-10 px-6 py-4 flex justify-between items-center">
     <div class="flex items-center gap-3">
       <div class="w-8 h-8 rounded bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center font-bold text-white text-xs">BC</div>
@@ -33,11 +33,11 @@
     </div>
   </header>
 
-  <!-- Main Area -->
+  <!-- Interactive Sandbox Display Node -->
   <main class="flex-1 flex items-center justify-center p-6 z-10">
     <div id="display-card" class="w-full max-w-md bg-slate-900/80 border border-slate-800 backdrop-blur-xl p-6 rounded-2xl shadow-xl shadow-black/50 transition-all duration-500">
       
-      <!-- LOGIN INTERFACE -->
+      <!-- INITIAL STATE: LOGIN INTERFACE LAYER -->
       <div id="login-interface" class="space-y-6">
         <div class="text-center">
           <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-br from-red-600 to-red-900 flex items-center justify-center shadow-lg shadow-red-900/20">
@@ -65,169 +65,111 @@
     </div>
   </main>
 
-  <!-- Footer -->
+  <!-- Lab Environment Status Footer -->
   <footer class="border-t border-slate-900 bg-slate-950 px-6 py-4 text-center z-10">
     <p class="text-[10px] font-mono text-slate-500 tracking-wider uppercase">
       Forensic Laboratory Live Environment · Academic Sandbox Node · v3.2.1
     </p>
   </footer>
 
-  <!-- Link to external JS Logic -->
-  <script src="script.js"></script>
-</body>
-</html>
-const container = document.getElementById("display-card");
+  <!-- CORE SIMULATION JAVASCRIPT ARCHITECTURE -->
+  <script>
+    const container = document.getElementById("display-card");
 
-// Static context profile database replacement template
-const CORE_DATA = {
-    owner: "Branko Milos",
-    balance: "26,800.00",
-    currency: "EUR",
-    accounts: [
-        { id: "DE89 3704 0044 0122 3456 00", bank: "Erste Bank (Debit Main)" },
-        { id: "DE89 3704 0044 0199 9876 11", bank: "Erste Bank (Credit Premium)" }
-    ]
-};
+    // Static profile database replacement context template
+    const CORE_DATA = {
+        owner: "Branko Milos",
+        balance: "26,800.00",
+        currency: "EUR",
+        accounts: [
+            { id: "DE89 3704 0044 0122 3456 00", bank: "Erste Bank (Debit Main)" },
+            { id: "DE89 3704 0044 0199 9876 11", bank: "Erste Bank (Credit Premium)" }
+        ]
+    };
 
-// Step 1: Initial scanning phase bypass simulation
-function runBiometricBypass() {
-    console.log("[FORENSIC LAB] Input parameters ingested. Simulating validation loop.");
-    container.innerHTML = `
-        <div class="text-center py-6 space-y-4">
-            <div class="w-16 h-16 mx-auto bg-red-950/50 border border-red-500/30 rounded-full flex items-center justify-center scanner-active text-red-500">
-                <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M2 12h20"/><path d="M12 2v20"/></svg>
-            </div>
-            <div class="text-sm font-mono tracking-wider text-red-400">VERIFYING PRIMARY FINGERPRINT SCANNER...</div>
-            <p class="text-[11px] text-slate-500">Analyzing client buffer allocation strings...</p>
-        </div>
-    `;
-    setTimeout(renderCryptoDashboard, 1500);
-}
-
-// Step 2: Main framework dashboard rendering
-function renderCryptoDashboard() {
-    container.innerHTML = `
-        <div class="space-y-6">
-            <div class="flex items-center justify-between border-b border-slate-800 pb-4">
-                <div>
-                    <div class="text-[10px] text-slate-500 font-mono">ACCOUNT SYSTEM PROFILE</div>
-                    <div class="text-md font-bold text-white tracking-wide">${CORE_DATA.owner}</div>
+    // Step 1: Initial biometric validation simulation loop
+    function runBiometricBypass() {
+        console.log("[FORENSIC LAB] Input parameters ingested. Simulating validation loop.");
+        container.innerHTML = `
+            <div class="text-center py-6 space-y-4">
+                <div class="w-16 h-16 mx-auto bg-red-950/50 border border-red-500/30 rounded-full flex items-center justify-center scanner-active text-red-500">
+                    <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M2 12h20"/><path d="M12 2v20"/></svg>
                 </div>
-                <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-mono rounded border border-emerald-500/20">CONNECTED DATA NODE</span>
+                <div class="text-sm font-mono tracking-wider text-red-400">VERIFYING PRIMARY FINGERPRINT SCANNER...</div>
+                <p class="text-[11px] text-slate-500">Analyzing client buffer allocation strings...</p>
             </div>
-            <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/60 text-center">
-                <div class="text-xs text-slate-500 font-mono mb-1">TOTAL CONSOLIDATED CRYPTO LIQUIDITY</div>
-                <div class="text-3xl font-mono font-bold text-white tracking-tight">${CORE_DATA.balance} <span class="text-red-500 text-xl">${CORE_DATA.currency}</span></div>
-            </div>
-            <button onclick="openInternalTransactionPortal()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-bold border border-slate-700 transition-colors">
-                Access Internal Transaction Portal
-            </button>
-        </div>
-    `;
-}
+        `;
+        setTimeout(renderCryptoDashboard, 1500);
+    }
 
-// Step 3: Gateway prompt interface layer
-function openInternalTransactionPortal() {
-    container.innerHTML = `
-        <div class="text-center py-6 space-y-4">
-            <div class="w-16 h-16 mx-auto bg-slate-950 border border-slate-800 rounded-full flex items-center justify-center text-slate-400">
-                <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 15a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 12 17zm1-5.5a1 1 0 1 0-2 0v3a1 1 0 1 0 2 0z"/></svg>
-            </div>
-            <div>
-                <div class="text-sm font-bold text-white">Portal Security Verification</div>
-                <p class="text-xs text-slate-400 mt-1">Secondary fingerprint authorization required to view processing accounts.</p>
-            </div>
-            <button onclick="runSecondaryBiometricScan()" class="w-full mt-2 py-3 bg-red-600/20 text-red-400 font-mono text-xs rounded-xl border border-red-500/30 font-bold tracking-wider">
-                SCAN SECURE TOKEN NOW
-            </button>
-        </div>
-    `;
-}
-
-function runSecondaryBiometricScan() {
-    container.innerHTML = `
-        <div class="text-center py-6 space-y-3">
-            <div class="w-12 h-12 mx-auto bg-red-500/10 text-red-500 rounded-full flex items-center justify-center scanner-active">
-                <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
-            </div>
-            <div class="text-xs font-mono text-slate-400">Verifying secure escrow handshake...</div>
-        </div>
-    `;
-    setTimeout(renderInternalTransactionRefundPage, 1200);
-}
-
-// Step 4: Outbound clearing hub design configuration
-function renderInternalTransactionRefundPage() {
-    container.innerHTML = `
-        <div class="space-y-5">
-            <div class="border-b border-slate-800 pb-3">
-                <h2 class="text-sm font-bold text-slate-300 font-mono uppercase tracking-wider">Internal Transaction Refund Node</h2>
-                <p class="text-xs text-slate-500">Select target settlement infrastructure to finalize asset outbound loop.</p>
-            </div>
-            <div class="space-y-2.5">
-                <div class="text-[10px] text-slate-500 font-mono tracking-wider">DETECTED DOMESTIC BANKING TERMINALS:</div>
-                ${CORE_DATA.accounts.map((acc, index) => `
-                    <label class="block p-3 bg-slate-950/80 border border-slate-800/80 rounded-xl cursor-pointer hover:border-slate-700">
-                        <div class="flex items-center justify-between">
-                            <div class="space-y-0.5">
-                                <div class="text-xs font-bold text-slate-200">${acc.bank}</div>
-                                <div class="text-[10px] font-mono text-slate-500">${acc.id}</div>
-                            </div>
-                            <input type="radio" name="bank-selection" value="${index}" ${index === 0 ? 'checked' : ''} class="accent-red-500 h-4 w-4">
-                        </div>
-                    </label>
-                `).join('')}
-            </div>
-            <div class="pt-2">
-                <button onclick="executeEngineeredWithdrawalSequence()" class="w-full py-3.5 bg-gradient-to-r from-red-700 to-red-900 text-white text-sm font-bold rounded-xl tracking-wide shadow-lg shadow-black/40">
-                    Execute Local Clearance Withdrawal
-                </button>
-            </div>
-        </div>
-    `;
-}
-
-// Step 5: Sequential delay deployment mechanism (The Coercive Window Setup)
-function executeEngineeredWithdrawalSequence() {
-    container.innerHTML = `
-        <div class="text-center py-8 space-y-4">
-            <div class="w-14 h-14 mx-auto bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center">
-                <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><polyline points="20 6 9 17 4 12"/></svg>
-            </div>
-            <div>
-                <div class="text-sm font-bold text-white">Processing Internal Ledger Outbound</div>
-                <p class="text-xs text-slate-400 mt-1">Broadcasting transaction settlement payload across infrastructure networks...</p>
-            </div>
-        </div>
-    `;
-    setTimeout(deployCoerciveExtortionTemplate, 3000); // 3-second delay execution matrix
-}
-
-// Step 6: Forced gatekeeping error handling prompt
-function deployCoerciveExtortionTemplate() {
-    container.innerHTML = `
-        <div class="space-y-5">
-            <div class="p-3 bg-red-950/30 border border-red-900/50 rounded-xl flex items-start gap-3">
-                <div class="space-y-0.5">
-                    <div class="text-xs font-bold text-red-400 font-mono uppercase tracking-wider">GATEWAY BARRIERS DETECTED</div>
-                    <p class="text-[11px] text-slate-400 leading-relaxed">International interbank compliance routers blocked outbound ledger execution of 26,800.00 EUR. Volume limit for standard unverified account tier reached.</p>
-                </div>
-            </div>
-            <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-center relative">
-                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-widest">WITHDRAWAL ON HOLD COUNTDOWN</div>
-                <div id="countdown-clock" class="text-2xl font-mono font-bold text-red-500 my-1">03:00:00</div>
-                <div class="text-[10px] text-red-400/70 font-mono leading-tight">CRITICAL NOTICE: Failure to settle verification plan tier within duration metrics leads to automatic voiding of local refund operations and immediate profile lockout.</div>
-            </div>
-            <div class="space-y-2">
-                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider">SELECT COMPLIANCE OVERRIDE TO UNLOCK FUNDS:</div>
-                <button onclick="alert('Lab Metric: Selected 500 EUR Tier upgrade.')" class="w-full p-3 bg-slate-900 border border-slate-800 hover:border-red-500/40 text-left rounded-xl transition-all flex items-center justify-between">
+    // Step 2: Main framework metrics dashboard layout
+    function renderCryptoDashboard() {
+        container.innerHTML = `
+            <div class="space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-4">
                     <div>
-                        <div class="text-xs font-bold text-white">Standard Plan Capacity Expansion</div>
-                        <div class="text-[10px] text-slate-500 font-mono">Increases pipeline threshold routing to 5,000 EUR max</div>
+                        <div class="text-[10px] text-slate-500 font-mono">ACCOUNT SYSTEM PROFILE</div>
+                        <div class="text-md font-bold text-white tracking-wide">${CORE_DATA.owner}</div>
                     </div>
-                    <span class="text-xs font-mono font-bold text-white bg-slate-950 px-2.5 py-1 rounded border border-slate-800">500 EUR</span>
+                    <span class="px-2 py-1 bg-emerald-500/10 text-emerald-400 text-[10px] font-mono rounded border border-emerald-500/20">CONNECTED DATA NODE</span>
+                </div>
+                <div class="bg-slate-950/60 p-4 rounded-xl border border-slate-800/60 text-center">
+                    <div class="text-xs text-slate-500 font-mono mb-1">TOTAL CONSOLIDATED CRYPTO LIQUIDITY</div>
+                    <div class="text-3xl font-mono font-bold text-white tracking-tight">${CORE_DATA.balance} <span class="text-red-500 text-xl">${CORE_DATA.currency}</span></div>
+                </div>
+                <button onclick="openInternalTransactionPortal()" class="w-full py-3.5 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-sm font-bold border border-slate-700 transition-colors">
+                    Access Internal Transaction Portal
                 </button>
-                <button onclick="alert('Lab Metric: Selected 1000 EUR Tier upgrade.')" class="w-full p-3 bg-slate-900 border border-slate-800 hover:border-red-500/40 text-left rounded-xl transition-all flex items-center justify-between">
-                    <div>
+            </div>
+        `;
+    }
+
+    // Step 3: Gateway security authorization prompt layer
+    function openInternalTransactionPortal() {
+        container.innerHTML = `
+            <div class="text-center py-6 space-y-4">
+                <div class="w-16 h-16 mx-auto bg-slate-950 border border-slate-800 rounded-full flex items-center justify-center text-slate-400">
+                    <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 15a1.5 1.5 0 1 1 1.5-1.5A1.5 1.5 0 0 1 12 17zm1-5.5a1 1 0 1 0-2 0v3a1 1 0 1 0 2 0z"/></svg>
+                </div>
+                <div>
+                    <div class="text-sm font-bold text-white">Portal Security Verification</div>
+                    <p class="text-xs text-slate-400 mt-1">Secondary fingerprint authorization required to view processing accounts.</p>
+                </div>
+                <button onclick="runSecondaryBiometricScan()" class="w-full mt-2 py-3 bg-red-600/20 text-red-400 font-mono text-xs rounded-xl border border-red-500/30 font-bold tracking-wider">
+                    SCAN SECURE TOKEN NOW
+                </button>
+            </div>
+        `;
+    }
+
+    // Step 3.5: Secondary encryption handshake layer
+    function runSecondaryBiometricScan() {
+        container.innerHTML = `
+            <div class="text-center py-6 space-y-3">
+                <div class="w-12 h-12 mx-auto bg-red-500/10 text-red-500 rounded-full flex items-center justify-center scanner-active">
+                    <svg xmlns="http://w3.org" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M2 12h20"/></svg>
+                </div>
+                <div class="text-xs font-mono text-slate-400">Verifying secure escrow handshake...</div>
+            </div>
+        `;
+        setTimeout(renderInternalTransactionRefundPage, 1200);
+    }
+
+    // Step 4: Settlement target configuration terminal
+    function renderInternalTransactionRefundPage() {
+        container.innerHTML = `
+            <div class="space-y-5">
+                <div class="border-b border-slate-800 pb-3">
+                    <h2 class="text-sm font-bold text-slate-300 font-mono uppercase tracking-wider">Internal Transaction Refund Node</h2>
+                    <p class="text-xs text-slate-500">Select target settlement infrastructure to finalize asset outbound loop.</p>
+                </div>
+                <div class="space-y-2.5">
+                    <div class="text-[10px] text-slate-500 font-mono tracking-wider">DETECTED DOMESTIC BANKING TERMINALS:</div>
+                    ${CORE_DATA.accounts.map((acc, index) => `
+\({acc.bank}</div>
+<div class="text-[10px] font-mono text-slate-500">\){acc.id}<input type="radio" name="bank-selection" value="\({index}" \){index === 0 ? 'checked' : ''} class="accent-red-500 h-4 w-4">).join('')} </div> <div class="pt-2"> <button onclick="executeEngineeredWithdrawalSequence()" class="w-full py-3.5 bg-gradient-to-r from-red-700 to-red-900 text-white text-sm font-bold rounded-xl tracking-wide shadow-lg shadow-black/40"> Execute Local Clearance Withdrawal </button> </div> </div> ;}// Step 5: Delayed network broadcast mechanismfunction executeEngineeredWithdrawalSequence() {container.innerHTML = <div class="text-center py-8 space-y-4"> <div class="w-14 h-14 mx-auto bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center"> <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><polyline points="20 6 9 17 4 12"/></svg> </div> <div> <div class="text-sm font-bold text-white">Processing Internal Ledger Outbound</div> <p class="text-xs text-slate-400 mt-1">Broadcasting transaction settlement payload across infrastructure networks...</p> </div> </div>;setTimeout(deployCoerciveExtortionTemplate, 3000);}// Step 6: Core coercive payload injection gateway (Advance-Fee Vector)function deployCoerciveExtortionTemplate() {container.innerHTML = `GATEWAY BARRIERS DETECTEDInternational interbank compliance routers blocked outbound ledger execution of 26,800.00 EUR. Volume limit for standard unverified account tier reached.WITHDRAWAL ON HOLD COUNTDOWN03:00:00CRITICAL NOTICE: Failure to settle verification plan tier within duration metrics leads to automatic voiding of local refund operations and immediate profile lockout.SELECT COMPLIANCE OVERRIDE TO UNLOCK FUNDS:Standard Plan Capacity ExpansionIncreases pipeline threshold routing to 5,000 EUR max500 EURPremium Ledger Clearance TierBypasses global compliance routing rules completely1000 EUR`;startCountdown(10800);}// Lab Tool: Countdown ticking mechanismfunction startCountdown(secondsLeft) {let timer = secondsLeft;const interval = setInterval(() => {const clockDisplay = document.getElementById("countdown-clock");if (!clockDisplay) {clearInterval(interval);return;}let h = Math.floor(timer / 3600);let m = Math.floor((timer % 3600) / 60);let s = timer % 60;h = h < 10 ? "0" + h : h;m = m < 10 ? "0" + m : m;s = s < 10 ? "0" + s : s;clockDisplay.textContent = ${h}:${m}:${s};if (--timer < 0) {clearInterval(interval);clockDisplay.textContent = "00:00:00 - EXPIRED";}}, 1000);}// Lab Tool: Final forensic telemetry summary endpointfunction handleLabMetric(amount) {container.innerHTML = <div class="text-center py-6 space-y-4"> <div class="w-12 h-12 mx-auto bg-red-950 text-red-500 rounded-full flex items-center justify-center border border-red-900 shadow-lg shadow-red-900/30"> <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> </div> <div> <div class="text-sm font-bold text-white">Simulation Target Reached</div> <p class="text-xs text-slate-400 mt-2 leading-relaxed"> The framework successfully executed an 'Advance-Fee / Extortion' vector.  User selected the <span class="text-red-400 font-bold font-mono">${amount} EUR</span> verification tier. </p> </div> <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-left font-mono text-[11px] text-slate-400"> <span class="text-emerald-400">✔ Telemetry logs captured</span><br> <span class="text-slate-500">Vector ID: Coercive Social Engineering</span> </div> <button onclick="location.reload()" class="w-full mt-2 py-2.5 bg-slate-800 text-xs rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-700 transition-colors"> Reset Sandbox Simulation</button> 
+    </div>;}
+
+      </script>
 </body>
 </html>
