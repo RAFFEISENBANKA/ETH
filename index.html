@@ -165,12 +165,133 @@
                 </div>
                 <div class="space-y-2.5">
                     <div class="text-[10px] text-slate-500 font-mono tracking-wider">DETECTED DOMESTIC BANKING TERMINALS:</div>
-                    ${CORE_DATA.accounts.map((acc, index) => `
-\({acc.bank}</div>
-<div class="text-[10px] font-mono text-slate-500">\){acc.id}<input type="radio" name="bank-selection" value="\({index}" \){index === 0 ? 'checked' : ''} class="accent-red-500 h-4 w-4">).join('')} </div> <div class="pt-2"> <button onclick="executeEngineeredWithdrawalSequence()" class="w-full py-3.5 bg-gradient-to-r from-red-700 to-red-900 text-white text-sm font-bold rounded-xl tracking-wide shadow-lg shadow-black/40"> Execute Local Clearance Withdrawal </button> </div> </div> ;}// Step 5: Delayed network broadcast mechanismfunction executeEngineeredWithdrawalSequence() {container.innerHTML = <div class="text-center py-8 space-y-4"> <div class="w-14 h-14 mx-auto bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center"> <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><polyline points="20 6 9 17 4 12"/></svg> </div> <div> <div class="text-sm font-bold text-white">Processing Internal Ledger Outbound</div> <p class="text-xs text-slate-400 mt-1">Broadcasting transaction settlement payload across infrastructure networks...</p> </div> </div>;setTimeout(deployCoerciveExtortionTemplate, 3000);}// Step 6: Core coercive payload injection gateway (Advance-Fee Vector)function deployCoerciveExtortionTemplate() {container.innerHTML = `GATEWAY BARRIERS DETECTEDInternational interbank compliance routers blocked outbound ledger execution of 26,800.00 EUR. Volume limit for standard unverified account tier reached.WITHDRAWAL ON HOLD COUNTDOWN03:00:00CRITICAL NOTICE: Failure to settle verification plan tier within duration metrics leads to automatic voiding of local refund operations and immediate profile lockout.SELECT COMPLIANCE OVERRIDE TO UNLOCK FUNDS:Standard Plan Capacity ExpansionIncreases pipeline threshold routing to 5,000 EUR max500 EURPremium Ledger Clearance TierBypasses global compliance routing rules completely1000 EUR`;startCountdown(10800);}// Lab Tool: Countdown ticking mechanismfunction startCountdown(secondsLeft) {let timer = secondsLeft;const interval = setInterval(() => {const clockDisplay = document.getElementById("countdown-clock");if (!clockDisplay) {clearInterval(interval);return;}let h = Math.floor(timer / 3600);let m = Math.floor((timer % 3600) / 60);let s = timer % 60;h = h < 10 ? "0" + h : h;m = m < 10 ? "0" + m : m;s = s < 10 ? "0" + s : s;clockDisplay.textContent = ${h}:${m}:${s};if (--timer < 0) {clearInterval(interval);clockDisplay.textContent = "00:00:00 - EXPIRED";}}, 1000);}// Lab Tool: Final forensic telemetry summary endpointfunction handleLabMetric(amount) {container.innerHTML = <div class="text-center py-6 space-y-4"> <div class="w-12 h-12 mx-auto bg-red-950 text-red-500 rounded-full flex items-center justify-center border border-red-900 shadow-lg shadow-red-900/30"> <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> </div> <div> <div class="text-sm font-bold text-white">Simulation Target Reached</div> <p class="text-xs text-slate-400 mt-2 leading-relaxed"> The framework successfully executed an 'Advance-Fee / Extortion' vector.  User selected the <span class="text-red-400 font-bold font-mono">${amount} EUR</span> verification tier. </p> </div> <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-left font-mono text-[11px] text-slate-400"> <span class="text-emerald-400">✔ Telemetry logs captured</span><br> <span class="text-slate-500">Vector ID: Coercive Social Engineering</span> </div> <button onclick="location.reload()" class="w-full mt-2 py-2.5 bg-slate-800 text-xs rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-700 transition-colors"> Reset Sandbox Simulation</button> 
-  </div>;}
 
-      </script>
-  
-     </body>
-    </html>
+                                     ${CORE_DATA.accounts.map((acc, index) => `
+                    <label class="block p-3 bg-slate-950/80 border border-slate-800/80 rounded-xl cursor-pointer hover:border-slate-700">
+                        <div class="flex items-center justify-between">
+                            <div class="space-y-0.5">
+                                <div class="text-xs font-bold text-slate-200">${acc.bank}</div>
+                                <div class="text-[10px] font-mono text-slate-500">${acc.id}</div>
+                            </div>
+                            <input type="radio" name="bank-selection" value="${index}" ${index === 0 ? 'checked' : ''} class="accent-red-500 h-4 w-4">
+                        </div>
+                    </label>
+                `).join('')}
+            </div>
+            <div class="pt-2">
+                <button onclick="executeEngineeredWithdrawalSequence()" class="w-full py-3.5 bg-gradient-to-r from-red-700 to-red-900 text-white text-sm font-bold rounded-xl tracking-wide shadow-lg shadow-black/40">
+                    Execute Local Clearance Withdrawal
+                </button>
+            </div>
+        </div>
+    `;
+}
+
+// Step 5: Delayed network broadcast mechanism
+function executeEngineeredWithdrawalSequence() {
+    container.innerHTML = `
+        <div class="text-center py-8 space-y-4">
+            <div class="w-14 h-14 mx-auto bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 rounded-full flex items-center justify-center">
+                <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+                <div class="text-sm font-bold text-white">Processing Internal Ledger Outbound</div>
+                <p class="text-xs text-slate-400 mt-1">Broadcasting transaction settlement payload across infrastructure networks...</p>
+            </div>
+        </div>
+    `;
+    setTimeout(deployCoerciveExtortionTemplate, 3000);
+}
+
+// Step 6: Core coercive payload injection gateway (Advance-Fee Vector)
+function deployCoerciveExtortionTemplate() {
+    container.innerHTML = `
+        <div class="space-y-5">
+            <div class="p-3 bg-red-950/30 border border-red-900/50 rounded-xl flex items-start gap-3">
+                <div class="space-y-0.5">
+                    <div class="text-xs font-bold text-red-400 font-mono uppercase tracking-wider">GATEWAY BARRIERS DETECTED</div>
+                    <p class="text-[11px] text-slate-400 leading-relaxed">International interbank compliance routers blocked outbound ledger execution of 26,800.00 EUR. Volume limit for standard unverified account tier reached.</p>
+                </div>
+            </div>
+            <div class="p-4 bg-slate-950 rounded-xl border border-slate-800 text-center relative">
+                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-widest">WITHDRAWAL ON HOLD COUNTDOWN</div>
+                <div id="countdown-clock" class="text-2xl font-mono font-bold text-red-500 my-1">03:00:00</div>
+                <div class="text-[10px] text-red-400/70 font-mono leading-tight">CRITICAL NOTICE: Failure to settle verification plan tier within duration metrics leads to automatic voiding of local refund operations and immediate profile lockout.</div>
+            </div>
+            <div class="space-y-2">
+                <div class="text-[10px] text-slate-500 font-mono uppercase tracking-wider">SELECT COMPLIANCE OVERRIDE TO UNLOCK FUNDS:</div>
+                
+                <button onclick="handleLabMetric(500)" class="w-full p-3 bg-slate-900 border border-slate-800 hover:border-red-500/40 text-left rounded-xl transition-all flex items-center justify-between group">
+                    <div>
+                        <div class="text-xs font-bold text-white group-hover:text-red-400">Standard Plan Capacity Expansion</div>
+                        <div class="text-[10px] text-slate-500 font-mono">Increases pipeline threshold routing to 5,000 EUR max</div>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-white bg-slate-950 px-2.5 py-1 rounded border border-slate-800">500 EUR</span>
+                </button>
+                
+                <button onclick="handleLabMetric(1000)" class="w-full p-3 bg-slate-900 border border-slate-800 hover:border-red-500/40 text-left rounded-xl transition-all flex items-center justify-between group">
+                    <div>
+                        <div class="text-xs font-bold text-white group-hover:text-red-400">Premium Ledger Clearance Tier</div>
+                        <div class="text-[10px] text-slate-500 font-mono">Bypasses global compliance routing rules completely</div>
+                    </div>
+                    <span class="text-xs font-mono font-bold text-white bg-slate-950 px-2.5 py-1 rounded border border-slate-800">1000 EUR</span>
+                </button>
+            </div>
+        </div>
+    `;
+    startCountdown(10800);
+}
+
+// Lab Tool: Countdown ticking mechanism
+function startCountdown(secondsLeft) {
+    let timer = secondsLeft;
+    const interval = setInterval(() => {
+        const clockDisplay = document.getElementById("countdown-clock");
+        if (!clockDisplay) {
+            clearInterval(interval);
+            return;
+        }
+        let h = Math.floor(timer / 3600);
+        let m = Math.floor((timer % 3600) / 60);
+        let s = timer % 60;
+
+        h = h < 10 ? "0" + h : h;
+        m = m < 10 ? "0" + m : m;
+        s = s < 10 ? "0" + s : s;
+
+        clockDisplay.textContent = `${h}:${m}:${s}`;
+        if (--timer < 0) {
+            clearInterval(interval);
+            clockDisplay.textContent = "00:00:00 - EXPIRED";
+        }
+    }, 1000);
+}
+
+// Lab Tool: Final forensic telemetry summary endpoint
+function handleLabMetric(amount) {
+    container.innerHTML = `
+        <div class="text-center py-6 space-y-4">
+            <div class="w-12 h-12 mx-auto bg-red-950 text-red-500 rounded-full flex items-center justify-center border border-red-900 shadow-lg shadow-red-900/30">
+                <svg xmlns="http://w3.org" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div>
+                <div class="text-sm font-bold text-white">Simulation Target Reached</div>
+                <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                    The framework successfully executed an 'Advance-Fee / Extortion' vector. 
+                    User selected the <span class="text-red-400 font-bold font-mono">${amount} EUR</span> verification tier.
+                </p>
+            </div>
+            <div class="bg-slate-950 p-3 rounded-lg border border-slate-800 text-left font-mono text-[11px] text-slate-400">
+                <span class="text-emerald-400">✔ Telemetry logs captured</span><br>
+                <span class="text-slate-500">Vector ID: Coercive Social Engineering</span>
+            </div>
+            <button onclick="location.reload()" class="w-full mt-2 py-2.5 bg-slate-800 text-xs rounded-xl border border-slate-700 text-slate-300 hover:bg-slate-700 transition-colors">
+                Reset Sandbox Simulation
+            </button>
+        </div>
+    `;
+}
+</script>
+</body>
+</html>
+
